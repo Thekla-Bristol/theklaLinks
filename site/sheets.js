@@ -74,7 +74,8 @@
   document.addEventListener('click', (e) => {
     const t = e.target.closest('[data-sheet]');
     if (t) {
-      if (open(t.dataset.sheet)) e.preventDefault();
+      e.preventDefault(); // never follow a link as well as opening the card
+      open(t.dataset.sheet);
       return;
     }
     const ev = e.target.closest('[data-event]');
@@ -185,7 +186,7 @@
     const end = e.end ? new Date(e.end) : null;
     const isClub = e.type === 'club';
     const hasTickets = e.linkKind === 'tickets' && !['soldout', 'cancelled'].includes(e.status);
-    const seller = e.source === 'fatsoma' ? 'Fatsoma' : e.source === 'alttickets' ? 'Alt Tickets' : 'the ticket site';
+    const seller = { fatsoma: 'Fatsoma', skiddle: 'Skiddle', alttickets: 'Alt Tickets' }[e.source] || 'the ticket site';
 
     const dlg = document.getElementById('event');
     dlg.dataset.hash = `e-${id}`;
@@ -207,6 +208,7 @@
     const chips = [];
     if (e.status === 'soldout') chips.push('<span class="chip soldout">Sold out</span>');
     if (e.status === 'low') chips.push('<span class="chip low">Last few</span>');
+    if (e.status === 'presale') chips.push('<span class="chip low">Pre-sale soon</span>');
     if (e.status === 'cancelled') chips.push('<span class="chip soldout">Cancelled</span>');
     if (e.status === 'postponed') chips.push('<span class="chip soldout">Postponed</span>');
 

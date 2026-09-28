@@ -15,6 +15,11 @@ globalThis.fetch = async (url) => {
     return res(JSON.stringify({ data: [{ attributes: { name: d[0], 'starts-at': d[1], 'vanity-name': id, 'seo-name': 's', 'asset-url': 'https://cdn2.fatsoma.com/media/K' } }] }));
   }
   if (url.includes('fatsoma.com')) return res(fx('fatsoma-event.html'));
+  if (url.includes('skiddle.com/api/v1/venues')) return res(JSON.stringify({ error: 0, results: [{ id: 1234, name: 'Thekla' }] }));
+  if (url.includes('skiddle.com/api/v1/events')) return res(JSON.stringify({ error: 0, results: [
+    { eventname: 'PRESSURE - Thekla Thursday', date: '2026-10-01', EventCode: 'CLUB', openingtimes: { doorsopen: '21:30', doorsclose: '03:00' }, link: 'https://www.skiddle.com/e/1' },
+    { eventname: 'Garage Nation', date: '2026-10-17', EventCode: 'CLUB', openingtimes: { doorsopen: '22:00', doorsclose: '03:00' }, link: 'https://www.skiddle.com/e/2', entryprice: '£12.50', description: '<p>UKG all night.</p>' },
+  ] }));
   if (url.includes('theklabristol.co.uk/live')) return res(fx('thekla-live.html'));
   if (url.includes('theklabristol.co.uk/club')) return res('down', 503); // simulate backend error
   return res('not found', 404);

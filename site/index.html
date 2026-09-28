@@ -78,8 +78,11 @@
   </section>
 
   <section class="block upcoming" id="coming-up" aria-labelledby="cu-h">
-    <div class="block-head"><h2 id="cu-h">Coming Up</h2></div>
-    <div id="later"></div>
+    <div class="block-head"><h2 id="cu-h">Coming Up</h2><span class="meta" id="cu-count"></span></div>
+    <div class="months-wrap">
+      <div class="months" id="months" role="tablist" aria-label="Choose a month"></div>
+    </div>
+    <div id="later" role="tabpanel" aria-labelledby="cu-h"></div>
   </section>
 
   <!-- ============ EDIT ME: link buttons ============ -->
@@ -88,8 +91,8 @@
       <li><a class="feature" href="https://www.theklabristol.co.uk/live/" target="_blank" rel="noopener">All gigs <span>Full gig guide →</span></a></li>
       <li><a class="feature" href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener">All club nights <span>On Fatsoma →</span></a></li>
       <li><a href="https://www.theklabristol.co.uk/merchandise/" target="_blank" rel="noopener">Merch <span>→</span></a></li>
-      <li><a href="https://www.theklabristol.co.uk/getting-to-thekla/" data-sheet="getting-here">Getting to Thekla <span class="opens">Map &amp; parking <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></a></li>
-      <li><a href="https://www.theklabristol.co.uk/accessibility/" data-sheet="accessibility">Accessibility <span class="opens">Access info <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></a></li>
+      <li><button type="button" data-sheet="getting-here" aria-haspopup="dialog">Getting to Thekla <span class="opens">Map &amp; parking <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="accessibility" aria-haspopup="dialog">Accessibility <span class="opens">Access info <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
       <li><a href="https://www.theklabristol.co.uk/hire/" target="_blank" rel="noopener">Hire the boat <span>→</span></a></li>
       <li><a href="https://www.theklabristol.co.uk/faq/" target="_blank" rel="noopener">FAQ <span>→</span></a></li>
     </ul>

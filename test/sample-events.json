@@ -163,6 +163,26 @@
    "id": "2026-10-12-lsd-and-the-search-for-god"
   },
   {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "John 5",
+   "start": "2026-10-13T18:30:00+01:00",
+   "id": "2026-10-13-john-5",
+   "ticketUrl": "https://www.alttickets.com/john-5-tickets/bristol-thekla/2026-10-13-18-30",
+   "url": "https://www.alttickets.com/john-5-tickets/bristol-thekla/2026-10-13-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Adult DVD",
+   "start": "2026-10-14T18:30:00+01:00",
+   "id": "2026-10-14-adult-dvd",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
    "source": "fatsoma",
    "type": "club",
    "title": "Club Classics - Ibiza Anthems",
@@ -173,6 +193,16 @@
    "id": "2026-10-14-club-classics---ibiza-anthems"
   },
   {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Punk Rock Factory",
+   "start": "2026-10-15T18:30:00+01:00",
+   "id": "2026-10-15-punk-rock-factory",
+   "ticketUrl": "https://www.alttickets.com/punk-rock-factory-tickets/bristol-thekla/2026-10-15-18-30",
+   "url": "https://www.alttickets.com/punk-rock-factory-tickets/bristol-thekla/2026-10-15-18-30",
+   "linkKind": "tickets"
+  },
+  {
    "source": "fatsoma",
    "type": "club",
    "title": "PRESSURE. #TheklaThursday",
@@ -181,6 +211,846 @@
    "linkKind": "tickets",
    "url": "https://www.fatsoma.com/thekla/promotions/cvvr6138/pressure-theklathursday",
    "id": "2026-10-15-pressure---theklathursday"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Alabama 3 Acoustic",
+   "start": "2026-10-16T18:30:00+01:00",
+   "id": "2026-10-16-alabama-3-acoustic",
+   "ticketUrl": "https://www.alttickets.com/alabama-3-tickets/bristol-thekla/2026-10-16-18-30",
+   "url": "https://www.alttickets.com/alabama-3-tickets/bristol-thekla/2026-10-16-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "HelloGoodbye",
+   "start": "2026-10-18T19:00:00+01:00",
+   "id": "2026-10-18-hellogoodbye",
+   "ticketUrl": "https://www.alttickets.com/the-early-november-tickets/bristol-thekla/2026-10-18-19-00",
+   "url": "https://www.alttickets.com/the-early-november-tickets/bristol-thekla/2026-10-18-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Nectar Woode",
+   "start": "2026-10-19T19:00:00+01:00",
+   "id": "2026-10-19-nectar-woode",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Lady Leshurr",
+   "start": "2026-10-20T18:30:00+01:00",
+   "id": "2026-10-20-lady-leshurr",
+   "ticketUrl": "https://www.alttickets.com/lady-leshurr-tickets/bristol-thekla/2026-10-20-18-30",
+   "url": "https://www.alttickets.com/lady-leshurr-tickets/bristol-thekla/2026-10-20-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Jake Vaadeland",
+   "start": "2026-10-21T18:30:00+01:00",
+   "id": "2026-10-21-jake-vaadeland",
+   "ticketUrl": "https://www.alttickets.com/jake-vaadeland-tickets/bristol-thekla/2026-10-21-18-30",
+   "url": "https://www.alttickets.com/jake-vaadeland-tickets/bristol-thekla/2026-10-21-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "World News",
+   "start": "2026-10-22T18:30:00+01:00",
+   "id": "2026-10-22-world-news",
+   "ticketUrl": "https://www.alttickets.com/world-news-tickets/bristol-thekla/2026-10-22-18-30",
+   "url": "https://www.alttickets.com/world-news-tickets/bristol-thekla/2026-10-22-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Rosadocs",
+   "start": "2026-10-23T18:30:00+01:00",
+   "id": "2026-10-23-the-rosadocs",
+   "ticketUrl": "https://www.alttickets.com/the-rosadocs-tickets/bristol-thekla/2026-10-23-18-30",
+   "url": "https://www.alttickets.com/the-rosadocs-tickets/bristol-thekla/2026-10-23-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Personal Trainer",
+   "start": "2026-10-24T18:30:00+01:00",
+   "id": "2026-10-24-personal-trainer",
+   "ticketUrl": "https://www.alttickets.com/personal-trainer-tickets/bristol-thekla/2026-10-24-18-30",
+   "url": "https://www.alttickets.com/personal-trainer-tickets/bristol-thekla/2026-10-24-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Browning",
+   "start": "2026-10-26T19:00:00+00:00",
+   "id": "2026-10-26-the-browning",
+   "ticketUrl": "https://www.alttickets.com/the-browning-tickets/bristol-thekla/2026-10-26-19-00",
+   "url": "https://www.alttickets.com/the-browning-tickets/bristol-thekla/2026-10-26-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "BLACKGOLD",
+   "start": "2026-10-28T18:30:00+00:00",
+   "id": "2026-10-28-blackgold",
+   "ticketUrl": "https://www.alttickets.com/blackgold-tickets/bristol-thekla/2026-10-28-18-30",
+   "url": "https://www.alttickets.com/blackgold-tickets/bristol-thekla/2026-10-28-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "MOULD",
+   "start": "2026-10-29T18:30:00+00:00",
+   "id": "2026-10-29-mould",
+   "ticketUrl": "https://www.alttickets.com/mould-tickets/bristol-thekla/2026-10-29-18-30",
+   "url": "https://www.alttickets.com/mould-tickets/bristol-thekla/2026-10-29-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Blood Red Shoes",
+   "start": "2026-10-30T18:30:00+00:00",
+   "id": "2026-10-30-blood-red-shoes",
+   "ticketUrl": "https://www.alttickets.com/blood-red-shoes-tickets/bristol-thekla/2026-10-30-18-30",
+   "url": "https://www.alttickets.com/blood-red-shoes-tickets/bristol-thekla/2026-10-30-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Pure Reason Revolution",
+   "start": "2026-11-01T18:00:00+00:00",
+   "id": "2026-11-01-pure-reason-revolution",
+   "ticketUrl": "https://www.alttickets.com/pure-reason-revolution-tickets/bristol-thekla/2026-11-01-18-00",
+   "url": "https://www.alttickets.com/pure-reason-revolution-tickets/bristol-thekla/2026-11-01-18-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Chloe Slater",
+   "start": "2026-11-02T19:00:00+00:00",
+   "id": "2026-11-02-chloe-slater",
+   "ticketUrl": "https://www.alttickets.com/chloe-slater-tickets/bristol-thekla/2026-11-02-19-00",
+   "url": "https://www.alttickets.com/chloe-slater-tickets/bristol-thekla/2026-11-02-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Lo Fidelity Allstars",
+   "start": "2026-11-03T18:30:00+00:00",
+   "id": "2026-11-03-lo-fidelity-allstars",
+   "ticketUrl": "https://www.alttickets.com/lo-fidelity-allstars-tickets/bristol-thekla/2026-11-03-18-30",
+   "url": "https://www.alttickets.com/lo-fidelity-allstars-tickets/bristol-thekla/2026-11-03-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Nick Hakim",
+   "start": "2026-11-04T18:30:00+00:00",
+   "id": "2026-11-04-nick-hakim",
+   "ticketUrl": "https://www.alttickets.com/nick-hakim-tickets/bristol-thekla/2026-11-04-18-30",
+   "url": "https://www.alttickets.com/nick-hakim-tickets/bristol-thekla/2026-11-04-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Messa",
+   "start": "2026-11-06T18:00:00+00:00",
+   "id": "2026-11-06-messa",
+   "ticketUrl": "https://www.alttickets.com/messa-tickets/bristol-thekla/2026-11-06-18-00",
+   "url": "https://www.alttickets.com/messa-tickets/bristol-thekla/2026-11-06-18-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "MNEK",
+   "start": "2026-11-07T18:30:00+00:00",
+   "id": "2026-11-07-mnek",
+   "ticketUrl": "https://www.alttickets.com/mnek-tickets/bristol-thekla/2026-11-07-18-30",
+   "url": "https://www.alttickets.com/mnek-tickets/bristol-thekla/2026-11-07-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Dave Lofts",
+   "start": "2026-11-08T19:00:00+00:00",
+   "id": "2026-11-08-dave-lofts",
+   "ticketUrl": "https://www.alttickets.com/dave-lofts-tickets/bristol-thekla/2026-11-08-19-00",
+   "url": "https://www.alttickets.com/dave-lofts-tickets/bristol-thekla/2026-11-08-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "De Staat",
+   "start": "2026-11-09T19:00:00+00:00",
+   "id": "2026-11-09-de-staat",
+   "ticketUrl": "https://www.alttickets.com/de-staat-tickets/bristol-thekla/2026-11-09-19-00",
+   "url": "https://www.alttickets.com/de-staat-tickets/bristol-thekla/2026-11-09-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "dublon (Live)",
+   "start": "2026-11-10T18:30:00+00:00",
+   "id": "2026-11-10-dublon-live",
+   "ticketUrl": "https://www.alttickets.com/dublon-tickets/bristol-thekla/2026-11-10-18-30",
+   "url": "https://www.alttickets.com/dublon-tickets/bristol-thekla/2026-11-10-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Employed To Serve & Cabal",
+   "start": "2026-11-11T18:30:00+00:00",
+   "id": "2026-11-11-employed-to-serve-cabal",
+   "ticketUrl": "https://www.alttickets.com/employed-to-serve-cabal-tickets/bristol-thekla/2026-11-11-18-30",
+   "url": "https://www.alttickets.com/employed-to-serve-cabal-tickets/bristol-thekla/2026-11-11-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "American Aquarium",
+   "start": "2026-11-12T19:00:00+00:00",
+   "id": "2026-11-12-american-aquarium",
+   "ticketUrl": "https://www.alttickets.com/american-aquarium-tickets/bristol-thekla/2026-11-12-19-00",
+   "url": "https://www.alttickets.com/american-aquarium-tickets/bristol-thekla/2026-11-12-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Wran",
+   "start": "2026-11-13T18:30:00+00:00",
+   "id": "2026-11-13-the-wran",
+   "ticketUrl": "https://www.alttickets.com/the-wran-tickets/bristol-thekla/2026-11-13-18-30",
+   "url": "https://www.alttickets.com/the-wran-tickets/bristol-thekla/2026-11-13-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Radio Free Alice",
+   "start": "2026-11-14T18:30:00+00:00",
+   "id": "2026-11-14-radio-free-alice",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Boko Yout",
+   "start": "2026-11-18T18:30:00+00:00",
+   "id": "2026-11-18-boko-yout",
+   "ticketUrl": "https://www.alttickets.com/boko-yout-tickets/bristol-thekla/2026-11-18-18-30",
+   "url": "https://www.alttickets.com/boko-yout-tickets/bristol-thekla/2026-11-18-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "King No-One",
+   "start": "2026-11-20T18:30:00+00:00",
+   "id": "2026-11-20-king-no-one",
+   "ticketUrl": "https://www.alttickets.com/king-no-one-tickets/bristol-thekla/2026-11-20-18-30",
+   "url": "https://www.alttickets.com/king-no-one-tickets/bristol-thekla/2026-11-20-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Grandmas House",
+   "start": "2026-11-21T18:30:00+00:00",
+   "id": "2026-11-21-grandmas-house",
+   "ticketUrl": "https://www.alttickets.com/grandmas-house-tickets/bristol-thekla/2026-11-21-18-30",
+   "url": "https://www.alttickets.com/grandmas-house-tickets/bristol-thekla/2026-11-21-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Ricky Warwick & The Fighting Hearts",
+   "start": "2026-11-22T19:00:00+00:00",
+   "id": "2026-11-22-ricky-warwick-the-fighting-hearts",
+   "ticketUrl": "https://www.alttickets.com/ricky-warwick-the-fighting-hearts-tickets/bristol-thekla/2026-11-22-19-00",
+   "url": "https://www.alttickets.com/ricky-warwick-the-fighting-hearts-tickets/bristol-thekla/2026-11-22-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Dea Matrona",
+   "start": "2026-11-24T18:30:00+00:00",
+   "id": "2026-11-24-dea-matrona",
+   "ticketUrl": "https://www.alttickets.com/dea-matrona-tickets/bristol-thekla/2026-11-24-18-30",
+   "url": "https://www.alttickets.com/dea-matrona-tickets/bristol-thekla/2026-11-24-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Opus Kink",
+   "start": "2026-11-25T18:30:00+00:00",
+   "id": "2026-11-25-opus-kink",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Gareth",
+   "start": "2026-11-26T19:00:00+00:00",
+   "id": "2026-11-26-gareth",
+   "ticketUrl": "https://www.alttickets.com/gareth-tickets/bristol-thekla/2026-11-26-19-00",
+   "url": "https://www.alttickets.com/gareth-tickets/bristol-thekla/2026-11-26-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "No Cigar",
+   "start": "2026-11-27T18:30:00+00:00",
+   "id": "2026-11-27-no-cigar",
+   "ticketUrl": "https://www.alttickets.com/no-cigar-tickets/bristol-thekla/2026-11-27-18-30",
+   "url": "https://www.alttickets.com/no-cigar-tickets/bristol-thekla/2026-11-27-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "1000mods",
+   "start": "2026-11-28T18:00:00+00:00",
+   "id": "2026-11-28-1000mods",
+   "ticketUrl": "https://www.alttickets.com/1000mods-tickets/bristol-thekla/2026-11-28-18-00",
+   "url": "https://www.alttickets.com/1000mods-tickets/bristol-thekla/2026-11-28-18-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Republica",
+   "start": "2026-11-29T19:00:00+00:00",
+   "id": "2026-11-29-republica",
+   "ticketUrl": "https://www.alttickets.com/republica-tickets/bristol-thekla/2026-11-29-19-00",
+   "url": "https://www.alttickets.com/republica-tickets/bristol-thekla/2026-11-29-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "mustbejohn",
+   "start": "2026-11-30T19:00:00+00:00",
+   "id": "2026-11-30-mustbejohn",
+   "ticketUrl": "https://www.alttickets.com/mustbejohn-tickets/bristol-thekla/2026-11-30-19-00",
+   "url": "https://www.alttickets.com/mustbejohn-tickets/bristol-thekla/2026-11-30-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Fell",
+   "start": "2026-12-01T18:00:00+00:00",
+   "id": "2026-12-01-the-fell",
+   "ticketUrl": "https://www.alttickets.com/the-fell-tickets/bristol-thekla/2026-12-01-18-00",
+   "url": "https://www.alttickets.com/the-fell-tickets/bristol-thekla/2026-12-01-18-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Andrew Cushin",
+   "start": "2026-12-02T18:30:00+00:00",
+   "id": "2026-12-02-andrew-cushin",
+   "ticketUrl": "https://www.alttickets.com/andrew-cushin-tickets/bristol-thekla/2026-12-02-18-30",
+   "url": "https://www.alttickets.com/andrew-cushin-tickets/bristol-thekla/2026-12-02-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Bleech 9:3",
+   "start": "2026-12-03T18:30:00+00:00",
+   "id": "2026-12-03-bleech-9-3",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "These Wicked Rivers",
+   "start": "2026-12-04T18:30:00+00:00",
+   "id": "2026-12-04-these-wicked-rivers",
+   "ticketUrl": "https://www.alttickets.com/these-wicked-rivers-tickets/bristol-thekla/2026-12-04-18-30",
+   "url": "https://www.alttickets.com/these-wicked-rivers-tickets/bristol-thekla/2026-12-04-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "PAINT BY NUMBERS",
+   "start": "2026-12-05T14:00:00+00:00",
+   "id": "2026-12-05-paint-by-numbers",
+   "ticketUrl": "https://www.alttickets.com/paint-by-numbers-tickets/bristol-thekla/2026-12-05-14-00",
+   "url": "https://www.alttickets.com/paint-by-numbers-tickets/bristol-thekla/2026-12-05-14-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "LEAP",
+   "start": "2026-12-06T19:00:00+00:00",
+   "id": "2026-12-06-leap",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "daydreamers",
+   "start": "2026-12-08T18:30:00+00:00",
+   "id": "2026-12-08-daydreamers",
+   "ticketUrl": "https://www.alttickets.com/daydreamers-tickets/bristol-thekla/2026-12-08-18-30",
+   "url": "https://www.alttickets.com/daydreamers-tickets/bristol-thekla/2026-12-08-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Jesus Jones",
+   "start": "2026-12-10T18:30:00+00:00",
+   "id": "2026-12-10-jesus-jones",
+   "ticketUrl": "https://www.alttickets.com/jesus-jones-tickets/bristol-thekla/2026-12-10-18-30",
+   "url": "https://www.alttickets.com/jesus-jones-tickets/bristol-thekla/2026-12-10-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The 900",
+   "start": "2026-12-11T18:30:00+00:00",
+   "id": "2026-12-11-the-900",
+   "ticketUrl": "https://www.alttickets.com/the-900-tickets/bristol-thekla/2026-12-11-18-30",
+   "url": "https://www.alttickets.com/the-900-tickets/bristol-thekla/2026-12-11-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "SLIFT",
+   "start": "2026-12-12T18:30:00+00:00",
+   "id": "2026-12-12-slift",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Peter Capaldi",
+   "start": "2026-12-15T18:30:00+00:00",
+   "id": "2026-12-15-peter-capaldi",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Black Queen",
+   "start": "2026-12-17T19:00:00+00:00",
+   "id": "2026-12-17-the-black-queen",
+   "ticketUrl": "https://www.alttickets.com/the-black-queen-tickets/bristol-thekla/2026-12-17-19-00",
+   "url": "https://www.alttickets.com/the-black-queen-tickets/bristol-thekla/2026-12-17-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Martin McAloon of Prefab Sprout",
+   "start": "2026-12-18T18:30:00+00:00",
+   "id": "2026-12-18-martin-mcaloon-of-prefab-sprout",
+   "ticketUrl": "https://www.alttickets.com/martin-mcaloon-tickets/bristol-thekla/2026-12-18-18-30",
+   "url": "https://www.alttickets.com/martin-mcaloon-tickets/bristol-thekla/2026-12-18-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Deadlians",
+   "start": "2026-12-19T18:30:00+00:00",
+   "id": "2026-12-19-the-deadlians",
+   "ticketUrl": "https://www.alttickets.com/the-deadlians-tickets/bristol-thekla/2026-12-19-18-30",
+   "url": "https://www.alttickets.com/the-deadlians-tickets/bristol-thekla/2026-12-19-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Rezillos",
+   "start": "2027-01-15T19:00:00+00:00",
+   "id": "2027-01-15-the-rezillos",
+   "ticketUrl": "https://www.alttickets.com/the-rezillos-tickets/bristol-thekla/2027-01-15-19-00",
+   "url": "https://www.alttickets.com/the-rezillos-tickets/bristol-thekla/2027-01-15-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Dave Hause and The Mermaid",
+   "start": "2027-01-19T18:30:00+00:00",
+   "id": "2027-01-19-dave-hause-and-the-mermaid",
+   "ticketUrl": "https://www.alttickets.com/dave-hause-tickets/bristol-thekla/2027-01-19-18-30",
+   "url": "https://www.alttickets.com/dave-hause-tickets/bristol-thekla/2027-01-19-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Too Many Zooz",
+   "start": "2027-01-21T19:00:00+00:00",
+   "id": "2027-01-21-too-many-zooz",
+   "ticketUrl": "https://www.alttickets.com/too-many-zooz-tickets/bristol-thekla/2027-01-21-19-00",
+   "url": "https://www.alttickets.com/too-many-zooz-tickets/bristol-thekla/2027-01-21-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "MECHANICAL ANIMAL",
+   "start": "2027-01-22T18:30:00+00:00",
+   "id": "2027-01-22-mechanical-animal",
+   "ticketUrl": "https://www.alttickets.com/mechanical-animal-tickets/bristol-thekla/2027-01-22-18-30",
+   "url": "https://www.alttickets.com/mechanical-animal-tickets/bristol-thekla/2027-01-22-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "almost monday",
+   "start": "2027-01-26T19:00:00+00:00",
+   "id": "2027-01-26-almost-monday",
+   "ticketUrl": "https://www.alttickets.com/almost-monday-tickets/bristol-thekla/2027-01-26-19-00",
+   "url": "https://www.alttickets.com/almost-monday-tickets/bristol-thekla/2027-01-26-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Ariel Posen",
+   "start": "2027-02-03T18:30:00+00:00",
+   "id": "2027-02-03-ariel-posen",
+   "ticketUrl": "https://www.alttickets.com/ariel-posen-tickets/bristol-thekla/2027-02-03-18-30",
+   "url": "https://www.alttickets.com/ariel-posen-tickets/bristol-thekla/2027-02-03-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Slow Pulp",
+   "start": "2027-02-04T18:30:00+00:00",
+   "id": "2027-02-04-slow-pulp",
+   "ticketUrl": "https://www.alttickets.com/slow-pulp-tickets/bristol-thekla/2027-02-04-18-30",
+   "url": "https://www.alttickets.com/slow-pulp-tickets/bristol-thekla/2027-02-04-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Anthony Gomes",
+   "start": "2027-02-05T18:00:00+00:00",
+   "id": "2027-02-05-anthony-gomes",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "presale"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Do Nothing",
+   "start": "2027-02-10T19:00:00+00:00",
+   "id": "2027-02-10-do-nothing",
+   "ticketUrl": "https://www.alttickets.com/do-nothing-tickets/bristol-thekla/2027-02-10-19-00",
+   "url": "https://www.alttickets.com/do-nothing-tickets/bristol-thekla/2027-02-10-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Split Dogs",
+   "start": "2027-02-13T18:30:00+00:00",
+   "id": "2027-02-13-split-dogs",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "presale"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "As Everything Unfolds",
+   "start": "2027-02-14T19:00:00+00:00",
+   "id": "2027-02-14-as-everything-unfolds",
+   "ticketUrl": "https://www.alttickets.com/as-everything-unfolds-tickets/bristol-thekla/2027-02-14-19-00",
+   "url": "https://www.alttickets.com/as-everything-unfolds-tickets/bristol-thekla/2027-02-14-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Greg Freeman",
+   "start": "2027-02-17T18:30:00+00:00",
+   "id": "2027-02-17-greg-freeman",
+   "ticketUrl": "https://www.alttickets.com/greg-freeman-tickets/bristol-thekla/2027-02-17-18-30",
+   "url": "https://www.alttickets.com/greg-freeman-tickets/bristol-thekla/2027-02-17-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "bis",
+   "start": "2027-02-20T18:30:00+00:00",
+   "id": "2027-02-20-bis",
+   "ticketUrl": "https://www.alttickets.com/bis-tickets/bristol-thekla/2027-02-20-18-30",
+   "url": "https://www.alttickets.com/bis-tickets/bristol-thekla/2027-02-20-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Corella",
+   "start": "2027-02-23T18:00:00+00:00",
+   "id": "2027-02-23-corella",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "presale"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Last Internationale",
+   "start": "2027-02-24T18:30:00+00:00",
+   "id": "2027-02-24-the-last-internationale",
+   "ticketUrl": "https://www.alttickets.com/the-last-internationale-tickets/bristol-thekla/2027-02-24-18-30",
+   "url": "https://www.alttickets.com/the-last-internationale-tickets/bristol-thekla/2027-02-24-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Blind Channel",
+   "start": "2027-02-25T18:30:00+00:00",
+   "id": "2027-02-25-blind-channel",
+   "ticketUrl": "https://www.alttickets.com/blind-channel-tickets/bristol-thekla/2027-02-25-18-30",
+   "url": "https://www.alttickets.com/blind-channel-tickets/bristol-thekla/2027-02-25-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Iceage",
+   "start": "2027-02-26T18:30:00+00:00",
+   "id": "2027-02-26-iceage",
+   "ticketUrl": "https://www.alttickets.com/iceage-tickets/bristol-thekla/2027-02-26-18-30",
+   "url": "https://www.alttickets.com/iceage-tickets/bristol-thekla/2027-02-26-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Scientist",
+   "start": "2027-02-27T18:30:00+00:00",
+   "id": "2027-02-27-scientist",
+   "ticketUrl": "https://www.alttickets.com/scientist-tickets/bristol-thekla/2027-02-27-18-30",
+   "url": "https://www.alttickets.com/scientist-tickets/bristol-thekla/2027-02-27-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Zac Schulze Gang",
+   "start": "2027-02-28T19:00:00+00:00",
+   "id": "2027-02-28-the-zac-schulze-gang",
+   "ticketUrl": "https://www.alttickets.com/the-zac-schulze-gang-tickets/bristol-thekla/2027-02-28-19-00",
+   "url": "https://www.alttickets.com/the-zac-schulze-gang-tickets/bristol-thekla/2027-02-28-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "TX2",
+   "start": "2027-03-07T19:00:00+00:00",
+   "id": "2027-03-07-tx2",
+   "ticketUrl": "https://www.alttickets.com/tx2-tickets/bristol-thekla/2027-03-07-19-00",
+   "url": "https://www.alttickets.com/tx2-tickets/bristol-thekla/2027-03-07-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Medium Build",
+   "start": "2027-03-08T19:00:00+00:00",
+   "id": "2027-03-08-medium-build",
+   "ticketUrl": "https://www.alttickets.com/medium-build-tickets/bristol-thekla/2027-03-08-19-00",
+   "url": "https://www.alttickets.com/medium-build-tickets/bristol-thekla/2027-03-08-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Anna Erhard",
+   "start": "2027-03-12T18:30:00+00:00",
+   "id": "2027-03-12-anna-erhard",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "presale"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Lilacs",
+   "start": "2027-03-20T18:30:00+00:00",
+   "id": "2027-03-20-the-lilacs",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "soldout"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "SOFY",
+   "start": "2027-03-23T19:00:00+00:00",
+   "id": "2027-03-23-sofy",
+   "ticketUrl": "https://www.alttickets.com/sofy-tickets/bristol-thekla/2027-03-23-19-00",
+   "url": "https://www.alttickets.com/sofy-tickets/bristol-thekla/2027-03-23-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Martin Stephenson & The Daintees",
+   "start": "2027-04-03T18:30:00+01:00",
+   "id": "2027-04-03-martin-stephenson-the-daintees",
+   "ticketUrl": "https://www.alttickets.com/martin-stephenson-the-daintees-tickets/bristol-thekla/2027-04-03-18-30",
+   "url": "https://www.alttickets.com/martin-stephenson-the-daintees-tickets/bristol-thekla/2027-04-03-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "First Time Flyers",
+   "start": "2027-04-10T18:30:00+01:00",
+   "id": "2027-04-10-first-time-flyers",
+   "ticketUrl": "https://www.alttickets.com/first-time-flyers-tickets/bristol-thekla/2027-04-10-18-30",
+   "url": "https://www.alttickets.com/first-time-flyers-tickets/bristol-thekla/2027-04-10-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Mansur Brown",
+   "start": "2027-04-16T18:00:00+01:00",
+   "id": "2027-04-16-mansur-brown",
+   "ticketUrl": "https://www.alttickets.com/mansur-brown-tickets/bristol-thekla/2027-04-16-18-00",
+   "url": "https://www.alttickets.com/mansur-brown-tickets/bristol-thekla/2027-04-16-18-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Charlie Jeer",
+   "start": "2027-04-18T19:00:00+01:00",
+   "id": "2027-04-18-charlie-jeer",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "linkKind": "info",
+   "status": "presale"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Darren Kiely",
+   "start": "2027-04-22T18:30:00+01:00",
+   "id": "2027-04-22-darren-kiely",
+   "ticketUrl": "https://www.alttickets.com/darren-kiely-tickets/bristol-thekla/2027-04-22-18-30",
+   "url": "https://www.alttickets.com/darren-kiely-tickets/bristol-thekla/2027-04-22-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "William The Conqueror",
+   "start": "2027-05-05T18:30:00+01:00",
+   "id": "2027-05-05-william-the-conqueror",
+   "ticketUrl": "https://www.alttickets.com/william-the-conqueror-tickets/bristol-thekla/2027-05-05-18-30",
+   "url": "https://www.alttickets.com/william-the-conqueror-tickets/bristol-thekla/2027-05-05-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Red Snapper",
+   "start": "2027-05-07T18:30:00+01:00",
+   "id": "2027-05-07-red-snapper",
+   "ticketUrl": "https://www.alttickets.com/red-snapper-tickets/bristol-thekla/2027-05-07-18-30",
+   "url": "https://www.alttickets.com/red-snapper-tickets/bristol-thekla/2027-05-07-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Toby Lee",
+   "start": "2027-05-08T18:30:00+01:00",
+   "id": "2027-05-08-toby-lee",
+   "ticketUrl": "https://www.alttickets.com/toby-lee-tickets/bristol-thekla/2027-05-08-18-30",
+   "url": "https://www.alttickets.com/toby-lee-tickets/bristol-thekla/2027-05-08-18-30",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Valley: Do You Need To Be Entertained?",
+   "start": "2027-05-10T19:00:00+01:00",
+   "id": "2027-05-10-valley-do-you-need-to-be-entertained",
+   "ticketUrl": "https://www.alttickets.com/valley-tickets/bristol-thekla/2027-05-10-19-00",
+   "url": "https://www.alttickets.com/valley-tickets/bristol-thekla/2027-05-10-19-00",
+   "linkKind": "tickets"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "JUST RADIOHEAD Performing OK Computer + Best of Radiohead",
+   "start": "2027-06-12T18:30:00+01:00",
+   "id": "2027-06-12-just-radiohead-performing-ok-computer-be",
+   "ticketUrl": "https://www.alttickets.com/just-radiohead-tickets/bristol-thekla/2027-06-12-18-30",
+   "url": "https://www.alttickets.com/just-radiohead-tickets/bristol-thekla/2027-06-12-18-30",
+   "linkKind": "tickets"
   }
  ]
 }

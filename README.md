@@ -10,8 +10,9 @@ A GitHub Action runs every 3 hours, plus extra runs in the early evening. Each r
 
 1. **Gigs** are read from Alt Tickets (`alttickets.com/venue/bristol/thekla`). Artwork and prices come from each event's page.
 2. **Club nights** are read from Thekla's Fatsoma page (`fatsoma.com/p/thekla`). Details come from Fatsoma's public API.
-3. **Backup** listings are read from `theklabristol.co.uk/live/` and `/club/`. These fill gaps and supply the Thekla event page for events with no ticket link (sold out, not on sale yet).
-4. Everything is merged into `site/events.json`, duplicates are removed, and the site is republished to GitHub Pages.
+3. **External promoters** are read from Skiddle's official API (optional, see below). A Skiddle event is only added if it isn't already on Alt Tickets or Fatsoma. Those always win, but they can borrow the Skiddle description or artwork if they have none. It counts as a duplicate if it's on the same night and either the name matches or it's the same kind of event starting within 90 minutes.
+4. **Backup** listings are read from `theklabristol.co.uk/live/` and `/club/`. These fill gaps and supply the Thekla event page for events with no ticket link (sold out, not on sale yet).
+5. Everything is merged into `site/events.json`, duplicates are removed, and the site is republished to GitHub Pages.
 
 If a source fails or changes its layout, the page keeps showing that source's events from the last good run. The Action only fails if every source is empty. The raw pages it downloaded are saved under **Actions → the run → Artifacts → debug-html**, so layout changes can be fixed quickly.
 
@@ -27,6 +28,16 @@ The page itself works out This Week and "On now" from the viewer's clock (always
    - In **Settings → Pages → Custom domain**, enter `links.theklabristol.co.uk`, then tick **Enforce HTTPS** once it's available.
    - If you use a different domain, change `site/CNAME` and add a repository variable `SITE_DOMAIN` under **Settings → Secrets and variables → Actions → Variables**.
 
+### Turning on Skiddle listings
+
+Skiddle only shares listings through its API, which needs a free key.
+
+1. Request a key at https://www.skiddle.com/api/join.php.
+2. In the repo, go to **Settings → Secrets and variables → Actions → New repository secret**. Name it `SKIDDLE_API_KEY` and paste the key.
+3. Run the workflow. The collector finds Thekla's Skiddle venue on its own. If it ever picks the wrong one, add a repository **variable** `SKIDDLE_VENUE_ID`.
+
+Until a key is added, Skiddle is skipped and everything else works as normal.
+
 ## Editing
 
 | What | Where |
@@ -36,7 +47,7 @@ The page itself works out This Week and "On now" from the viewer's clock (always
 | Hero photo | Add `site/assets/hero.jpg` (landscape, ~1600px wide). Until then the Action uses the photo from the Thekla site. |
 | Logo | Add `site/assets/logo.jpg` (square). Until then the Action uses Thekla's Fatsoma logo. |
 | Colours and fonts | Top of `site/styles.css` (`--gig` brass, `--club` pink) |
-| How far ahead / how many in Coming Up | `DAYS_AHEAD` in the workflow; `COMING_UP_MAX` in `site/app.js` |
+| How far ahead Coming Up goes | `DAYS_AHEAD` (default 300 days) in `scripts/collect.mjs` or the workflow |
 
 Any push to `main` redeploys straight away.
 

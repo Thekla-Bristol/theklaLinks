@@ -113,3 +113,46 @@ test('Alt event page: age + finish time', () => {
   assert.deepEqual(p.finish, [22, 0]);
   assert.match(p.imageLarge, /1170x375/);
 });
+
+test('Skiddle mapping', async () => {
+  const { eventFromSkiddle } = await import('../scripts/lib/skiddle.mjs');
+  const e = eventFromSkiddle({
+    eventname: 'Garage Nation &amp; Friends', date: '2026-10-17', EventCode: 'CLUB',
+    openingtimes: { doorsopen: '22:00', doorsclose: '03:00', lastentry: '01:00' },
+    link: 'https://www.skiddle.com/whats-on/Bristol/Thekla/Garage-Nation/123/', entryprice: '£12.50',
+    minage: '18', imageurl: 'https://i/s.jpg', largeimageurl: 'https://i/l.jpg',
+    description: '<p>UKG all night.</p><p>Two rooms</p>', cancelled: false,
+  });
+  assert.equal(e.title, 'Garage Nation & Friends');
+  assert.equal(e.type, 'club');
+  assert.equal(e.start, '2026-10-17T22:00:00+01:00');
+  assert.equal(new Date(e.end).toISOString(), '2026-10-18T02:00:00.000Z');
+  assert.equal(e.price, '£12.50');
+  assert.equal(e.age, '18+');
+  assert.deepEqual(e.about, ['UKG all night.', 'Two rooms']);
+  assert.equal(eventFromSkiddle({ eventname: 'X', date: '2026-10-20', openingtimes: { doorsopen: '19:00' } }).type, 'gig');
+});
+
+test('merge: Skiddle never beats Alt Tickets / Fatsoma', () => {
+  const win = { from: new Date('2026-09-28'), until: new Date('2027-09-28') };
+  const primary = [
+    { source: 'fatsoma', type: 'club', title: 'Pop Confessional ✞ Bristol\'s Best Pop Party', start: '2026-10-03T21:30:00+01:00', ticketUrl: 'https://f/pop' },
+    { source: 'alttickets', type: 'gig', title: 'Fickle Friends', start: '2026-10-06T18:30:00+01:00', ticketUrl: 'https://a/ff' },
+  ];
+  const skiddle = [
+    { source: 'skiddle', type: 'club', title: 'POP CONFESSIONAL - Bristol', start: '2026-10-03T22:00:00+01:00', ticketUrl: 'https://s/1', about: ['From Skiddle'] },
+    { source: 'skiddle', type: 'club', title: 'Totally Different Name', start: '2026-10-03T22:30:00+01:00', ticketUrl: 'https://s/2' },   // same night, same type, 1hr apart → dupe
+    { source: 'skiddle', type: 'gig', title: 'Fickle Friends (Live)', start: '2026-10-06T19:00:00+01:00', ticketUrl: 'https://s/3' },
+    { source: 'skiddle', type: 'club', title: 'Garage Nation', start: '2026-10-17T22:00:00+01:00', ticketUrl: 'https://s/4' },       // new → kept
+    { source: 'skiddle', type: 'club', title: 'After Party', start: '2026-10-04T01:00:00+01:00', ticketUrl: 'https://s/5' },          // 1am = Sat night, but 3.5hrs later → kept
+  ];
+  const out = mergeEvents(primary, [], { ...win, secondary: skiddle });
+  assert.deepEqual(out.map((e) => `${e.source}:${e.title}`), [
+    "fatsoma:Pop Confessional ✞ Bristol's Best Pop Party",
+    'skiddle:After Party',
+    'alttickets:Fickle Friends',
+    'skiddle:Garage Nation',
+  ]);
+  assert.deepEqual(out[0].about, ['From Skiddle'], 'borrows description from the Skiddle duplicate');
+  assert.equal(out[0].url, 'https://f/pop', 'but keeps the Fatsoma ticket link');
+});

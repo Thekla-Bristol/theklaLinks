@@ -4,19 +4,21 @@
 // Env:
 //   PREVIOUS_URL  deployed events.json — used for any source that fails this run
 //   DEBUG_DIR     save the raw HTML that was downloaded (for diagnosing layout changes)
-//   DAYS_AHEAD    how far ahead to collect (default 60)
+//   DAYS_AHEAD    how far ahead to collect (default 300)
+//   SKIDDLE_API_KEY / SKIDDLE_VENUE_ID  optional, for Skiddle listings
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchAlt } from './lib/alttickets.mjs';
 import { fetchFatsoma } from './lib/fatsoma.mjs';
 import { fetchThekla } from './lib/thekla.mjs';
+import { fetchSkiddle } from './lib/skiddle.mjs';
 import { mergeEvents } from './lib/merge.mjs';
 import { getJSON } from './lib/util.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'site', 'events.json');
-const DAYS_AHEAD = +(process.env.DAYS_AHEAD || 60);
+const DAYS_AHEAD = +(process.env.DAYS_AHEAD || 300); // ~10 months, for the Coming Up month tabs
 
 const now = new Date();
 const from = new Date(now.getTime() - 12 * 3600e3); // keep tonight's events until the site filters them
@@ -50,17 +52,27 @@ async function run(name, fn, prevEvents, isSource) {
 const prev = await previous();
 const prevEvents = prev.events || [];
 
-const [alt, fat, thek] = await Promise.all([
+let skiddleSkipped = false;
+const [alt, fat, thek, skid] = await Promise.all([
   run('Alt Tickets (gigs)', () => fetchAlt({ enrichUntil: until }), prevEvents, (e) => e.source === 'alttickets'),
   run('Fatsoma (clubs)', fetchFatsoma, prevEvents, (e) => e.source === 'fatsoma'),
   run('Thekla site (backup)', fetchThekla, prevEvents, (e) => e.source === 'thekla'),
+  run('Skiddle (external promoters)', async () => {
+    const r = await fetchSkiddle({ from, until });
+    skiddleSkipped = !!r.skipped;
+    return r.events;
+  }, prevEvents, (e) => e.source === 'skiddle'),
 ]);
+if (skiddleSkipped) {
+  console.log('  (Skiddle skipped: add a SKIDDLE_API_KEY repository secret to include it)');
+  skid.status = { ok: true, skipped: true, count: 0 };
+}
 
-const events = mergeEvents([...alt.events, ...fat.events], thek.events, { from, until });
+const events = mergeEvents([...alt.events, ...fat.events], thek.events, { from, until, secondary: skid.events });
 
 const data = {
   generatedAt: now.toISOString(),
-  sources: { alttickets: alt.status, fatsoma: fat.status, thekla: thek.status },
+  sources: { alttickets: alt.status, fatsoma: fat.status, skiddle: skid.status, thekla: thek.status },
   events,
 };
 

@@ -36,6 +36,7 @@ export function parseAltListing(html) {
       : /cancel/i.test(text) ? 'cancelled'
       : /postpon|rescheduled/i.test(text) ? 'postponed'
       : /few tickets|limited/i.test(text) ? 'low'
+      : /pre-?sale/i.test(text) && !link ? 'presale'
       : null;
 
     const start = londonISO(fullYear(y), +m, +d, +hh, +mm);

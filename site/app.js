@@ -1,13 +1,13 @@
 // Thekla Links — renders site/events.json (rebuilt every few hours by GitHub Actions).
 (() => {
   const TZ = 'Europe/London';
-  const COMING_UP_MAX = 12;
   const DEFAULT_LENGTH_H = { gig: 4.5, club: 5.5 }; // when no end time is known
   const REFRESH_MS = 30 * 60 * 1000;
 
   const $ = (s) => document.querySelector(s);
   let data = window.__EVENTS__ || null; // preview builds inline the data
   let filter = 'all';
+  let selMonth = null; // selected "YYYY-MM" in Coming Up
 
   // ---------- filter (remembered per viewer; #gigs / #clubs deep links for stories) ----------
   const fromHash = { '#gigs': 'gig', '#clubs': 'club', '#all': 'all' }[location.hash];
@@ -62,11 +62,12 @@
     if (isLive) chips.push('<span class="chip live">On now</span>');
     if (e.status === 'soldout') chips.push('<span class="chip soldout">Sold out</span>');
     if (e.status === 'low') chips.push('<span class="chip low">Last few</span>');
+    if (e.status === 'presale') chips.push('<span class="chip low">Pre-sale soon</span>');
     if (e.status === 'cancelled') chips.push('<span class="chip soldout">Cancelled</span>');
     if (e.status === 'postponed') chips.push('<span class="chip soldout">Postponed</span>');
 
     const hasTickets = e.linkKind === 'tickets' && !['soldout', 'cancelled'].includes(e.status);
-    const where = e.source === 'fatsoma' ? 'Fatsoma' : 'Alt Tickets';
+    const where = { fatsoma: 'Fatsoma', skiddle: 'Skiddle', alttickets: 'Alt Tickets' }[e.source] || 'the ticket site';
     const label = `${e.title}, ${typeWord}, ${fmt({ weekday: 'long', day: 'numeric', month: 'long' }).format(start)}${when ? ', ' + when : ''}${e.status === 'soldout' ? ', sold out' : ''}. Show details`;
 
     const art = e.image
@@ -109,7 +110,7 @@
     };
 
     const week = events.filter((e) => nightKey(e) < weekEndKey);
-    const later = events.filter((e) => nightKey(e) >= weekEndKey).slice(0, COMING_UP_MAX);
+    const later = events.filter((e) => nightKey(e) >= weekEndKey);
 
     const lastDay = new Date(`${addDays(todayKey, 6)}T12:00:00Z`);
     $('#tw-range').textContent = `${fmt({ day: 'numeric', month: 'short' }).format(now)} – ${fmt({ day: 'numeric', month: 'short' }).format(lastDay)}`;
@@ -129,8 +130,7 @@
         </div>`).join('');
     }
 
-    $('#coming-up').hidden = !later.length;
-    $('#later').innerHTML = `<ul class="events">${later.map((e) => card(e, now, true)).join('')}</ul>`;
+    renderMonths(later, nightKey);
 
     if (data.generatedAt) {
       const mins = Math.round((now - new Date(data.generatedAt)) / 60000);
@@ -138,6 +138,55 @@
       $('#updated').textContent = `Listings updated ${ago}`;
     }
   }
+
+  // ---------- Coming Up: one tab per month ----------
+  function renderMonths(later, nightKey) {
+    const byMonth = new Map();
+    later.forEach((e) => { const k = nightKey(e).slice(0, 7); byMonth.set(k, [...(byMonth.get(k) || []), e]); });
+    const keys = [...byMonth.keys()];
+    $('#coming-up').hidden = !keys.length;
+    if (!keys.length) return;
+    if (!byMonth.has(selMonth)) selMonth = keys[0];
+
+    const thisYear = dayKey(new Date()).slice(0, 4);
+    const label = (k, long) => {
+      const d = new Date(`${k}-15T12:00:00Z`);
+      const m = fmt({ month: long ? 'long' : 'short' }).format(d);
+      return k.slice(0, 4) === thisYear ? m : `${m} ${long ? k.slice(0, 4) : '’' + k.slice(2, 4)}`;
+    };
+
+    const tabs = $('#months');
+    tabs.innerHTML = keys.map((k) => `
+      <button type="button" role="tab" class="month" id="m-${k}" data-month="${k}" aria-selected="${k === selMonth}" tabindex="${k === selMonth ? 0 : -1}">
+        <span>${esc(label(k))}</span><small>${byMonth.get(k).length}</small>
+      </button>`).join('');
+
+    const list = byMonth.get(selMonth);
+    $('#cu-count').textContent = `${list.length} in ${label(selMonth, true)}`;
+    $('#later').setAttribute('aria-labelledby', `m-${selMonth}`);
+    $('#later').innerHTML = `<ul class="events">${list.map((e) => card(e, new Date(), true)).join('')}</ul>`;
+
+    // keep the selected tab in view without jumping the page
+    const sel = tabs.querySelector('[aria-selected="true"]');
+    if (sel && renderMonths.shown !== selMonth) tabs.scrollTo({ left: sel.offsetLeft - tabs.clientWidth / 2 + sel.offsetWidth / 2, behavior: renderMonths.shown ? 'smooth' : 'auto' });
+    renderMonths.shown = selMonth;
+  }
+
+  $('#months').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-month]');
+    if (!b || b.dataset.month === selMonth) return;
+    selMonth = b.dataset.month;
+    render();
+    $('#months [aria-selected="true"]')?.focus({ preventScroll: true });
+  });
+  // arrow keys move between month tabs
+  $('#months').addEventListener('keydown', (ev) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(ev.key)) return;
+    const tabs = [...ev.currentTarget.querySelectorAll('[data-month]')];
+    const i = tabs.findIndex((t) => t.dataset.month === selMonth);
+    const next = tabs[Math.max(0, Math.min(tabs.length - 1, i + (ev.key === 'ArrowRight' ? 1 : -1)))];
+    if (next) next.click();
+  });
 
   async function load() {
     try {

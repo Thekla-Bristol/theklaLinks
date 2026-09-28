@@ -153,13 +153,13 @@ h2 { margin: 0; font: 800 30px/1 var(--display); text-transform: uppercase; lett
 
 /* ---------- Link buttons ---------- */
 .links { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.links a {
+.links a, .links button {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px;
   padding: 0 18px; border-radius: var(--radius); background: var(--deck); border: 1px solid var(--line);
   text-decoration: none; font-weight: 700; font-size: 16px;
 }
-.links a span { color: var(--fog); font-weight: 500; font-size: 13px; }
-.links a:active { background: var(--deck-2); }
+.links a span, .links button span { color: var(--fog); font-weight: 500; font-size: 13px; }
+.links a:active, .links button:active { background: var(--deck-2); }
 .links a.feature { background: var(--rope); color: var(--hull); border-color: transparent; }
 .links a.feature span { color: #4a4f58; }
 
@@ -327,8 +327,9 @@ html.intro #this-week  { animation-delay: 0.96s; }
    ===================================================================== */
 html.sheet-open { overflow: hidden; }
 
-.links a .opens { display: inline-flex; align-items: center; gap: 6px; }
-.links a .opens svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.links button { width: 100%; color: var(--rope); font-family: var(--body); cursor: pointer; text-align: left; }
+.links .opens { display: inline-flex; align-items: center; gap: 6px; }
+.links .opens svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
 dialog.sheet {
   position: fixed; inset: 0; width: 100%; max-width: 100%; height: 100%; max-height: 100%;
@@ -519,3 +520,28 @@ dialog.sheet.closing .sheet-panel { animation: sheet-down .24s cubic-bezier(.4, 
   .app-icon { grid-row: span 2; margin: 0; }
   .ev .cta { display: none; }
 }
+
+/* ---------- Coming Up: month tabs ---------- */
+.months-wrap {
+  position: relative; margin: 0 calc(var(--gutter) * -1) 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 28px), transparent);
+          mask-image: linear-gradient(90deg, transparent 0, #000 var(--gutter), #000 calc(100% - 28px), transparent);
+}
+.months {
+  display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+  padding: 2px var(--gutter) 4px;
+}
+.months::-webkit-scrollbar { display: none; }
+.month {
+  flex: none; scroll-snap-align: center; appearance: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 12px 0 14px;
+  border-radius: 999px; border: 1px solid var(--line); background: var(--deck); color: var(--rope);
+  font: 700 14.5px/1 var(--body);
+}
+.month small {
+  min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; display: inline-grid; place-items: center;
+  background: rgba(239, 232, 218, 0.1); color: var(--fog); font: 700 11.5px/1 var(--body); font-variant-numeric: tabular-nums;
+}
+.month[aria-selected="true"] { background: var(--rope); color: var(--hull); border-color: transparent; }
+.month[aria-selected="true"] small { background: rgba(11, 16, 25, 0.12); color: var(--hull); }
+.month:active { transform: scale(.97); }

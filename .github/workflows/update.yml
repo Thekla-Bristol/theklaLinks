@@ -1,0 +1,79 @@
+name: Update events & deploy
+
+on:
+  schedule:
+    - cron: '7 */3 * * *'     # every 3 hours (UTC)
+    - cron: '37 15-19 * * *'  # extra runs in the late afternoon/evening UK time
+  push:
+    branches: [main]
+  workflow_dispatch:           # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  actions: write   # lets the keep-alive step stop GitHub pausing the schedule
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Test parsers
+        run: npm test
+
+      - name: Fetch hero photo + logo (only if not committed to the repo)
+        run: |
+          mkdir -p site/assets
+          [ -f site/assets/hero.jpg ] || curl -fsSL -o site/assets/hero.jpg "https://www.theklabristol.co.uk/wp-content/uploads/2024/11/theka-sea-img-Large.jpeg" || true
+          [ -f site/assets/logo.jpg ] || curl -fsSL -o site/assets/logo.jpg "https://cdn2.fatsoma.com/media/W1siZiIsInB1YmxpYy8yMDIwLzcvMTgvMjEvNy81OC8yODIvVGhla2xhIFNxdWFyZTIuanBnIl1d" || true
+
+      - name: Collect events
+        env:
+          PREVIOUS_URL: https://${{ vars.SITE_DOMAIN || 'links.theklabristol.co.uk' }}/events.json
+          DEBUG_DIR: debug
+        run: npm run collect
+
+      - name: Save downloaded pages (for debugging layout changes)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-html
+          path: debug/
+          retention-days: 3
+          if-no-files-found: ignore
+
+      # GitHub pauses scheduled workflows after 60 days without repo activity.
+      - name: Keep schedule alive
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow enable update.yml --repo "$GITHUB_REPOSITORY" || true
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

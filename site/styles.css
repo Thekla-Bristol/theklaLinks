@@ -1,9 +1,10 @@
 /* Thekla Links — dark by design (it's a night-time page, viewed in dark venues). */
 :root {
   color-scheme: dark;
-  --hull: #0b1019;        /* page */
-  --deck: #141b27;        /* cards */
-  --deck-2: #1b2433;      /* pressed / chips */
+  --hull: #0b1019;        /* page / navy */
+  --thekla-red: #e52342;  /* Thekla brand red */
+  --deck: rgba(20, 27, 39, 0.86);   /* cards — lets the background glow through a little */
+  --deck-2: rgba(27, 36, 51, 0.94); /* pressed / chips */
   --rope: #efe8da;        /* text */
   --fog: #939cab;         /* muted text */
   --line: rgba(239, 232, 218, 0.1);
@@ -44,10 +45,9 @@ a { color: inherit; }
     radial-gradient(120% 80% at 70% 20%, #2a3a55 0%, #121a28 55%, var(--hull) 100%);
 }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
-.hero-photo::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(11,16,25,0) 45%, var(--hull) 100%);
-}
+/* fade the photo into whatever the animated background is doing */
+.hero-photo { -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent 100%); mask-image: linear-gradient(180deg, #000 50%, transparent 100%); }
+.hero-photo img { will-change: transform; transform-origin: 50% 0; }
 .hero-id { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-top: -52px; position: relative; padding-inline: var(--gutter); }
 .logo {
   width: 104px; height: 104px; border-radius: 50%; overflow: hidden; background: #fff;
@@ -76,10 +76,10 @@ h1 {
 /* ---------- Filter ---------- */
 .filter-bar {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: linear-gradient(var(--hull) 75%, rgba(11,16,25,0));
   padding-block: 12px 14px; margin-top: 12px;
 }
-.filter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 999px; background: var(--deck); border: 1px solid var(--line); }
+.filter-bar .filter { box-shadow: 0 8px 24px rgba(5, 8, 14, 0.45); }
+.filter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 999px; background: rgba(20, 27, 39, 0.96); border: 1px solid var(--line); }
 .filter button {
   appearance: none; border: 0; background: transparent; color: var(--fog);
   font: 700 15px/1 var(--body); min-height: 40px; border-radius: 999px; cursor: pointer;
@@ -180,4 +180,138 @@ footer address { font-style: normal; }
   .ev { grid-template-columns: 64px 1fr; }
   .ev .cta { display: none; }
   .art { width: 64px; height: 64px; }
+}
+
+/* =====================================================================
+   Motion: animated harbour background, porthole opener, header parallax
+   (driven by motion.js; everything degrades to static if JS/motion is off)
+   ===================================================================== */
+
+/* ---------- Background: slow red/navy glows drifting like light on water ---------- */
+.hero, main, footer { position: relative; z-index: 1; }
+.sea {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+  background: var(--hull);
+  --depth: 0; /* 0 at the top of the page → 1 at the bottom (set by motion.js) */
+}
+.sea .glow {
+  position: absolute; width: 120vmax; height: 120vmax; left: 50%; top: 50%;
+  margin: -60vmax 0 0 -60vmax; border-radius: 50%;
+  will-change: transform;
+}
+.sea .g1 { /* Thekla red, strongest near the top of the page */
+  background: radial-gradient(closest-side, var(--thekla-red), transparent);
+  opacity: calc(0.5 - var(--depth) * 0.32);
+  animation: drift-a 21s ease-in-out infinite alternate;
+}
+.sea .g2 { /* lifted navy */
+  background: radial-gradient(closest-side, #1d3358, transparent);
+  opacity: 0.9;
+  animation: drift-b 27s ease-in-out infinite alternate;
+}
+.sea .g3 { /* second, smaller red that wanders lower down */
+  background: radial-gradient(closest-side, var(--thekla-red), transparent);
+  width: 80vmax; height: 80vmax; margin: -40vmax 0 0 -40vmax;
+  opacity: calc(0.24 + var(--depth) * 0.08);
+  animation: drift-c 33s ease-in-out infinite alternate;
+}
+.sea::after { /* deepens to navy as you scroll down the listings */
+  content: ''; position: absolute; inset: 0; background: var(--hull);
+  opacity: calc(0.18 + var(--depth) * 0.37);
+}
+@keyframes drift-a {
+  0%   { transform: translate(-38vw, -46vh) scale(1); }
+  50%  { transform: translate(22vw, -30vh) scale(1.15); }
+  100% { transform: translate(-8vw, -8vh) scale(0.95); }
+}
+@keyframes drift-b {
+  0%   { transform: translate(34vw, 18vh) scale(1.05); }
+  50%  { transform: translate(-26vw, 36vh) scale(0.9); }
+  100% { transform: translate(18vw, -14vh) scale(1.1); }
+}
+@keyframes drift-c {
+  0%   { transform: translate(30vw, 48vh) scale(0.9); }
+  50%  { transform: translate(-34vw, 20vh) scale(1.1); }
+  100% { transform: translate(6vw, 40vh) scale(1); }
+}
+
+/* ---------- Film grain: generated noise over the glows (tiny inline SVG, tiled) ---------- */
+.sea .grain {
+  position: absolute; inset: -50%; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.1 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.1;
+  animation: grain 0.9s steps(6) infinite; /* gentle film-grain shimmer */
+}
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  17%  { transform: translate(-7%, 4%); }
+  33%  { transform: translate(5%, -6%); }
+  50%  { transform: translate(-3%, 8%); }
+  67%  { transform: translate(8%, 2%); }
+  83%  { transform: translate(-6%, -4%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------- Parallax targets (transforms set by motion.js) ---------- */
+.px { will-change: transform, opacity; }
+
+/* ---------- Porthole opener ---------- */
+@property --hole { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
+.opener { display: none; }
+html.intro .opener {
+  display: grid; place-items: center;
+  position: fixed; inset: 0; z-index: 100; cursor: pointer;
+  background:
+    radial-gradient(60% 45% at 50% 42%, color-mix(in srgb, var(--thekla-red) 38%, transparent), transparent 70%),
+    var(--hull);
+  /* the "hole" opens outward from the porthole to reveal the site */
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+          mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
+  animation: porthole-open 0.55s cubic-bezier(.7, 0, .2, 1) 0.55s forwards;
+}
+.porthole {
+  width: 132px; height: 132px; border-radius: 50%; position: relative;
+  display: grid; place-items: center;
+  /* brass-and-rope ring with 8 rivets */
+  background: radial-gradient(circle, transparent 57px, var(--rope) 58px, var(--rope) 62px, transparent 63px);
+  animation: porthole-in 0.45s cubic-bezier(.2, .9, .3, 1.2) both, porthole-out 0.4s ease-in 0.6s forwards;
+}
+.porthole::before { /* rivets */
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 3%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 50% 97%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 3% 50%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 97% 50%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 16.5% 16.5%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 83.5% 16.5%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 16.5% 83.5%, var(--rope) 2.5px, transparent 3px),
+    radial-gradient(circle at 83.5% 83.5%, var(--rope) 2.5px, transparent 3px);
+}
+.porthole .glass {
+  width: 112px; height: 112px; border-radius: 50%; overflow: hidden; background: #fff;
+  display: grid; place-items: center;
+}
+.porthole .glass img { width: 100%; height: 100%; object-fit: cover; }
+.porthole .glass .fallback { font: 800 22px/1 var(--display); color: var(--hull); }
+@keyframes porthole-in { from { transform: scale(0.7) rotate(-25deg); opacity: 0; } }
+@keyframes porthole-out { to { transform: scale(1.6); opacity: 0; } }
+@keyframes porthole-open { to { --hole: 150vmax; } }
+
+/* Content lifts in as the porthole opens (runs once; page is complete at rest) */
+html.intro .hero-id, html.intro .about, html.intro .socials, html.intro .filter-bar, html.intro #this-week {
+  animation: rise 0.6s cubic-bezier(.2, .8, .2, 1) backwards;
+}
+html.intro .hero-id    { animation-delay: 0.7s; }
+html.intro .about      { animation-delay: 0.78s; }
+html.intro .socials    { animation-delay: 0.84s; }
+html.intro .filter-bar { animation-delay: 0.9s; }
+html.intro #this-week  { animation-delay: 0.96s; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html.intro .opener { display: none; }
+  .sea .glow, .sea .grain { animation: none; }
 }

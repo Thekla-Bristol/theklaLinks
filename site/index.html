@@ -15,8 +15,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Big+Shoulders+Stencil+Display:wght@800&family=Figtree:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="styles.css">
+<script>
+  // Porthole opener: once per visit, skipped for reduced motion. Set before first paint to avoid a flash.
+  (function () {
+    try {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (sessionStorage.getItem('thekla-intro')) return;
+      sessionStorage.setItem('thekla-intro', '1');
+    } catch (e) { return; }
+    document.documentElement.classList.add('intro');
+  })();
+</script>
 </head>
 <body>
+
+<div class="opener" aria-hidden="true">
+  <div class="porthole"><div class="glass"><img src="assets/logo.jpg" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'THEKLA'}))"></div></div>
+</div>
+<div class="sea" aria-hidden="true"><div class="glow g2"></div><div class="glow g1"></div><div class="glow g3"></div><div class="grain"></div></div>
 
 <!-- ============ EDIT ME: hero, about, socials ============ -->
 <header class="hero">
@@ -86,5 +102,6 @@
 </footer>
 
 <script src="app.js" defer></script>
+<script src="motion.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,20 @@
+{
+  "name": "thekla-links",
+  "version": "1.0.0",
+  "description": "Automated link-in-bio events page for Thekla Bristol",
+  "scripts": {
+    "collect": "node scripts/collect.mjs",
+    "test": "node --test test/*.test.mjs",
+    "collect:offline": "node --import ./test/mock-fetch.mjs scripts/collect.mjs",
+    "serve": "npx --yes serve site",
+    "preview": "node scripts/build-preview.mjs"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

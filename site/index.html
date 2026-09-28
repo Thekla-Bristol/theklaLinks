@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thekla Bristol — What's On</title>
+<meta name="description" content="Gigs and club nights this week at Thekla, the floating venue in Bristol's harbour. Tap an event to buy tickets.">
+<meta name="theme-color" content="#0b1019">
+<meta property="og:title" content="Thekla Bristol — What's On">
+<meta property="og:description" content="Gigs and club nights this week on the boat. Tap for tickets.">
+<meta property="og:image" content="assets/hero.jpg">
+<link rel="icon" href="assets/logo.jpg">
+<link rel="apple-touch-icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Big+Shoulders+Stencil+Display:wght@800&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ EDIT ME: hero, about, socials ============ -->
+<header class="hero">
+  <div class="hero-photo">
+    <!-- Replace site/assets/hero.jpg with your own photo any time -->
+    <img src="assets/hero.jpg" alt="Thekla, the black-hulled former cargo ship moored in Bristol harbour" onerror="this.remove()">
+  </div>
+  <div class="hero-id">
+    <div class="logo">
+      <img src="assets/logo.jpg" alt="Thekla logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'THEKLA'}))">
+    </div>
+    <h1>Thekla</h1>
+    <p class="coords">Mud Dock · Bristol Harbour · Since 1984</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="about">
+    A converted German cargo ship moored in Bristol’s harbour, and one of the UK’s best-loved small venues.
+    Live music below deck most nights and club nights all week: Pressure on Thursdays, Pop Confessional on Saturdays.
+  </p>
+
+  <ul class="socials" aria-label="Instagram and social links">
+    <li><a href="https://www.instagram.com/theklabris/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>theklabris</a></li>
+    <li><a href="https://www.instagram.com/pressurebristol/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>pressurebristol</a></li>
+    <li><a href="https://www.instagram.com/popconfessional/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>popconfessional</a></li>
+    <li><a href="https://www.facebook.com/theklabristol" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg>Facebook</a></li>
+  </ul>
+
+  <div class="filter-bar">
+    <div class="filter" role="group" aria-label="Show events">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="gig" aria-pressed="false"><span class="dot" style="background:var(--gig)"></span>Gigs</button>
+      <button type="button" data-filter="club" aria-pressed="false"><span class="dot" style="background:var(--club)"></span>Clubs</button>
+    </div>
+  </div>
+
+  <section class="block" id="this-week" aria-labelledby="tw-h">
+    <div class="block-head"><h2 id="tw-h">This Week</h2><span class="meta" id="tw-range"></span></div>
+    <div id="week" class="skeleton" aria-live="polite">
+      <ul class="events"><li class="ev"><div class="art"></div><div class="ev-body"><div class="ev-title">Loading this week’s events…</div></div></li></ul>
+    </div>
+  </section>
+
+  <section class="block upcoming" id="coming-up" aria-labelledby="cu-h">
+    <div class="block-head"><h2 id="cu-h">Coming Up</h2></div>
+    <div id="later"></div>
+  </section>
+
+  <!-- ============ EDIT ME: link buttons ============ -->
+  <section class="block" aria-label="Links">
+    <ul class="links">
+      <li><a class="feature" href="https://www.theklabristol.co.uk/live/" target="_blank" rel="noopener">All gigs <span>Full gig guide →</span></a></li>
+      <li><a class="feature" href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener">All club nights <span>On Fatsoma →</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/merchandise/" target="_blank" rel="noopener">Merch <span>→</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/getting-to-thekla/" target="_blank" rel="noopener">Getting to Thekla <span>→</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/accessibility/" target="_blank" rel="noopener">Accessibility <span>→</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/hire/" target="_blank" rel="noopener">Hire the boat <span>→</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/faq/" target="_blank" rel="noopener">FAQ <span>→</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="wrap">
+  <address>Thekla · The Grove, East Mud Dock, Bristol BS1 4RB</address>
+  <span id="updated"></span>
+</footer>
+
+<script src="app.js" defer></script>
+</body>
+</html>

@@ -85,9 +85,14 @@ export function parseAltEventPage(html) {
   });
   const text = clean($('body').text());
   const price = /£\s?(\d+(?:\.\d{2})?)\s*inc/i.exec(text);
+  const age = /Age restriction:?\s*(\d{1,2}\+|all ages|under \d+s?[^.,;]*)/i.exec(text);
+  const finish = /(?:expected\s+)?finish(?:\s+time)?:?\s*(\d{1,2})[:.](\d{2})/i.exec(text);
   return {
     image: og || banner,
+    imageLarge: banner || og,
     price: price ? `£${price[1]}` : null,
+    age: age ? age[1].replace(/^all ages$/i, 'All ages') : null,
+    finish: finish ? [+finish[1], +finish[2]] : null,
     soldOut: /sold\s*out/i.test(text) && !/book tickets/i.test(text),
   };
 }
@@ -112,7 +117,18 @@ export async function fetchAlt({ enrichUntil }) {
     if (!p.ok) return;
     const info = parseAltEventPage(p.text);
     e.image = info.image;
+    e.imageLarge = info.imageLarge;
     e.price = info.price;
+    e.age = info.age;
+    if (info.finish) {
+      // finish time is on the same evening (or just after midnight)
+      const [h, m] = info.finish;
+      const d = new Date(e.start);
+      const day = e.start.slice(0, 10).split('-').map(Number);
+      let end = londonISO(day[0], day[1], day[2], h, m);
+      if (new Date(end) <= d) end = new Date(new Date(end).getTime() + 86400e3).toISOString();
+      e.end = end;
+    }
   });
   return events;
 }

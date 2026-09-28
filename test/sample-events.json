@@ -1,23 +1,186 @@
 {
  "generatedAt": "2026-09-28T13:07:00Z",
  "events": [
-  {"source":"fatsoma","type":"club","title":"it girls. non-stop club anthems from the hottest girls in pop.","start":"2026-09-30T22:00:00+01:00","end":"2026-10-01T03:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/e/nbi6f8pt/it-girls-non-stop-club-anthems-from-the-hottest-girls-in-pop"},
-  {"source":"alttickets","type":"gig","title":"Mary In The Junkyard","start":"2026-10-01T19:00:00+01:00","status":"soldout","linkKind":"info","url":"https://www.theklabristol.co.uk/live/"},
-  {"source":"fatsoma","type":"club","title":"PRESSURE. #TheklaThursday","start":"2026-10-01T21:30:00+01:00","end":"2026-10-02T03:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/thekla/promotions/16xtm6e4/pressure-theklathursday"},
-  {"source":"alttickets","type":"gig","title":"Man/Woman/Chainsaw","start":"2026-10-02T18:30:00+01:00","status":"soldout","linkKind":"info","url":"https://www.theklabristol.co.uk/live/"},
-  {"source":"alttickets","type":"gig","title":"Brother Strut","start":"2026-10-03T18:30:00+01:00","price":"£30.25","linkKind":"tickets","url":"https://www.alttickets.com/brother-strut-tickets/bristol-thekla/2026-10-03-18-30"},
-  {"source":"fatsoma","type":"club","title":"Pop Confessional ✞ Bristol's Best Pop Party ⚓️","start":"2026-10-03T21:30:00+01:00","end":"2026-10-04T04:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/thekla/promotions/blwh7ck2/pop-confessional-bristol-s-best-pop-party"},
-  {"source":"alttickets","type":"gig","title":"Violet Grohl","start":"2026-10-04T19:00:00+01:00","status":"soldout","linkKind":"info","url":"https://www.theklabristol.co.uk/live/"},
-  {"source":"alttickets","type":"gig","title":"Fickle Friends","start":"2026-10-06T18:30:00+01:00","linkKind":"tickets","url":"https://www.alttickets.com/fickle-friends-tickets/bristol-thekla/2026-10-06-18-30"},
-  {"source":"alttickets","type":"gig","title":"Damian Lewis","support":"Young Martyrs","start":"2026-10-07T18:30:00+01:00","linkKind":"tickets","url":"https://www.alttickets.com/damian-lewis-tickets/bristol-thekla/2026-10-07-18-30"},
-  {"source":"fatsoma","type":"club","title":"1D vs 5SOS - A Boyband Special","start":"2026-10-07T22:00:00+01:00","end":"2026-10-08T03:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/e/23bau800/1d-vs-5sos-a-boyband-special"},
-  {"source":"alttickets","type":"gig","title":"Ben Ellis","start":"2026-10-08T18:30:00+01:00","linkKind":"tickets","url":"https://www.alttickets.com/ben-ellis-tickets/bristol-thekla/2026-10-08-18-30"},
-  {"source":"fatsoma","type":"club","title":"PRESSURE. #TheklaThursday","start":"2026-10-08T21:30:00+01:00","end":"2026-10-09T03:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/thekla/promotions/mpdfin9l/pressure-theklathursday"},
-  {"source":"alttickets","type":"gig","title":"Ian Prowse & Amsterdam","start":"2026-10-09T18:30:00+01:00","linkKind":"tickets","url":"https://www.alttickets.com/ian-prowse-amsterdam-tickets/bristol-thekla/2026-10-09-18-30"},
-  {"source":"fatsoma","type":"club","title":"Pop Confessional ✞ Bristol's Best Pop Party ⚓️","start":"2026-10-10T21:30:00+01:00","end":"2026-10-11T04:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/thekla/promotions/ufvofsmo/pop-confessional-bristol-s-best-pop-party"},
-  {"source":"alttickets","type":"gig","title":"The Cinelli Brothers","support":"True Strays","start":"2026-10-11T19:00:00+01:00","linkKind":"tickets","url":"https://www.alttickets.com/the-cinelli-brothers-tickets/bristol-thekla/2026-10-11-19-00"},
-  {"source":"alttickets","type":"gig","title":"LSD and the Search for God","start":"2026-10-12T19:00:00+01:00","status":"soldout","linkKind":"info","url":"https://www.theklabristol.co.uk/live/"},
-  {"source":"fatsoma","type":"club","title":"Club Classics - Ibiza Anthems","start":"2026-10-14T22:00:00+01:00","end":"2026-10-15T03:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/e/m7jm8b5g/club-classics-ibiza-anthems"},
-  {"source":"fatsoma","type":"club","title":"PRESSURE. #TheklaThursday","start":"2026-10-15T21:30:00+01:00","end":"2026-10-16T03:00:00+01:00","linkKind":"tickets","url":"https://www.fatsoma.com/thekla/promotions/cvvr6138/pressure-theklathursday"}
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "it girls. non-stop club anthems from the hottest girls in pop.",
+   "start": "2026-09-30T22:00:00+01:00",
+   "end": "2026-10-01T03:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/e/nbi6f8pt/it-girls-non-stop-club-anthems-from-the-hottest-girls-in-pop",
+   "id": "2026-09-30-it-girls--non-stop-club-anthems-from-th"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Mary In The Junkyard",
+   "start": "2026-10-01T19:00:00+01:00",
+   "status": "soldout",
+   "linkKind": "info",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "id": "2026-10-01-mary-in-the-junkyard"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "PRESSURE. #TheklaThursday",
+   "start": "2026-10-01T21:30:00+01:00",
+   "end": "2026-10-02T03:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/thekla/promotions/16xtm6e4/pressure-theklathursday",
+   "id": "2026-10-01-pressure---theklathursday"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Man/Woman/Chainsaw",
+   "start": "2026-10-02T18:30:00+01:00",
+   "status": "soldout",
+   "linkKind": "info",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "id": "2026-10-02-man-woman-chainsaw"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Brother Strut",
+   "start": "2026-10-03T18:30:00+01:00",
+   "price": "£30.25",
+   "linkKind": "tickets",
+   "url": "https://www.alttickets.com/brother-strut-tickets/bristol-thekla/2026-10-03-18-30",
+   "id": "2026-10-03-brother-strut",
+   "end": "2026-10-03T22:00:00+01:00"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "Pop Confessional ✞ Bristol's Best Pop Party ⚓️",
+   "start": "2026-10-03T21:30:00+01:00",
+   "end": "2026-10-04T04:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/thekla/promotions/blwh7ck2/pop-confessional-bristol-s-best-pop-party",
+   "id": "2026-10-03-pop-confessional---bristol-s-best-pop-p"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Violet Grohl",
+   "start": "2026-10-04T19:00:00+01:00",
+   "status": "soldout",
+   "linkKind": "info",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "id": "2026-10-04-violet-grohl"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Fickle Friends",
+   "start": "2026-10-06T18:30:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.alttickets.com/fickle-friends-tickets/bristol-thekla/2026-10-06-18-30",
+   "id": "2026-10-06-fickle-friends",
+   "age": "14+",
+   "end": "2026-10-06T22:00:00+01:00",
+   "timeKnown": true
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Damian Lewis",
+   "support": "Young Martyrs",
+   "start": "2026-10-07T18:30:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.alttickets.com/damian-lewis-tickets/bristol-thekla/2026-10-07-18-30",
+   "id": "2026-10-07-damian-lewis"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "1D vs 5SOS - A Boyband Special",
+   "start": "2026-10-07T22:00:00+01:00",
+   "end": "2026-10-08T03:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/e/23bau800/1d-vs-5sos-a-boyband-special",
+   "id": "2026-10-07-1d-vs-5sos---a-boyband-special"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Ben Ellis",
+   "start": "2026-10-08T18:30:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.alttickets.com/ben-ellis-tickets/bristol-thekla/2026-10-08-18-30",
+   "id": "2026-10-08-ben-ellis"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "PRESSURE. #TheklaThursday",
+   "start": "2026-10-08T21:30:00+01:00",
+   "end": "2026-10-09T03:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/thekla/promotions/mpdfin9l/pressure-theklathursday",
+   "id": "2026-10-08-pressure---theklathursday"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "Ian Prowse & Amsterdam",
+   "start": "2026-10-09T18:30:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.alttickets.com/ian-prowse-amsterdam-tickets/bristol-thekla/2026-10-09-18-30",
+   "id": "2026-10-09-ian-prowse---amsterdam"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "Pop Confessional ✞ Bristol's Best Pop Party ⚓️",
+   "start": "2026-10-10T21:30:00+01:00",
+   "end": "2026-10-11T04:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/thekla/promotions/ufvofsmo/pop-confessional-bristol-s-best-pop-party",
+   "id": "2026-10-10-pop-confessional---bristol-s-best-pop-p"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "The Cinelli Brothers",
+   "support": "True Strays",
+   "start": "2026-10-11T19:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.alttickets.com/the-cinelli-brothers-tickets/bristol-thekla/2026-10-11-19-00",
+   "id": "2026-10-11-the-cinelli-brothers"
+  },
+  {
+   "source": "alttickets",
+   "type": "gig",
+   "title": "LSD and the Search for God",
+   "start": "2026-10-12T19:00:00+01:00",
+   "status": "soldout",
+   "linkKind": "info",
+   "url": "https://www.theklabristol.co.uk/live/",
+   "id": "2026-10-12-lsd-and-the-search-for-god"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "Club Classics - Ibiza Anthems",
+   "start": "2026-10-14T22:00:00+01:00",
+   "end": "2026-10-15T03:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/e/m7jm8b5g/club-classics-ibiza-anthems",
+   "id": "2026-10-14-club-classics---ibiza-anthems"
+  },
+  {
+   "source": "fatsoma",
+   "type": "club",
+   "title": "PRESSURE. #TheklaThursday",
+   "start": "2026-10-15T21:30:00+01:00",
+   "end": "2026-10-16T03:00:00+01:00",
+   "linkKind": "tickets",
+   "url": "https://www.fatsoma.com/thekla/promotions/cvvr6138/pressure-theklathursday",
+   "id": "2026-10-15-pressure---theklathursday"
+  }
  ]
 }

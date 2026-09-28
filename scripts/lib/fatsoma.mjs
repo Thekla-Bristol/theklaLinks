@@ -36,7 +36,9 @@ export function fatsomaImage(assetUrl, size = 480) {
   if (!assetUrl) return null;
   const m = /\/media\/([^?]+)/.exec(assetUrl) || /imgix\.net\/([^?]+)/.exec(assetUrl);
   if (!m) return assetUrl;
-  return `https://fatsoma.imgix.net/${m[1]}?w=${size}&h=${size}&fit=crop&auto=format,compress`;
+  return size === 'large'
+    ? `https://fatsoma.imgix.net/${m[1]}?w=1000&auto=format,compress`
+    : `https://fatsoma.imgix.net/${m[1]}?w=${size}&h=${size}&fit=crop&auto=format,compress`;
 }
 
 export function eventFromApi(json, pageUrl) {
@@ -55,8 +57,37 @@ export function eventFromApi(json, pageUrl) {
     price: typeof a['price-min-with-fees'] === 'number' && a['price-min-with-fees'] > 0
       ? `£${(a['price-min-with-fees'] / 100).toFixed(2).replace(/\.00$/, '')}` : null,
     age: a['age-restrictions'] || null,
+    lastEntry: a['last-entry-time'] || null,
     image: fatsomaImage(a['asset-url']),
+    imageLarge: fatsomaImage(a['asset-url'], 'large'),
+    about: htmlToParagraphs(a.description),
   };
+}
+
+/** Event description HTML → a few plain-text paragraphs (safe to render as text). */
+export function htmlToParagraphs(html, maxChars = 900) {
+  if (!html) return null;
+  const $ = cheerio.load(`<div id="r">${html}</div>`);
+  $('script,style,img,iframe').remove();
+  $('br').replaceWith('\n');
+  const blocks = [];
+  $('#r').find('p,li,h1,h2,h3,h4,h5,h6,div').each((_, el) => {
+    if ($(el).find('p,li,div').length) return; // leaf blocks only
+    const t = $(el).text().split('\n').map(clean).filter(Boolean).join('\n');
+    if (t) blocks.push($(el).is('li') ? `• ${t}` : t);
+  });
+  if (!blocks.length) blocks.push(...clean($('#r').text()).split(/\n{2,}/).filter(Boolean));
+  const out = [];
+  let used = 0;
+  for (const b of blocks) {
+    if (used + b.length > maxChars) {
+      if (!out.length) out.push(b.slice(0, maxChars).replace(/\s+\S*$/, '') + '…');
+      break;
+    }
+    out.push(b);
+    used += b.length;
+  }
+  return out.length ? out : null;
 }
 
 /** Fallback: read an event page's og tags. "… at Thekla, East Mud Dock on 30th Sep 2026" */

@@ -7,7 +7,8 @@ let html = read('site/index.html')
   .replace('<link rel="stylesheet" href="styles.css">', `<style>\n${read('site/styles.css')}\n</style>`)
   .replace('<script src="app.js" defer></script>',
     `<script>window.__EVENTS__ = ${data.trim()};</script>\n<script>\n${read('site/app.js')}\n</script>`)
-  .replace('<script src="motion.js" defer></script>', `<script>\n${read('site/motion.js')}\n</script>`);
+  .replace('<script src="motion.js" defer></script>', `<script>\n${read('site/motion.js')}\n</script>`)
+  .replace('<script src="sheets.js" defer></script>', `<script>\n${read('site/sheets.js')}\n</script>`);
 fs.mkdirSync(new URL('../preview/', import.meta.url), { recursive: true });
 fs.writeFileSync(new URL('../preview/index.html', import.meta.url), html);
 console.log('wrote preview/index.html');

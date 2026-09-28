@@ -98,3 +98,18 @@ test('merge: dedupe, links, fallbacks', () => {
   // Club-night merge: "Pressure Presents: Freshers" vs "PRESSURE. #TheklaThursday" → same night? similarity low; ok either way
   assert.ok(out.every((e, i) => i === 0 || new Date(out[i - 1].start) <= new Date(e.start)), 'sorted');
 });
+
+test('Fatsoma description → paragraphs', async () => {
+  const { htmlToParagraphs } = await import('../scripts/lib/fatsoma.mjs');
+  const p = htmlToParagraphs('<p><strong>No Diggity</strong> - 90s/00s Hip-Hop</p><p>Back-to-back classics<br>all night</p><ul><li>Top deck</li><li>Quayside</li></ul><script>x</script>');
+  assert.deepEqual(p, ['No Diggity - 90s/00s Hip-Hop', 'Back-to-back classics\nall night', '• Top deck', '• Quayside']);
+  assert.equal(htmlToParagraphs(''), null);
+  assert.ok(htmlToParagraphs('<p>' + 'word '.repeat(400) + '</p>')[0].endsWith('…'));
+});
+
+test('Alt event page: age + finish time', () => {
+  const p = parseAltEventPage('<html><body><p>Age restriction: 14+</p><p>Doors at 18:30, Expected finish time: 22:00</p><img src="/static_alt_tickets/images/campaign/1170x375/x.jpg"></body></html>');
+  assert.equal(p.age, '14+');
+  assert.deepEqual(p.finish, [22, 0]);
+  assert.match(p.imageLarge, /1170x375/);
+});

@@ -41,6 +41,7 @@
     return fmt({ weekday: 'long', day: 'numeric', month: 'short' }).format(d);
   }
 
+  window.TheklaFmt = { fmt, time, weekday, dateNum, month, esc: (x) => esc(x) };
   const endOf = (e) => (e.end ? new Date(e.end) : new Date(new Date(e.start).getTime() + DEFAULT_LENGTH_H[e.type] * 3600e3));
 
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -65,25 +66,30 @@
     if (e.status === 'postponed') chips.push('<span class="chip soldout">Postponed</span>');
 
     const hasTickets = e.linkKind === 'tickets' && !['soldout', 'cancelled'].includes(e.status);
-    const ctaText = hasTickets ? 'Tickets' : 'Info';
-    const where = e.linkKind === 'tickets' ? (e.source === 'fatsoma' ? 'Fatsoma' : 'Alt Tickets') : 'Thekla';
-    const label = `${e.title}, ${typeWord}, ${fmt({ weekday: 'long', day: 'numeric', month: 'long' }).format(start)}${when ? ', ' + when : ''}${e.status === 'soldout' ? ', sold out' : ''}. Opens ${where}.`;
+    const where = e.source === 'fatsoma' ? 'Fatsoma' : 'Alt Tickets';
+    const label = `${e.title}, ${typeWord}, ${fmt({ weekday: 'long', day: 'numeric', month: 'long' }).format(start)}${when ? ', ' + when : ''}${e.status === 'soldout' ? ', sold out' : ''}. Show details`;
 
     const art = e.image
       ? `<img src="${esc(e.image)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`
       : '';
-    return `<li><a class="ev ${e.type}" href="${esc(e.url)}" target="_blank" rel="noopener" aria-label="${esc(label)}">
+    const cta = hasTickets
+      ? `<a class="cta" href="${esc(e.ticketUrl || e.url)}" target="_blank" rel="noopener" aria-label="Tickets for ${esc(e.title)} on ${where}">Tickets</a>`
+      : `<span class="cta info" aria-hidden="true">Info</span>`;
+    return `<li><article class="ev ${e.type}" data-id="${esc(e.id)}">
+      <button type="button" class="ev-open" data-event="${esc(e.id)}" aria-label="${esc(label)}"></button>
       <div class="art"><div class="tile">${esc(weekday(start))}<b>${esc(dateNum(start))}</b></div>${art}</div>
       <div class="ev-body">
         <div class="ev-title">${esc(e.title)}</div>
         ${e.support && !compact ? `<div class="ev-support">+ ${esc(e.support)}</div>` : ''}
         <div class="ev-meta"><span class="tag">${typeWord}</span>${when ? `<span>${esc(when)}</span>` : ''}${chips.join('')}${e.price && !compact && hasTickets ? `<span>From ${esc(e.price)}</span>` : ''}</div>
       </div>
-      <span class="cta ${hasTickets ? '' : 'info'}" aria-hidden="true">${ctaText}</span>
-    </a></li>`;
+      ${cta}
+    </article></li>`;
   }
 
   function render() {
+    if (data) window.TheklaEvents = data.events || [];
+    document.dispatchEvent(new CustomEvent('thekla:events'));
     document.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
     if (!data) return;
 

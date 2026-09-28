@@ -2,7 +2,7 @@
 
 A link-in-bio page for Thekla that updates itself. It shows the hero photo, logo, about text and socials, then **This Week**: the next 7 days of gigs and club nights. Tapping an event opens its Alt Tickets or Fatsoma page. Below that are **Coming Up** and the usual link buttons.
 
-Live at **https://links.theklabristol.co.uk** once set up. You can also share `…/#gigs` or `…/#clubs` to open the page with that filter already on, which is handy for Stories.
+Live at **https://links.theklabristol.co.uk** once set up. You can also share `…/#gigs` or `…/#clubs` to open the page with that filter already on, which is handy for Stories. `…/#getting-here` and `…/#accessibility` open those pop-ups directly, and each event's Share button gives a link that opens straight to that event.
 
 ## How it updates
 
@@ -32,6 +32,7 @@ The page itself works out This Week and "On now" from the viewer's clock (always
 | What | Where |
 |---|---|
 | About text, socials, link buttons | `site/index.html` (look for `EDIT ME`) |
+| Getting to Thekla / Accessibility pop-ups | `site/index.html`, the `<dialog>` blocks under `EDIT ME: pop-up sheets` |
 | Hero photo | Add `site/assets/hero.jpg` (landscape, ~1600px wide). Until then the Action uses the photo from the Thekla site. |
 | Logo | Add `site/assets/logo.jpg` (square). Until then the Action uses Thekla's Fatsoma logo. |
 | Colours and fonts | Top of `site/styles.css` (`--gig` brass, `--club` pink) |

@@ -545,3 +545,5 @@ dialog.sheet.closing .sheet-panel { animation: sheet-down .24s cubic-bezier(.4, 
 .month[aria-selected="true"] { background: var(--rope); color: var(--hull); border-color: transparent; }
 .month[aria-selected="true"] small { background: rgba(11, 16, 25, 0.12); color: var(--hull); }
 .month:active { transform: scale(.97); }
+
+footer .privacy { font-size: 12px; opacity: .75; }

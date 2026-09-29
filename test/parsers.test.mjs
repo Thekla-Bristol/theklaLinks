@@ -156,3 +156,20 @@ test('merge: Skiddle never beats Alt Tickets / Fatsoma', () => {
   assert.deepEqual(out[0].about, ['From Skiddle'], 'borrows description from the Skiddle duplicate');
   assert.equal(out[0].url, 'https://f/pop', 'but keeps the Fatsoma ticket link');
 });
+
+test('report: tracked names roll up per event and per section', async () => {
+  const { parseEvents } = await import('../scripts/lib/report-email.mjs');
+  const r = parseEvents([
+    { x: 'EO|2026-10-03|Pop Confessional ✞ Bristol\'s Best …', y: 10 },
+    { x: 'TF|2026-10-03|Pop Confessional ✞ Bristol\'s Best …', y: 4 },
+    { x: 'TA|2026-10-06|Fickle Friends', y: 2 },
+    { x: 'ES|2026-10-06|Fickle Friends', y: 1 },
+    { x: 'Sheet|getting-here', y: 3 }, { x: 'Link|Merch', y: 0 }, { x: 'Filter|club', y: 5 },
+  ]);
+  assert.equal(r.events.length, 2);
+  const pop = r.events.find((e) => e.title.startsWith('Pop'));
+  assert.deepEqual([pop.opened, pop.tickets, pop.seller], [10, 4, 'Fatsoma']);
+  assert.deepEqual(r.totals, { tickets: 6, opened: 10, shares: 1, arrivals: 0 });
+  assert.deepEqual(r.groups.Sheet, { 'getting-here': 3 });
+  assert.deepEqual(r.groups.Link, {}, 'zero counts are left out');
+});

@@ -21,7 +21,9 @@ const OUT = path.join(ROOT, 'site', 'events.json');
 const DAYS_AHEAD = +(process.env.DAYS_AHEAD || 300); // ~10 months, for the Coming Up month tabs
 
 const now = new Date();
-const from = new Date(now.getTime() - 12 * 3600e3); // keep tonight's events until the site filters them
+// Keep the last 8 days too: the page hides finished events itself, and the weekly
+// report uses them to show full event names.
+const from = new Date(now.getTime() - 8 * 86400e3);
 const until = new Date(now.getTime() + DAYS_AHEAD * 86400e3);
 
 async function previous() {

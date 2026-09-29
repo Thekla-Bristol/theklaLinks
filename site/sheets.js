@@ -24,6 +24,7 @@
     $('.sheet-scroll', dlg).scrollTop = 0;
     root.classList.add('sheet-open');
     current = dlg;
+    if (id !== 'event' && !fromHash) window.track?.(`Sheet|${id}`);
 
     const hash = '#' + (dlg.dataset.hash || id);
     if (!fromHash && location.hash !== hash) {
@@ -241,10 +242,14 @@
     $('#event-actions').innerHTML = `${primary}<button type="button" class="btn secondary share" aria-label="Share this event">${icon.share}</button>`;
     $('#event-actions .share').onclick = () => share(e, id);
 
+    if (opts?.fromHash) window.track?.event('Arrive', e);
+    else window.track?.event('O', e);
+    $('#event-actions a.btn')?.addEventListener('click', () => { if (hasTickets) window.track?.event('T', e); });
     return open('event', opts);
   }
 
   async function share(e, id) {
+    window.track?.event('Share', e);
     const url = `${location.origin}${location.pathname}#e-${id}`;
     const { fmt } = F();
     const text = `${e.title} at Thekla, ${fmt({ weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(e.start))}`;
@@ -258,7 +263,7 @@
   function openFromHash() {
     const h = decodeURIComponent(location.hash.slice(1));
     if (!h) return;
-    if (h === 'getting-here' || h === 'accessibility') open(h, { fromHash: true });
+    if (['getting-here', 'accessibility', 'lost-property'].includes(h)) { open(h, { fromHash: true }); window.track?.(`Sheet|${h} (direct link)`); }
     else if (h.startsWith('e-')) {
       const id = h.slice(2);
       if (!openEvent(id, { fromHash: true })) {

@@ -1,0 +1,18 @@
+# Thekla Links visit counter — a tiny Cloudflare Worker + D1 database.
+name = "thekla-links-counter"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[vars]
+# Pages allowed to send visits (comma-separated). *.github.io covers the preview address.
+ALLOWED_ORIGINS = "https://links.theklabristol.co.uk,https://*.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "thekla-links"
+database_id = "__D1_DATABASE_ID__"   # filled in by the deploy workflow from the D1_DATABASE_ID variable
+
+# Daily tidy-up: delete visits older than ~13 months
+[triggers]
+crons = ["30 4 * * *"]

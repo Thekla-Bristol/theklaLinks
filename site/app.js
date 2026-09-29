@@ -16,6 +16,7 @@
   document.querySelectorAll('[data-filter]').forEach((b) => {
     b.addEventListener('click', () => {
       filter = b.dataset.filter;
+      window.track && window.track(`Filter|${filter}`);
       try { localStorage.setItem('thekla-filter', filter); } catch {}
       render();
     });
@@ -74,7 +75,7 @@
       ? `<img src="${esc(e.image)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`
       : '';
     const cta = hasTickets
-      ? `<a class="cta" href="${esc(e.ticketUrl || e.url)}" target="_blank" rel="noopener" aria-label="Tickets for ${esc(e.title)} on ${where}">Tickets</a>`
+      ? `<a class="cta" data-tix="${esc(e.id)}" href="${esc(e.ticketUrl || e.url)}" target="_blank" rel="noopener" aria-label="Tickets for ${esc(e.title)} on ${where}">Tickets</a>`
       : `<span class="cta info" aria-hidden="true">Info</span>`;
     return `<li><article class="ev ${e.type}" data-id="${esc(e.id)}">
       <button type="button" class="ev-open" data-event="${esc(e.id)}" aria-label="${esc(label)}"></button>
@@ -176,6 +177,7 @@
     const b = ev.target.closest('[data-month]');
     if (!b || b.dataset.month === selMonth) return;
     selMonth = b.dataset.month;
+    window.track && window.track(`Month|${selMonth}`);
     render();
     $('#months [aria-selected="true"]')?.focus({ preventScroll: true });
   });
@@ -186,6 +188,14 @@
     const i = tabs.findIndex((t) => t.dataset.month === selMonth);
     const next = tabs[Math.max(0, Math.min(tabs.length - 1, i + (ev.key === 'ArrowRight' ? 1 : -1)))];
     if (next) next.click();
+  });
+
+  // Ticket taps straight from a listing card
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest('a[data-tix]');
+    if (!a || !window.track) return;
+    const e = (window.TheklaEvents || []).find((x) => x.id === a.dataset.tix);
+    window.track.event('T', e);
   });
 
   async function load() {

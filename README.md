@@ -2,7 +2,7 @@
 
 A link-in-bio page for Thekla that updates itself. It shows the hero photo, logo, about text and socials, then **This Week**: the next 7 days of gigs and club nights. Tapping an event opens its Alt Tickets or Fatsoma page. Below that are **Coming Up** and the usual link buttons.
 
-Live at **https://links.theklabristol.co.uk** once set up. You can also share `…/#gigs` or `…/#clubs` to open the page with that filter already on, which is handy for Stories. `…/#getting-here` and `…/#accessibility` open those pop-ups directly, and each event's Share button gives a link that opens straight to that event.
+Live at **https://links.theklabristol.co.uk** once set up. You can also share `…/#gigs` or `…/#clubs` to open the page with that filter already on, which is handy for Stories. `…/#getting-here`, `…/#accessibility` and `…/#lost-property` open those pop-ups directly, and each event's Share button gives a link that opens straight to that event.
 
 ## How it updates
 
@@ -38,12 +38,63 @@ Skiddle only shares listings through its API, which needs a free key.
 
 Until a key is added, Skiddle is skipped and everything else works as normal.
 
+## Analytics and the weekly report
+
+The page counts visits and taps with **its own small counter on Cloudflare's free plan** (`workers/counter`). It uses no cookies and stores no IP addresses: visitors are recognised by a one-way code that resets every Monday. No cookie banner is needed, and the data stays with Thekla.
+
+Every Monday at 9am (UK time) a second workflow emails a report of the previous week to Phoebe and Harrison. It covers Monday to Sunday, counted from 6am to 6am so Sunday's late club night is included. The email also links to a **live "this week so far" page**.
+
+**What the report covers, in the same order every week:** visitors, page views, ticket taps and events opened (each with the change on last week); each event's details opens and ticket taps; where visitors came from; every button and link that was clicked; and visits per day with the peak time. Anything with zero clicks is left out.
+
+### 1. Cloudflare (about 10 minutes, free)
+
+1. Sign up at https://dash.cloudflare.com (free plan). You don't need to move the domain to Cloudflare.
+2. **Workers & Pages:** open it once and pick your free `workers.dev` subdomain when asked, e.g. `thekla`.
+3. **Storage & Databases → D1 → Create database.** Name it exactly `thekla-links`. Copy its **Database ID**.
+4. **My Profile → API Tokens → Create Token → "Edit Cloudflare Workers" template.** Add the permission **Account → D1 → Edit**, then create it and copy the token. Also copy your **Account ID** (on the Workers & Pages overview page).
+5. Make up a long random password (32+ characters from a password generator). This is the `COUNTER_TOKEN` that keeps the stats private.
+6. In GitHub, go to **Settings → Secrets and variables → Actions** and add:
+   - Secret `CLOUDFLARE_API_TOKEN` = the API token
+   - Secret `CLOUDFLARE_ACCOUNT_ID` = the Account ID
+   - Secret `COUNTER_TOKEN` = the random password
+   - Variable `D1_DATABASE_ID` = the Database ID
+7. **Actions → Deploy visit counter → Run workflow.** At the end of the log it prints the counter's address, like `https://thekla-links-counter.thekla.workers.dev`.
+8. Add that address as the variable `COUNTER_URL`, then run **Update events & deploy** once. The page starts counting straight away.
+
+### 2. Microsoft 365 (about 10 minutes, needs a Microsoft 365 admin)
+
+The report is sent through Microsoft Graph, the modern method. Microsoft is switching off the older password-based SMTP sending.
+
+1. **Pick the sending mailbox**, for example `office@theklabristol.co.uk`. Better still, create a free shared mailbox such as `reports@theklabristol.co.uk`.
+2. Go to **entra.microsoft.com → App registrations → New registration**. Name it `Thekla Links reports`, choose "Single tenant", then Register.
+3. **API permissions → Add → Microsoft Graph → Application permissions → Mail.Send → Add**, then **Grant admin consent**.
+4. **Certificates & secrets → New client secret** (24 months). Copy the **Value** straight away. Set a calendar reminder to renew it before it expires.
+5. Recommended: limit the app so it can only send as that one mailbox. In Exchange Online, use an *application access policy* or *RBAC for Applications*.
+6. In GitHub, add:
+   - Secret `MS_TENANT_ID` = Directory (tenant) ID (on the app's Overview page)
+   - Secret `MS_CLIENT_ID` = Application (client) ID
+   - Secret `MS_CLIENT_SECRET` = the secret value
+   - Variable `MS_SENDER` = the sending mailbox address
+   - Variable `REPORT_TO` = recipients, comma-separated (optional; defaults to phoebe@ and harrison@)
+
+### 3. Test it
+
+Go to **Actions → Weekly analytics report → Run workflow**. Untick "Send" to just build it; the email is attached to the run as `weekly-report`. Leave it ticked to send now. You can also type your own address in "Send to" for a test.
+
+### Tracking where people came from
+
+Instagram's in-app browser usually hides where visitors came from. Tag each link you post, and the report lists them under "Tagged links":
+
+- Instagram bio: `https://links.theklabristol.co.uk/?src=ig-bio`
+- Stories: `…/?src=ig-story`
+- Posters or QR codes: `…/?src=qr-poster`, `…/?src=qr-bar`, and so on
+
 ## Editing
 
 | What | Where |
 |---|---|
 | About text, socials, link buttons | `site/index.html` (look for `EDIT ME`) |
-| Getting to Thekla / Accessibility pop-ups | `site/index.html`, the `<dialog>` blocks under `EDIT ME: pop-up sheets` |
+| Getting to Thekla / Accessibility / Lost property pop-ups | `site/index.html`, the `<dialog>` blocks under `EDIT ME: pop-up sheets` |
 | Hero photo | Add `site/assets/hero.jpg` (landscape, ~1600px wide). Until then the Action uses the photo from the Thekla site. |
 | Logo | Add `site/assets/logo.jpg` (square). Until then the Action uses Thekla's Fatsoma logo. |
 | Colours and fonts | Top of `site/styles.css` (`--gig` brass, `--club` pink) |

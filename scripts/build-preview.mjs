@@ -12,6 +12,7 @@ let html = read('site/index.html')
     `<script>window.__EVENTS__ = ${data};window.__PREVIEW__ = true;</script>\n<script>\n${read('site/app.js')}\n</script>`)
   .replace('<script src="motion.js" defer></script>', `<script>\n${read('site/motion.js')}\n</script>`)
   .replace('<script src="sheets.js" defer></script>', `<script>\n${read('site/sheets.js')}\n</script>`)
+  .replace('<script src="seasons.js" defer></script>', `<script>\n${read('site/seasons.js')}\n</script>`)
   .replace('<script src="track.js" defer></script>', `<script>\n${read('site/track.js')}\n</script>`)
   .replace(/^.*__COUNTER_URL__.*\n/m, '');
 fs.mkdirSync(new URL('../preview/', import.meta.url), { recursive: true });

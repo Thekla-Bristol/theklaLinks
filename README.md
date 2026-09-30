@@ -99,6 +99,25 @@ Four big cards under This Week show the best events coming up **after this week 
 - Events must have artwork and must not be sold out. No weekly series appears twice.
 - **Pins:** anything listed in `site/featured.txt` always takes a slot first, even beyond 6 weeks. Edit the file on GitHub and it applies at the next update, within 3 hours.
 
+## Seasonal effects
+
+Like Google's holiday doodles, the page decorates itself around key dates (UK time). Everything sits behind or around the listings, never over the buttons, and switches off for anyone with "reduce motion" on.
+
+| Season | When | What appears |
+|---|---|---|
+| Halloween | 24 Oct – 1 Nov | Chain garland, cobwebs, dangling spider and skeleton, pumpkins, bats, witch hat on the logo |
+| Bonfire Night | 3 – 6 Nov | Orange and red fireworks |
+| Christmas | 1 – 30 Dec | Tinsel, hanging baubles, trees, snowfall, Santa hat |
+| New Year | 31 Dec (from midday) – 1 Jan | Gold fireworks, confetti, party hat, a countdown on the day then "Happy New Year" |
+| Valentine's | 10 – 14 Feb | Heart garland, rising hearts |
+| Easter | Thursday before Easter – Easter Monday (worked out each year) | Pastel bunting and eggs, bunny ears, a bunny peeking in |
+| Pride | All of June | Rainbow stripe, rainbow ring on the logo, light confetti |
+| Harbour Festival | Friday–Sunday around the third Saturday of July | Bunting and boats bobbing on the harbour |
+
+**Preview any season** on the live site: add `?season=halloween` to the address (or `christmas`, `nye`, `bonfire`, `valentines`, `easter`, `pride`, `harbour`). Use `?season=preview` for a drop-down switcher, or `?season=off` to see the page without effects.
+
+**Change dates or switch one off:** edit the `SEASONS` list at the top of `site/seasons.js` (set `enabled: false`). If the Harbour Festival dates are announced and differ, change its line there.
+
 ## Editing
 
 | What | Where |

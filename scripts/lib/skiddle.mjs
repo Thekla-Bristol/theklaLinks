@@ -6,14 +6,19 @@ import { getJSON, londonISO, clean, decodeEntities } from './util.mjs';
 const API = 'https://www.skiddle.com/api/v1';
 const THEKLA = { lat: 51.448983, lng: -2.5941729 };
 
-/** Find Thekla's Skiddle venue id (or use SKIDDLE_VENUE_ID if set). */
+// Thekla's Skiddle venue is www.skiddle.com/venues/1480. (There's also a separate
+// "Thekla Faraway" venue on Skiddle, so we don't guess by name any more.)
+export const THEKLA_SKIDDLE_VENUE = '1480';
+
+/** Search Skiddle's venues near the boat (only used if SKIDDLE_VENUE_ID is set to "auto"). */
 export async function findVenueId(key) {
-  if (process.env.SKIDDLE_VENUE_ID) return process.env.SKIDDLE_VENUE_ID;
+  const set = process.env.SKIDDLE_VENUE_ID;
+  if (set && set !== 'auto') return set;
+  if (!set) return THEKLA_SKIDDLE_VENUE;
   const url = `${API}/venues/?api_key=${key}&latitude=${THEKLA.lat}&longitude=${THEKLA.lng}&radius=1&limit=100`;
   const json = await getJSON(url);
-  const hit = (json.results || []).find((v) => /thekla/i.test(v.name || ''));
-  if (!hit) throw new Error('Could not find Thekla in Skiddle venues (set SKIDDLE_VENUE_ID)');
-  return hit.id;
+  const hit = (json.results || []).find((v) => /^thekla$/i.test((v.name || '').trim()));
+  return hit ? hit.id : THEKLA_SKIDDLE_VENUE; // never fail: fall back to Thekla's known venue
 }
 
 const hm = (s) => {
@@ -79,6 +84,7 @@ export async function fetchSkiddle({ from, until }) {
   const key = process.env.SKIDDLE_API_KEY;
   if (!key) return { skipped: true, events: [] };
   const venueid = await findVenueId(key);
+  console.log(`  Skiddle: reading venue ${venueid}`);
   const ymd = (d) => d.toISOString().slice(0, 10);
   const events = [];
   for (let offset = 0; offset < 500; offset += 100) {

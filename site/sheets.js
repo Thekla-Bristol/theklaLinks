@@ -136,6 +136,13 @@
     box.appendChild(f);
   }
 
+  // ---------- FAQ questions opened ----------
+  document.querySelectorAll('#faq details').forEach((d) => {
+    d.addEventListener('toggle', () => {
+      if (d.open) window.track?.(`FAQ|${d.querySelector('summary').textContent.trim()}`);
+    });
+  });
+
   // ---------- copy buttons ----------
   document.addEventListener('click', async (e) => {
     const b = e.target.closest('[data-copy]');
@@ -184,7 +191,12 @@
     if (!e || !F()) return false;
     const { fmt, time, weekday, dateNum, esc } = F();
     const start = new Date(e.start);
-    const end = e.end ? new Date(e.end) : null;
+    // Gigs finish by the 10pm curfew
+    let end = e.end ? new Date(e.end) : null;
+    if (!end && e.type === 'gig') {
+      const d = new Date(`${e.start.slice(0, 10)}T22:00:00${e.start.slice(19) || 'Z'}`);
+      if (d > start) end = d;
+    }
     const isClub = e.type === 'club';
     const hasTickets = e.linkKind === 'tickets' && !['soldout', 'cancelled'].includes(e.status);
     const seller = { fatsoma: 'Fatsoma', skiddle: 'Skiddle', alttickets: 'Alt Tickets' }[e.source] || 'the ticket site';
@@ -193,10 +205,9 @@
     dlg.dataset.hash = `e-${id}`;
     $('.sheet-panel', dlg).classList.toggle('club', isClub);
 
+    // Event artwork, softly blurred behind the big date
     const img = e.imageLarge || e.image;
-    const media = img
-      ? `<div class="blur" style="background-image:url('${esc(img)}')"></div><img src="${esc(img)}" alt="" onerror="this.previousElementSibling.remove();this.remove()">`
-      : '';
+    const media = img ? `<div class="blur" style="background-image:url('${esc(img)}')"></div>` : '';
     const facts = [
       ['Date', fmt({ weekday: 'short', day: 'numeric', month: 'short' }).format(start)],
       e.timeKnown !== false ? [isClub ? 'Starts' : 'Doors', time(start)] : null,
@@ -214,7 +225,7 @@
     if (e.status === 'postponed') chips.push('<span class="chip soldout">Postponed</span>');
 
     $('#event-body').innerHTML = `
-      <div class="ev-media">${media || ''}<div class="big-date" ${img ? 'hidden' : ''}><span>${esc(weekday(start))}</span><b>${esc(dateNum(start))}</b></div></div>
+      <div class="ev-media ${img ? 'has-art' : ''}">${media}<div class="big-date"><span>${esc(weekday(start))}</span><b>${esc(dateNum(start))}</b><em>${esc(F().month(start))}</em></div></div>
       <div class="ev-headline">
         <div class="ev-meta"><span class="tag" style="color:var(--tone)">${isClub ? 'Club night' : 'Gig'}</span>${chips.join('')}</div>
         <h2 id="ev-title">${esc(e.title)}</h2>
@@ -225,9 +236,6 @@
       <button type="button" class="venue-link" data-sheet="getting-here">${icon.pin}<span>Thekla, East Mud Dock<small>Map, parking &amp; buses</small></span></button>
       ${e.pageUrl ? `<a class="sheet-more" href="${esc(e.pageUrl)}" target="_blank" rel="noopener">Event page on theklabristol.co.uk</a>` : ''}
     `;
-    // if the image fails, show the date tile instead
-    const im = $('#event-body .ev-media img');
-    if (im) im.addEventListener('error', () => { $('#event-body .big-date').hidden = false; });
 
     let primary;
     if (hasTickets) {
@@ -263,7 +271,7 @@
   function openFromHash() {
     const h = decodeURIComponent(location.hash.slice(1));
     if (!h) return;
-    if (['getting-here', 'accessibility', 'lost-property'].includes(h)) { open(h, { fromHash: true }); window.track?.(`Sheet|${h} (direct link)`); }
+    if (['getting-here', 'accessibility', 'lost-property', 'faq'].includes(h)) { open(h, { fromHash: true }); window.track?.(`Sheet|${h} (direct link)`); }
     else if (h.startsWith('e-')) {
       const id = h.slice(2);
       if (!openEvent(id, { fromHash: true })) {

@@ -132,12 +132,53 @@
     }
 
     renderMonths(later, nightKey);
+    renderFeatured(events, nightKey, weekEndKey, addDays(todayKey, 7 + 42));
 
     if (data.generatedAt) {
       const mins = Math.round((now - new Date(data.generatedAt)) / 60000);
       const ago = mins < 60 ? `${Math.max(mins, 1)} min ago` : mins < 1440 ? `${Math.round(mins / 60)} hr ago` : `${Math.round(mins / 1440)} days ago`;
       $('#updated').textContent = `Listings updated ${ago}`;
     }
+  }
+
+  // ---------- Featured: 4 big cards (2 gigs + 2 clubs), after this week ----------
+  // Scores come from the collector (scripts/lib/featured.mjs); pins in site/featured.txt go first.
+  function renderFeatured(events, nightKey, fromKey, untilKey) {
+    const ok = (e) => !['soldout', 'cancelled', 'presale'].includes(e.status) && nightKey(e) >= fromKey;
+    const pinned = events.filter((e) => e.pinned && ok(e)).slice(0, 4);
+    const pool = events.filter((e) => !e.pinned && ok(e) && nightKey(e) < untilKey && (e.image || e.imageLarge || window.__PREVIEW__));
+    const bestFirst = (a, b) => (b.feature || 0) - (a.feature || 0) || new Date(a.start) - new Date(b.start);
+    const gigs = pool.filter((e) => e.type === 'gig').sort(bestFirst);
+    const clubs = pool.filter((e) => e.type === 'club').sort(bestFirst);
+
+    const picked = [...pinned];
+    const series = new Set(picked.map((e) => e.series).filter(Boolean));
+    const take = (list, max) => {
+      let n = 0;
+      for (const e of list) {
+        if (picked.length >= 4 || n >= max) break;
+        if (picked.includes(e) || (e.series && series.has(e.series))) continue;
+        picked.push(e); n++;
+        if (e.series) series.add(e.series);
+      }
+    };
+    const want = Math.max(0, 4 - picked.length);
+    take(gigs, Math.ceil(want / 2));
+    take(clubs, 4 - picked.length);
+    take(gigs, 4 - picked.length); // top up if there weren't enough club nights
+
+    picked.sort((a, b) => new Date(a.start) - new Date(b.start));
+    $('#featured').hidden = !picked.length;
+    $('#feats').innerHTML = picked.map((e) => {
+      const d = new Date(e.start);
+      const img = e.imageLarge || e.image;
+      return `<li><article class="feat ${e.type}">
+        <button type="button" class="ev-open" data-event="${esc(e.id)}" aria-label="${esc(`${e.title}, ${fmt({ weekday: 'long', day: 'numeric', month: 'long' }).format(d)}. Show details`)}"></button>
+        ${img ? `<img src="${esc(img)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
+        <div class="feat-date"><span>${esc(weekday(d))}</span><b>${esc(dateNum(d))}</b><span>${esc(month(d))}</span></div>
+        <div class="feat-body"><span class="tag">${e.type === 'club' ? 'Club' : 'Gig'}</span><h3>${esc(e.title)}</h3></div>
+      </article></li>`;
+    }).join('');
   }
 
   // ---------- Coming Up: one tab per month ----------

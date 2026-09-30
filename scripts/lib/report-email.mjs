@@ -7,6 +7,7 @@ const num = (v) => (v && typeof v === 'object' ? +(v.value ?? 0) : +(v ?? 0)) ||
 const fmtN = (n) => Math.round(n).toLocaleString('en-GB');
 
 const SHEETS = {
+  faq: 'FAQs',
   'getting-here': 'Getting to Thekla',
   accessibility: 'Accessibility',
   'lost-property': 'Lost property',
@@ -32,7 +33,7 @@ function friendlyReferrer(host) {
 /** Parse the one-line event names written by site/track.js. */
 export function parseEvents(list) {
   const events = new Map();
-  const groups = { Sheet: {}, Link: {}, Social: {}, Map: {}, Email: {}, Copy: {}, Filter: {}, Month: {}, From: {} };
+  const groups = { Sheet: {}, Link: {}, Social: {}, Map: {}, Email: {}, Copy: {}, Filter: {}, Month: {}, From: {}, FAQ: {} };
   const sellers = { A: 0, F: 0, S: 0, X: 0 };
   const totals = { tickets: 0, opened: 0, shares: 0, arrivals: 0 };
 
@@ -133,8 +134,8 @@ export function summarise({ week, thisWeek, lastWeek, shareUrl, listings = [] })
     Sheet: SHEETS[v.replace(/ \(direct link\)$/, '')] ? SHEETS[v.replace(/ \(direct link\)$/, '')] + (v.endsWith('(direct link)') ? ' (direct link)' : '') : v,
     Filter: { gig: 'Gigs only', club: 'Clubs only', all: 'All events' }[v] || v,
     Month: (() => { const m = /^(\d{4})-(\d{2})$/.exec(v); return m ? new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(+m[1], +m[2] - 1, 15))) : v; })(),
-    Copy: { address: 'Address', email: 'Email address' }[v] || v,
-    Email: { accessibility: 'Accessibility email', 'lost-property': 'Lost property email' }[v] || v,
+    Copy: { address: 'Address', email: 'Email address', phone: 'Phone number' }[v] || v,
+    Email: { accessibility: 'Accessibility email', 'lost-property': 'Lost property email', faq: 'Email from FAQs' }[v] || v,
     Social: v === 'facebook' ? 'Facebook' : `Instagram @${v}`,
   }[k] ?? v);
 
@@ -171,6 +172,7 @@ export function summarise({ week, thisWeek, lastWeek, shareUrl, listings = [] })
       { title: 'Socials', rows: group('Social') },
       { title: 'Map apps', rows: group('Map') },
       { title: 'Emails & copy buttons', rows: [...group('Email'), ...group('Copy').map((r) => ({ ...r, name: `Copied: ${r.name}` }))] },
+      { title: 'FAQ questions opened', rows: group('FAQ') },
       { title: 'Gigs / Clubs filter', rows: group('Filter') },
       { title: 'Coming Up month tabs', rows: group('Month') },
     ].filter((sec) => sec.rows.length),

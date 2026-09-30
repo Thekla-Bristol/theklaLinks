@@ -19,6 +19,16 @@ export function parseAltListing(html) {
   const $ = cheerio.load(html);
   const events = new Map();
 
+  // The "Recently Announced" block (used to help pick Featured gigs)
+  const recentBlocks = [];
+  $('body *').each((_, el) => {
+    if (!/^\s*recently announced\s*$/i.test($(el).text())) return;
+    let box = el.parent;
+    while (box && box.tagName !== 'body' && !DATE_RE.test($(box).text())) box = box.parent;
+    if (box && box.tagName !== 'body' && !/full listings/i.test($(box).text())) recentBlocks.push(box);
+  });
+  const inRecent = (card) => recentBlocks.some((b) => b === card || $(b).find(card).length > 0);
+
   for (const { card, dateEl, match } of findCards($, DATE_RE)) {
     const [, hh, mm, d, m, y] = match;
     const $c = $(card);
@@ -47,11 +57,12 @@ export function parseAltListing(html) {
       prev.ticketUrl ||= link || null;
       prev.support ||= support;
       prev.status ||= status;
+      prev.recent ||= inRecent(card);
       continue;
     }
     events.set(key, {
       source: 'alttickets', type: 'gig', title: decodeEntities(title), support: decodeEntities(support),
-      start, timeKnown: true, ticketUrl: link || null, status, image: null,
+      start, timeKnown: true, ticketUrl: link || null, status, image: null, recent: inRecent(card),
     });
   }
 

@@ -57,6 +57,7 @@ export function eventFromApi(json, pageUrl) {
     price: typeof a['price-min-with-fees'] === 'number' && a['price-min-with-fees'] > 0
       ? `£${(a['price-min-with-fees'] / 100).toFixed(2).replace(/\.00$/, '')}` : null,
     age: a['age-restrictions'] || null,
+    going: typeof a['attendees-count'] === 'number' ? a['attendees-count'] : null,
     lastEntry: a['last-entry-time'] || null,
     image: fatsomaImage(a['asset-url']),
     imageLarge: fatsomaImage(a['asset-url'], 'large'),

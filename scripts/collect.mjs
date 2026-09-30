@@ -14,6 +14,7 @@ import { fetchFatsoma } from './lib/fatsoma.mjs';
 import { fetchThekla } from './lib/thekla.mjs';
 import { fetchSkiddle } from './lib/skiddle.mjs';
 import { mergeEvents } from './lib/merge.mjs';
+import { scoreEvents, parsePins } from './lib/featured.mjs';
 import { getJSON } from './lib/util.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -71,6 +72,12 @@ if (skiddleSkipped) {
 }
 
 const events = mergeEvents([...alt.events, ...fat.events], thek.events, { from, until, secondary: skid.events });
+
+// Featured: score every event; pins come from site/featured.txt
+let pins = [];
+try { pins = parsePins(await fs.readFile(path.join(ROOT, 'site', 'featured.txt'), 'utf8')); } catch { /* no pins file */ }
+scoreEvents(events, pins);
+if (pins.length) console.log(`  Featured pins: ${events.filter((e) => e.pinned).map((e) => e.title).join(', ') || 'none matched'}`);
 
 const data = {
   generatedAt: now.toISOString(),

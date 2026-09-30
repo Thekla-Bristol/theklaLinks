@@ -1,5 +1,5 @@
 // Merge sources, de-duplicate, and pick the right link for each event.
-import { londonDay, titleSimilarity, slugify, tokens } from './util.mjs';
+import { londonDay, londonISO, titleSimilarity, slugify, tokens } from './util.mjs';
 
 const THEKLA_FALLBACK = {
   gig: 'https://www.theklabristol.co.uk/live/',
@@ -81,6 +81,12 @@ export function mergeEvents(primary, backup, { from, until, secondary = [] }) {
 
   for (const e of out) {
     e.support = tidySupport(e.support);
+    // Every Thekla gig has a 10pm curfew
+    if (e.type === 'gig') {
+      const [y, m, d] = londonDay(e.start).split('-').map(Number);
+      const curfew = londonISO(y, m, d, 22, 0);
+      if (new Date(curfew) > new Date(e.start)) e.end = curfew;
+    }
     // Where a tap should go: ticket page → Thekla event page → Thekla guide
     e.url = e.ticketUrl || e.pageUrl || THEKLA_FALLBACK[e.type];
     e.linkKind = e.ticketUrl ? 'tickets' : 'info';

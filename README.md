@@ -89,12 +89,24 @@ Instagram's in-app browser usually hides where visitors came from. Tag each link
 - Stories: `…/?src=ig-story`
 - Posters or QR codes: `…/?src=qr-poster`, `…/?src=qr-bar`, and so on
 
+## Featured
+
+Four big cards under This Week show the best events coming up **after this week and within the next 6 weeks**. They pick themselves:
+
+- **2 gigs and 2 club nights**, scored separately so gigs only compete with gigs.
+- **Gigs** score for "Few tickets left" (+3), being in Alt Tickets' "Recently announced" list (+3) and falling on a Friday or Saturday (+1).
+- **Club nights** score for how many people are going on Fatsoma compared with the busiest club night (up to +4), being a one-off rather than a weekly regular (+2), and having a description (+0.5).
+- Events must have artwork and must not be sold out. No weekly series appears twice.
+- **Pins:** anything listed in `site/featured.txt` always takes a slot first, even beyond 6 weeks. Edit the file on GitHub and it applies at the next update, within 3 hours.
+
 ## Editing
 
 | What | Where |
 |---|---|
 | About text, socials, link buttons | `site/index.html` (look for `EDIT ME`) |
 | Getting to Thekla / Accessibility / Lost property pop-ups | `site/index.html`, the `<dialog>` blocks under `EDIT ME: pop-up sheets` |
+| Featured events | `site/featured.txt`: add a ticket link or part of an event name to pin it (see below) |
+| FAQs pop-up | `site/index.html`, the `<dialog id="faq">` block |
 | Hero photo | Add `site/assets/hero.jpg` (landscape, ~1600px wide). Until then the Action uses the photo from the Thekla site. |
 | Logo | Add `site/assets/logo.jpg` (square). Until then the Action uses Thekla's Fatsoma logo. |
 | Colours and fonts | Top of `site/styles.css` (`--gig` brass, `--club` pink) |

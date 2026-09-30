@@ -173,3 +173,27 @@ test('report: tracked names roll up per event and per section', async () => {
   assert.deepEqual(r.groups.Sheet, { 'getting-here': 3 });
   assert.deepEqual(r.groups.Link, {}, 'zero counts are left out');
 });
+
+test('Alt Tickets: recently announced flag', () => {
+  const ev = parseAltListing(fx('alttickets.html'));
+  assert.equal(ev.find((e) => e.title === 'Fickle Friends').recent, true);
+  assert.equal(ev.find((e) => e.title === 'Brother Strut').recent, false);
+});
+
+test('featured scoring: gigs and clubs scored separately, pins, series', async () => {
+  const { scoreEvents, parsePins } = await import('../scripts/lib/featured.mjs');
+  const ev = [
+    { type: 'gig', title: 'Blood Red Shoes', start: '2026-10-30T18:30:00+00:00', status: 'low', recent: true, ticketUrl: 'https://a/brs' },
+    { type: 'gig', title: 'Quiet Tuesday', start: '2026-10-27T18:30:00+00:00' },
+    { type: 'club', title: 'PRESSURE. #TheklaThursday', start: '2026-10-08T21:30:00+01:00', going: 40 },
+    { type: 'club', title: 'PRESSURE. #TheklaThursday', start: '2026-10-15T21:30:00+01:00', going: 20 },
+    { type: 'club', title: 'PRESSURE. #TheklaThursday', start: '2026-10-22T21:30:00+01:00', going: 10 },
+    { type: 'club', title: 'Boat-o-ween', start: '2026-10-31T22:00:00+00:00', going: 80, about: ['x'] },
+  ];
+  scoreEvents(ev, parsePins('# c\nquiet tues\n'));
+  assert.equal(ev[0].feature, 7);          // low + recent + Fri
+  assert.equal(ev[1].pinned, true);
+  assert.ok(ev[2].series && ev[2].series === ev[3].series);
+  assert.ok(ev[5].feature > ev[2].feature, 'one-off busy night beats the weekly regular');
+  assert.equal(ev[5].series, undefined);
+});

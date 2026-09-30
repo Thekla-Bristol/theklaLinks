@@ -45,6 +45,8 @@ jobs:
         env:
           PREVIOUS_URL: https://${{ vars.SITE_DOMAIN || 'links.theklabristol.co.uk' }}/events.json
           DEBUG_DIR: debug
+          SKIDDLE_API_KEY: ${{ secrets.SKIDDLE_API_KEY }}
+          SKIDDLE_VENUE_ID: ${{ vars.SKIDDLE_VENUE_ID }}
         run: npm run collect
 
       - name: Save downloaded pages (for debugging layout changes)
@@ -62,6 +64,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow enable update.yml --repo "$GITHUB_REPOSITORY" || true
+
+      - name: Add visit counter address
+        env:
+          COUNTER_URL: ${{ vars.COUNTER_URL }}
+        run: |
+          if [ -n "$COUNTER_URL" ]; then
+            sed -i "s#__COUNTER_URL__#$COUNTER_URL#" site/index.html
+          else
+            sed -i '/__COUNTER_URL__/d' site/index.html
+            echo "COUNTER_URL not set: visit counting is off"
+          fi
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

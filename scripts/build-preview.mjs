@@ -15,7 +15,8 @@ let html = read('site/index.html')
   .replace('<script src="seasons.js" defer></script>', `<script>\n${read('site/seasons.js')}\n</script>`)
   .replace('<script src="track.js" defer></script>', `<script>\n${read('site/track.js')}\n</script>`)
   .replace(/^.*__COUNTER_URL__.*\n/m, '')
-  .replace(/^.*cloud\.umami\.is.*\n/m, '');
+  .replace(/^.*cloud\.umami\.is.*\n/m, '')
+  .replace(/<!-- GA:start[\s\S]*?<!-- GA:end -->\n/, '');
 fs.mkdirSync(new URL('../preview/', import.meta.url), { recursive: true });
 fs.writeFileSync(new URL('../preview/index.html', import.meta.url), html);
 console.log('wrote preview/index.html');

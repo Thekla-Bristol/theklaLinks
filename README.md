@@ -41,7 +41,7 @@ Until a key is added, Skiddle is skipped and everything else works as normal.
 
 ## Analytics and the weekly report
 
-The page counts visits and taps with **its own small counter on Cloudflare's free plan** (`workers/counter`). It uses no cookies and stores no IP addresses: visitors are recognised by a one-way code that resets every Monday. No cookie banner is needed, and the data stays with Thekla.
+The page counts visits and taps with **its own small counter on Cloudflare's free plan** (`workers/counter`). It uses no cookies and stores no IP addresses: visitors are recognised by a one-way code that resets every Monday. It needs no cookie consent, and the data stays with Thekla. (Google Analytics, below, is the only thing the cookie bar controls.)
 
 Every Monday at 9am (UK time) a second workflow emails a report of the previous week to Phoebe and Harrison. It covers Monday to Sunday, counted from 6am to 6am so Sunday's late club night is included. The email also links to a **live "this week so far" page**.
 
@@ -89,6 +89,24 @@ Instagram's in-app browser usually hides where visitors came from. Tag each link
 - Instagram bio: `https://links.theklabristol.co.uk/?src=ig-bio`
 - Stories: `…/?src=ig-story`
 - Posters or QR codes: `…/?src=qr-poster`, `…/?src=qr-bar`, and so on
+
+### Google Analytics (G-VX16WT108K)
+
+The Google tag is in `site/index.html` between `<!-- GA:start -->` and `<!-- GA:end -->`. Google Analytics sets cookies, so UK law needs the visitor's OK first. It runs in **Consent Mode**: until someone taps **Allow** on the cookie bar, Google gets only cookieless pings (which it uses to estimate totals). "Cookie settings" in the footer reopens the bar. The Umami and Cloudflare counters need no consent and count everyone.
+
+Every ticket link carries tags, so a purchase on Fatsoma (which has the same Google tag) is credited to this page:
+
+- `utm_source=thekla_links`, `utm_medium=referral`
+- `utm_campaign` = the event (e.g. `2026-10-16-alabama-3-acoustic`)
+- `utm_content` = where the tap came from: `this-week`, `coming-up` or `details`
+
+Events sent to GA: `ticket_click`, `view_event`, `share` (with event title, date, type, ticket site and page section) and `page_click` for the other buttons.
+
+**In GA4, once:**
+
+1. **Admin → Data streams → (the stream) → Configure tag settings → Configure your domains.** Add `links.theklabristol.co.uk` and `fatsoma.com`. This keeps one visitor as one visitor across both sites.
+2. **Admin → Events:** when Fatsoma's `purchase` event appears, mark it as a **key event**.
+3. To see sales from this page: **Reports → Acquisition → Traffic acquisition**, filter *Session source = thekla_links*, and add *Session campaign* to see the event.
 
 ## Featured
 

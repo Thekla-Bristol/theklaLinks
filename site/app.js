@@ -75,7 +75,7 @@
       ? `<img src="${esc(e.image)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`
       : '';
     const cta = hasTickets
-      ? `<a class="cta" data-tix="${esc(e.id)}" href="${esc(e.ticketUrl || e.url)}" target="_blank" rel="noopener" aria-label="Tickets for ${esc(e.title)} on ${where}">Tickets</a>`
+      ? `<a class="cta" data-tix="${esc(e.id)}" data-section="${compact ? 'coming-up' : 'this-week'}" href="${esc(window.ticketLink ? window.ticketLink(e.ticketUrl || e.url, e, compact ? 'coming-up' : 'this-week') : (e.ticketUrl || e.url))}" target="_blank" rel="noopener" aria-label="Tickets for ${esc(e.title)} on ${where}">Tickets</a>`
       : `<span class="cta info" aria-hidden="true">Info</span>`;
     return `<li><article class="ev ${e.type}" data-id="${esc(e.id)}">
       <button type="button" class="ev-open" data-event="${esc(e.id)}" aria-label="${esc(label)}"></button>
@@ -236,7 +236,7 @@
     const a = ev.target.closest('a[data-tix]');
     if (!a || !window.track) return;
     const e = (window.TheklaEvents || []).find((x) => x.id === a.dataset.tix);
-    window.track.event('T', e);
+    window.track.event('T', e, a.dataset.section);
   });
 
   // ---------- loading (with a saved copy for flaky connections) ----------

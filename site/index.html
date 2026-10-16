@@ -31,6 +31,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Big+Shoulders+Stencil+Display:wght@800&family=Figtree:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="styles.css">
+<!-- GA:start — Google Analytics (G-VX16WT108K). Consent mode: no cookies until the visitor taps "Allow".
+     Cross-domain linking lets Fatsoma purchases be credited to visits from this page. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500 });
+  try { if (localStorage.getItem('thekla-consent') === 'granted') gtag('consent', 'update', { analytics_storage: 'granted' }); } catch (e) {}
+  gtag('js', new Date());
+  gtag('config', 'G-VX16WT108K', { linker: { domains: ['fatsoma.com', 'alttickets.com', 'skiddle.com'] } });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VX16WT108K"></script>
+<!-- GA:end -->
 <!-- Umami analytics (no cookies). Only counts visits on the live domain; pop-up cards (#…) don't count as extra page views. -->
 <script defer src="https://cloud.umami.is/script.js" data-website-id="a3244469-e41e-4b79-afeb-b7587a4b326e" data-domains="links.theklabristol.co.uk" data-exclude-hash="true"></script>
 <!-- Anonymous visit counter (no cookies). The address is filled in by the deploy workflow. -->
@@ -106,8 +118,8 @@
   <!-- ============ EDIT ME: link buttons ============ -->
   <section class="block side-links" aria-label="Links">
     <ul class="links">
-      <li><a class="feature" href="https://www.alttickets.com/venue/bristol/thekla" target="_blank" rel="noopener" data-track="Link|All gigs">All gigs <span>On Alt Tickets →</span></a></li>
-      <li><a class="feature" href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener" data-track="Link|All club nights">All club nights <span>On Fatsoma →</span></a></li>
+      <li><a class="feature" href="https://www.alttickets.com/venue/bristol/thekla?utm_source=thekla_links&amp;utm_medium=referral&amp;utm_campaign=all_gigs" target="_blank" rel="noopener" data-track="Link|All gigs">All gigs <span>On Alt Tickets →</span></a></li>
+      <li><a class="feature" href="https://www.fatsoma.com/p/thekla?utm_source=thekla_links&amp;utm_medium=referral&amp;utm_campaign=all_club_nights" target="_blank" rel="noopener" data-track="Link|All club nights">All club nights <span>On Fatsoma →</span></a></li>
       <li><button type="button" data-sheet="getting-here" aria-haspopup="dialog">Getting to Thekla <span class="opens">Map &amp; parking <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
       <li><button type="button" data-sheet="faq" aria-haspopup="dialog">FAQs <span class="opens">Tickets, entry, times <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
       <li><button type="button" data-sheet="accessibility" aria-haspopup="dialog">Accessibility <span class="opens">Access info <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
@@ -154,7 +166,7 @@
   <address>Thekla · The Grove, East Mud Dock, Bristol BS1 4RB</address>
   <span class="contact"><a href="mailto:office@theklabristol.co.uk">office@theklabristol.co.uk</a> · <a href="tel:+441179293301">0117 929 3301</a></span>
   <span id="updated"></span>
-  <span class="privacy">We count visits anonymously. No cookies, no personal data.</span>
+  <span class="privacy">We count visits anonymously. Google Analytics cookies are only used if you allow them. <button type="button" class="linkish" data-consent-open>Cookie settings</button></span>
 </footer>
 
 <!-- ============ EDIT ME: pop-up sheets ============ -->
@@ -372,6 +384,14 @@
 </dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<div class="consent" id="consent" role="region" aria-label="Cookie choice" hidden>
+  <p>Can we use Google Analytics cookies? They help us see which listings sell tickets. <a href="https://www.theklabristol.co.uk/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a></p>
+  <div class="consent-actions">
+    <button type="button" class="btn secondary" data-consent="denied">No thanks</button>
+    <button type="button" class="btn primary" data-consent="granted">Allow</button>
+  </div>
+</div>
 
 <noscript><div class="noscript">This page needs JavaScript for the listings. You can find every gig on <a href="https://www.alttickets.com/venue/bristol/thekla">Alt Tickets</a> and every club night on <a href="https://www.fatsoma.com/p/thekla">Fatsoma</a>.</div></noscript>
 <script src="track.js" defer></script>

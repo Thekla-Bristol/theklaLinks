@@ -86,7 +86,7 @@
       return;
     }
     const ev = e.target.closest('[data-event]');
-    if (ev) openEvent(ev.dataset.event);
+    if (ev) openEvent(ev.dataset.event, { section: ev.closest('.feat') ? 'featured' : ev.closest('#coming-up') ? 'coming-up' : 'this-week' });
   });
 
   // ---------- swipe down to close ----------
@@ -245,7 +245,7 @@
 
     let primary;
     if (hasTickets) {
-      primary = `<a class="btn ${isClub ? 'club' : 'gig'}" href="${esc(e.ticketUrl || e.url)}" target="_blank" rel="noopener">${icon.ticket}Get tickets on ${seller}</a>`;
+      primary = `<a class="btn ${isClub ? 'club' : 'gig'}" href="${esc(window.ticketLink ? window.ticketLink(e.ticketUrl || e.url, e, 'details') : (e.ticketUrl || e.url))}" target="_blank" rel="noopener">${icon.ticket}Get tickets on ${seller}</a>`;
     } else if (e.status === 'soldout') {
       primary = e.url && e.linkKind !== 'tickets'
         ? `<a class="btn secondary" href="${esc(e.url)}" target="_blank" rel="noopener">${icon.info}Sold out · more info</a>`
@@ -257,8 +257,8 @@
     $('#event-actions .share').onclick = () => share(e, id);
 
     if (opts?.fromHash) window.track?.event('Arrive', e);
-    else window.track?.event('O', e);
-    $('#event-actions a.btn')?.addEventListener('click', () => { if (hasTickets) window.track?.event('T', e); });
+    else window.track?.event('O', e, opts?.section);
+    $('#event-actions a.btn')?.addEventListener('click', () => { if (hasTickets) window.track?.event('T', e, 'details'); });
     return open('event', opts);
   }
 

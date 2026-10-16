@@ -69,6 +69,60 @@
   };
   window.track = track;
 
+  // ---------- Google Analytics ----------
+  // Ticket links get tags so purchases on Fatsoma (and any site that reports them) are
+  // credited to this page, by event and by which part of the page the tap came from.
+  window.ticketLink = (url, e, section) => {
+    try {
+      const u = new URL(url);
+      u.searchParams.set('utm_source', 'thekla_links');
+      u.searchParams.set('utm_medium', 'referral');
+      if (e?.id) u.searchParams.set('utm_campaign', String(e.id).slice(0, 60));
+      if (section) u.searchParams.set('utm_content', section);
+      return u.href;
+    } catch { return url; }
+  };
+
+  // Mirror taps into Google Analytics as readable events (no-op until gtag exists)
+  const gaEvent = (name, params) => { try { if (typeof window.gtag === 'function') window.gtag('event', name, params); } catch { /* ignore */ } };
+  const SELLER_NAME = { alttickets: 'Alt Tickets', fatsoma: 'Fatsoma', skiddle: 'Skiddle' };
+  const baseEvent = track.event;
+  track.event = (kind, e, section) => {
+    baseEvent(kind, e);
+    if (!e) return;
+    const p = { event_title: String(e.title).slice(0, 100), event_date: String(e.start).slice(0, 10), event_type: e.type, ticket_site: SELLER_NAME[e.source] || 'Other', ...(section ? { page_section: section } : {}) };
+    if (kind === 'T') gaEvent('ticket_click', p);
+    else if (kind === 'O') gaEvent('view_event', p);
+    else if (kind === 'Share') gaEvent('share', { ...p, method: 'share_button' });
+  };
+  document.addEventListener('click', (ev) => {
+    const el = ev.target.closest('[data-track]');
+    if (!el) return;
+    const [group, ...rest] = String(el.dataset.track).split('|');
+    gaEvent('page_click', { click_group: group, click_label: rest.join('|').slice(0, 100) });
+  }, { capture: true });
+
+  // ---------- Cookie choice (only affects Google Analytics) ----------
+  const KEY = 'thekla-consent';
+  const getChoice = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
+  const setChoice = (v) => { try { localStorage.setItem(KEY, v); } catch { /* private mode */ } };
+  function initConsent() {
+    const bar = document.getElementById('consent');
+    if (!bar) return;
+    const show = () => { bar.hidden = false; };
+    if (!getChoice()) setTimeout(show, 1200); // after the opener animation
+    bar.addEventListener('click', (ev) => {
+      const b = ev.target.closest('[data-consent]');
+      if (!b) return;
+      const v = b.dataset.consent === 'granted' ? 'granted' : 'denied';
+      setChoice(v);
+      if (typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: v });
+      bar.hidden = true;
+    });
+    document.addEventListener('click', (ev) => { if (ev.target.closest('[data-consent-open]')) show(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initConsent); else initConsent();
+
   // Static elements carry data-track="Link|Merch" etc.
   document.addEventListener('click', (ev) => {
     const el = ev.target.closest('[data-track]');

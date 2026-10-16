@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thekla Bristol — What's On</title>
+<meta name="description" content="Gigs and club nights this week at Thekla, the floating venue in Bristol's harbour. Tap an event to buy tickets.">
+<meta name="theme-color" content="#0b1019">
+<meta property="og:title" content="Thekla Bristol — What's On">
+<meta property="og:description" content="Gigs and club nights this week on the boat. Tap for tickets.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://links.theklabristol.co.uk/">
+<meta property="og:image" content="https://links.theklabristol.co.uk/assets/hero.jpg">
+<meta property="og:site_name" content="Thekla Bristol">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://links.theklabristol.co.uk/">
+<link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high">
+<link rel="preconnect" href="https://fatsoma.imgix.net" crossorigin>
+<link rel="preconnect" href="https://alttickets-9a2.kxcdn.com" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MusicVenue","name":"Thekla","url":"https://links.theklabristol.co.uk/",
+ "description":"Live music venue and nightclub on a converted German cargo ship moored in Bristol's harbour since 1984.",
+ "address":{"@type":"PostalAddress","streetAddress":"The Grove, East Mud Dock","addressLocality":"Bristol","postalCode":"BS1 4RB","addressCountry":"GB"},
+ "geo":{"@type":"GeoCoordinates","latitude":51.448983,"longitude":-2.5941729},
+ "telephone":"+44 117 929 3301","email":"office@theklabristol.co.uk","maximumAttendeeCapacity":400,
+ "sameAs":["https://www.theklabristol.co.uk/","https://www.instagram.com/theklabris/","https://www.facebook.com/theklabristol"]}
+</script>
+<link rel="icon" href="assets/logo.jpg">
+<link rel="apple-touch-icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Big+Shoulders+Stencil+Display:wght@800&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="styles.css">
+<!-- Anonymous visit counter (no cookies). The address is filled in by the deploy workflow. -->
+<meta name="thekla-counter" content="__COUNTER_URL__">
+<script>
+  // Porthole opener: once per visit, skipped for reduced motion. Set before first paint to avoid a flash.
+  (function () {
+    try {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (sessionStorage.getItem('thekla-intro')) return;
+      sessionStorage.setItem('thekla-intro', '1');
+    } catch (e) { return; }
+    document.documentElement.classList.add('intro');
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#this-week">Skip to this week’s events</a>
+
+<div class="opener" aria-hidden="true">
+  <div class="porthole"><div class="glass"><img src="assets/logo.jpg" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'THEKLA'}))"></div></div>
+</div>
+<div class="sea" aria-hidden="true"><div class="glow g2"></div><div class="glow g1"></div><div class="glow g3"></div><div class="grain"></div></div>
+
+<!-- ============ EDIT ME: hero, about, socials ============ -->
+<header class="hero">
+  <div class="hero-photo">
+    <!-- Drawn fallback: shows if the photo is slow or missing, so this area is never blank -->
+    <svg class="hero-fallback" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="hf-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2440"/><stop offset=".7" stop-color="#3a1424"/><stop offset="1" stop-color="#5a1424"/></linearGradient>
+        <linearGradient id="hf-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a0f1c"/><stop offset="1" stop-color="#0b1019"/></linearGradient>
+      </defs>
+      <rect width="1200" height="500" fill="url(#hf-sky)"/>
+      <g fill="#0d0f16">
+        <rect x="0" y="300" width="160" height="40"/><rect x="40" y="250" width="70" height="60"/><rect x="1020" y="270" width="180" height="70"/><rect x="1080" y="230" width="60" height="50"/>
+        <path d="M250 330 L270 360 L930 360 L960 318 L930 318 L900 300 L840 300 L840 250 L770 250 L770 300 L320 300 L300 318 Z"/>
+        <rect x="790" y="210" width="34" height="42"/><rect x="560" y="200" width="6" height="100"/><path d="M563 200 L470 300 M563 200 L656 300" stroke="#0d0f16" stroke-width="3"/>
+      </g>
+      <g fill="#f0c04c" opacity=".8"><rect x="790" y="270" width="8" height="8"/><rect x="808" y="270" width="8" height="8"/><rect x="826" y="270" width="8" height="8"/><rect x="380" y="318" width="6" height="6"/><rect x="430" y="318" width="6" height="6"/><rect x="480" y="318" width="6" height="6"/></g>
+      <rect y="360" width="1200" height="140" fill="url(#hf-water)"/>
+      <g stroke="#e52342" stroke-opacity=".35" stroke-width="2"><path d="M300 380h560M340 400h480M380 420h400M420 440h320"/></g>
+    </svg>
+    <!-- Replace site/assets/hero.jpg with your own photo any time -->
+    <img src="assets/hero.jpg" alt="Thekla, the black-hulled former cargo ship moored in Bristol harbour"
+         fetchpriority="high" decoding="async" width="1600" height="1000"
+         data-fallbacks="https://www.theklabristol.co.uk/wp-content/uploads/2024/11/theka-sea-img-Large.jpeg"
+         onload="this.classList.add('loaded')"
+         onerror="var n=(this.dataset.fallbacks||'').split(' ').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join(' ');this.src=n[0];}else{this.remove();}">
+  </div>
+  <div class="hero-id">
+    <div class="logo">
+      <img src="assets/logo.jpg" alt="Thekla logo" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'THEKLA'}))">
+    </div>
+    <h1>Thekla</h1>
+    <p class="coords">Mud Dock · Bristol Harbour · Since 1984</p>
+  </div>
+</header>
+
+<main class="wrap layout" id="main">
+  <aside class="side">
+  <p class="about">
+    A converted German cargo ship moored in Bristol’s harbour, and one of the UK’s best-loved small venues.
+  </p>
+
+  <ul class="socials" aria-label="Instagram and social links">
+    <li><a href="https://www.instagram.com/theklabris/" data-track="Social|theklabris" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>theklabris</a></li>
+    <li><a href="https://www.instagram.com/pressurebristol/" data-track="Social|pressurebristol" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>pressurebristol</a></li>
+    <li><a href="https://www.instagram.com/popconfessional/" data-track="Social|popconfessional" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>popconfessional</a></li>
+    <li><a href="https://www.facebook.com/theklabristol" data-track="Social|facebook" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg>Facebook</a></li>
+  </ul>
+
+  <!-- ============ EDIT ME: link buttons ============ -->
+  <section class="block side-links" aria-label="Links">
+    <ul class="links">
+      <li><a class="feature" href="https://www.alttickets.com/venue/bristol/thekla" target="_blank" rel="noopener" data-track="Link|All gigs">All gigs <span>On Alt Tickets →</span></a></li>
+      <li><a class="feature" href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener" data-track="Link|All club nights">All club nights <span>On Fatsoma →</span></a></li>
+      <li><button type="button" data-sheet="getting-here" aria-haspopup="dialog">Getting to Thekla <span class="opens">Map &amp; parking <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="faq" aria-haspopup="dialog">FAQs <span class="opens">Tickets, entry, times <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="accessibility" aria-haspopup="dialog">Accessibility <span class="opens">Access info <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="lost-property" aria-haspopup="dialog">Lost property <span class="opens">Left something? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><a href="mailto:office@theklabristol.co.uk?subject=Venue%20hire%20enquiry" data-track="Link|Hire the boat">Hire the boat <span>Email us →</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/merchandise/" target="_blank" rel="noopener" data-track="Link|Merch">Merch <span>→</span></a></li>
+    </ul>
+  </section>
+  </aside>
+
+  <div class="content">
+  <div class="filter-bar">
+    <div class="filter" role="group" aria-label="Show events">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="gig" aria-pressed="false"><span class="dot" style="background:var(--gig)"></span>Gigs</button>
+      <button type="button" data-filter="club" aria-pressed="false"><span class="dot" style="background:var(--club)"></span>Clubs</button>
+    </div>
+  </div>
+
+  <section class="block" id="this-week" aria-labelledby="tw-h">
+    <div class="block-head"><h2 id="tw-h">This Week</h2><span class="meta" id="tw-range"></span></div>
+    <div id="week" class="skeleton" aria-live="polite">
+      <ul class="events"><li class="ev"><div class="art"></div><div class="ev-body"><div class="ev-title">Loading this week’s events…</div></div></li></ul>
+    </div>
+  </section>
+
+  <section class="block" id="featured" aria-labelledby="ft-h" hidden>
+    <div class="block-head"><h2 id="ft-h">Featured</h2><span class="meta">Don’t miss</span></div>
+    <ul class="feats" id="feats"></ul>
+  </section>
+
+  <section class="block upcoming" id="coming-up" aria-labelledby="cu-h">
+    <div class="block-head"><h2 id="cu-h">Coming Up</h2><span class="meta" id="cu-count"></span></div>
+    <div class="months-wrap">
+      <div class="months" id="months" role="tablist" aria-label="Choose a month"></div>
+    </div>
+    <div id="later" role="tabpanel" aria-labelledby="cu-h"></div>
+  </section>
+
+  </div>
+</main>
+
+<footer class="wrap">
+  <address>Thekla · The Grove, East Mud Dock, Bristol BS1 4RB</address>
+  <span class="contact"><a href="mailto:office@theklabristol.co.uk">office@theklabristol.co.uk</a> · <a href="tel:+441179293301">0117 929 3301</a></span>
+  <span id="updated"></span>
+  <span class="privacy">We count visits anonymously. No cookies, no personal data.</span>
+</footer>
+
+<!-- ============ EDIT ME: pop-up sheets ============ -->
+<dialog class="sheet" id="getting-here" aria-labelledby="gh-title">
+  <div class="sheet-panel">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <button type="button" class="sheet-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="sheet-scroll">
+      <p class="eyebrow">Getting here</p>
+      <h2 id="gh-title" class="sheet-title">Getting to Thekla</h2>
+
+      <div class="map" data-map-src="https://maps.google.com/maps?q=Thekla,+The+Grove,+East+Mud+Dock,+Bristol+BS1+4RB&amp;ll=51.448983,-2.5941729&amp;z=16&amp;hl=en-GB&amp;output=embed">
+        <div class="map-placeholder" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div>
+      </div>
+
+      <div class="address-row">
+        <address>Thekla, The Grove, East Mud Dock,<br>Bristol, BS1 4RB</address>
+        <button type="button" class="copy" data-track="Copy|address" data-copy="Thekla, The Grove, East Mud Dock, Bristol, BS1 4RB">Copy</button>
+      </div>
+
+      <div class="apps" role="list">
+        <a role="listitem" class="app gmaps" data-track="Map|Google Maps" href="https://www.google.com/maps/dir/?api=1&amp;destination=Thekla%2C%20The%20Grove%2C%20East%20Mud%20Dock%2C%20Bristol%20BS1%204RB" target="_blank" rel="noopener">
+          <span class="app-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+          <span class="app-name">Google Maps</span><span class="app-sub">Directions</span>
+        </a>
+        <a role="listitem" class="app amaps" data-track="Map|Apple Maps" href="https://maps.apple.com/?q=Thekla&amp;address=The%20Grove%2C%20East%20Mud%20Dock%2C%20Bristol%20BS1%204RB&amp;ll=51.448983%2C-2.5941729" target="_blank" rel="noopener">
+          <span class="app-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4L3 11l7 2.5L12.5 21z"/></svg></span>
+          <span class="app-name">Apple Maps</span><span class="app-sub">Directions</span>
+        </a>
+        <a role="listitem" class="app w3w" data-track="Map|what3words" href="https://what3words.com/linen.stop.care" target="_blank" rel="noopener">
+          <span class="app-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16"/></svg></span>
+          <span class="app-name">what3words</span><span class="app-sub">linen.stop.care</span>
+        </a>
+      </div>
+
+      <div class="info-list">
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M9.5 16V8h3.2a2.4 2.4 0 0 1 0 4.8H9.5"/></svg></span>
+          <div>
+            <h3>Parking</h3>
+            <p>The Grove council car park is directly outside. It’s pay &amp; display, or you can pay with the RingGo app. Disabled bays are available.</p>
+            <p>There’s more parking in the Mud Dock car park.</p>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 21v-3M16 21v-3"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></span>
+          <div>
+            <h3>Buses</h3>
+            <p>Buses stop at Queen Square and The Centre. Both are a short walk away, through or around Queen Square.</p>
+            <ul class="stops">
+              <li><b>Q1</b> Queen Square</li>
+              <li><b>C4</b> The Centre</li>
+              <li><b>C6</b> The Centre</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <a class="sheet-more" data-track="Link|More travel info" href="https://www.theklabristol.co.uk/getting-to-thekla/" target="_blank" rel="noopener">More travel info on theklabristol.co.uk</a>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="accessibility" aria-labelledby="ax-title">
+  <div class="sheet-panel">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <button type="button" class="sheet-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="sheet-scroll">
+      <p class="eyebrow">Plan your visit</p>
+      <h2 id="ax-title" class="sheet-title">Accessibility</h2>
+      <p class="lede">Because the venue is a converted cargo ship, disabled access can be difficult, but we’ll do our absolute best to accommodate you.</p>
+
+      <div class="info-list">
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20h16M6 20v-6h12v6M8 14V9h8v5M3 9h18"/></svg></span>
+          <div>
+            <h3>Reserved balcony seating</h3>
+            <p>Book seats in advance on our balcony for a great view of the stage.</p>
+            <p class="note">There are nine standard sized steps between the door and the balcony, so please plan accordingly if you’re a wheelchair user.</p>
+          </div>
+        </div>
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="7" r="3"/><circle cx="16.5" cy="8" r="2.5"/><path d="M2.5 20a5.5 5.5 0 0 1 11 0M13 20a4 4 0 0 1 8 0"/></svg></span>
+          <div>
+            <h3>Free companion tickets</h3>
+            <p>If you need a carer to come with you, their ticket is free. Just show proof of your original ticket purchase.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <p>To arrange balcony access or companion tickets, or for any other accessibility questions, email us:</p>
+        <a class="btn primary" data-track="Email|accessibility" href="mailto:office@theklabristol.co.uk?subject=Accessibility%20enquiry">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>
+          Email the office
+        </a>
+        <div class="address-row compact">
+          <span class="mono">office@theklabristol.co.uk</span>
+          <button type="button" class="copy" data-track="Copy|email" data-copy="office@theklabristol.co.uk">Copy</button>
+        </div>
+      </div>
+
+      <a class="sheet-more" data-track="Link|Full accessibility info" href="https://www.theklabristol.co.uk/accessibility/" target="_blank" rel="noopener">Full accessibility info on theklabristol.co.uk</a>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="lost-property" aria-labelledby="lp-title">
+  <div class="sheet-panel">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <button type="button" class="sheet-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="sheet-scroll">
+      <p class="eyebrow">Left something behind?</p>
+      <h2 id="lp-title" class="sheet-title">Lost property</h2>
+      <p class="lede">If you’ve left something behind at the boat, drop us a line with:</p>
+      <p class="note-line">We keep lost items for 28 days. After that they’re donated to charity.</p>
+
+      <div class="info-list">
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+          <div><h3>A clear description of the item</h3><p>Colour, brand and anything distinctive.</p></div>
+        </div>
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></span>
+          <div><h3>When you left it</h3><p>The date, and the event if you know it.</p></div>
+        </div>
+        <div class="info">
+          <span class="info-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2.5a2.5 2.5 0 0 0 0 5V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4.5a2.5 2.5 0 0 0 0-5z"/></svg></span>
+          <div><h3>Your cloakroom ticket number</h3><p>If you have one.</p></div>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <p>Email us and we’ll check what’s been handed in:</p>
+        <a class="btn primary" data-track="Email|lost-property" href="mailto:office@theklabristol.co.uk?subject=Lost%20property&amp;body=Item%20description%3A%20%0AWhen%20I%20left%20it%20(date%20%2F%20event)%3A%20%0ACloakroom%20ticket%20number%20(if%20you%20have%20one)%3A%20%0A">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>
+          Email about lost property
+        </a>
+        <div class="address-row compact">
+          <span class="mono">office@theklabristol.co.uk</span>
+          <button type="button" class="copy" data-track="Copy|email" data-copy="office@theklabristol.co.uk">Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="faq" aria-labelledby="faq-title">
+  <div class="sheet-panel">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <button type="button" class="sheet-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="sheet-scroll">
+      <p class="eyebrow">Good to know</p>
+      <h2 id="faq-title" class="sheet-title">FAQs</h2>
+      <h3 class="faq-group">Tickets</h3>
+      <div class="faq-list">
+        <details class="faq"><summary>Can I buy a ticket on the door?</summary><div class="faq-a"><p>Yes, as long as the show hasn’t sold out.</p></div></details>
+        <details class="faq"><summary>Where should I buy gig tickets?</summary><div class="faq-a"><p>Our official ticketing partner is <a href="https://www.alttickets.com/venue/bristol/thekla" target="_blank" rel="noopener">Alt Tickets</a>, which has every show. Please avoid secondary resale sites.</p><p>We don’t have a box office, so you can’t buy advance tickets at the venue.</p></div></details>
+        <details class="faq"><summary>My tickets haven’t arrived yet</summary><div class="faq-a"><p>If the show is months away, that’s normal. If it’s 5 days or less until the show, get in touch with your ticket provider.</p></div></details>
+        <details class="faq"><summary>My ticket is lost, damaged or stolen</summary><div class="faq-a"><p>Contact whoever you booked with straight away. They can usually send replacements. If not, bring photo ID and your booking reference to the venue.</p></div></details>
+      </div>
+      <h3 class="faq-group">Getting in</h3>
+      <div class="faq-list">
+        <details class="faq"><summary>What are the age limits?</summary><div class="faq-a"><p>Most gigs are 14+. If a gig is 18+, it’ll say so on the listing or your ticket. Club nights are 18+.</p></div></details>
+        <details class="faq"><summary>What ID do I need for 18+ events?</summary><div class="faq-a"><p>A driving licence (provisional is fine), a passport, or PASS-approved ID.</p></div></details>
+        <details class="faq"><summary>I turn 18 at midnight. Can I come in after 12?</summary><div class="faq-a"><p>Sorry, you need to be 18 on the day the event starts.</p></div></details>
+        <details class="faq"><summary>Is there a dress code?</summary><div class="faq-a"><p>Nothing strict. We just don’t allow team sportswear, hi-vis, or fancy dress that spoils the night for others.</p></div></details>
+        <details class="faq"><summary>Could I be refused entry?</summary><div class="faq-a"><p>Be nice and don’t do anything silly. If you seem drunk or behave badly in the queue, we may refuse entry without a refund.</p></div></details>
+        <details class="faq"><summary>Do you allow stag and hen dos?</summary><div class="faq-a"><p>Yes, as long as you’re well behaved.</p></div></details>
+      </div>
+      <h3 class="faq-group">On the night</h3>
+      <div class="faq-list">
+        <details class="faq"><summary>What time do things finish?</summary><div class="faq-a"><p><b>Gigs</b> finish by our 10pm curfew.</p><p><b>Club nights</b> run 10pm–3am or 4am, Thursday to Saturday, plus Wednesdays in term time. Last entry is 1:30–2am depending on the night.</p></div></details>
+        <details class="faq"><summary>What are tonight’s stage times?</summary><div class="faq-a"><p>We post set times on our socials on the day. Follow us on <a href="https://www.instagram.com/theklabris/" target="_blank" rel="noopener">Instagram</a> and <a href="https://www.facebook.com/theklabristol" target="_blank" rel="noopener">Facebook</a>.</p></div></details>
+        <details class="faq"><summary>Will there be strobe lighting?</summary><div class="faq-a"><p>Most shows use some strobe lighting. If you’re worried about a particular show, get in touch and we’ll help where we can.</p></div></details>
+        <details class="faq"><summary>What safety measures are in place?</summary><div class="faq-a"><p>Our staff are always on hand if you have a concern. Security search bags on the door, and CCTV runs throughout.</p></div></details>
+        <details class="faq"><summary>Can I book for a group at a club night?</summary><div class="faq-a"><p>Yes. Message us on Facebook, or email <a href="mailto:office@theklabristol.co.uk?subject=Group%20booking">office@theklabristol.co.uk</a>.</p></div></details>
+        <details class="faq"><summary>Does Thekla set sail on the night?</summary><div class="faq-a"><p>Unfortunately not.</p></div></details>
+      </div>
+
+      <div class="contact-card">
+        <p>Can’t find your answer? The office is open 12pm–6pm.</p>
+        <a class="btn primary" data-track="Email|faq" href="mailto:office@theklabristol.co.uk">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>
+          Email the office
+        </a>
+        <div class="address-row compact">
+          <span class="mono">0117 929 3301</span>
+          <button type="button" class="copy" data-track="Copy|phone" data-copy="0117 929 3301">Copy</button>
+        </div>
+      </div>
+
+      <a class="sheet-more" data-track="Link|Full FAQs" href="https://www.theklabristol.co.uk/faq/" target="_blank" rel="noopener">See all FAQs on theklabristol.co.uk</a>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="sheet event-sheet" id="event" aria-labelledby="ev-title">
+  <div class="sheet-panel">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <button type="button" class="sheet-close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="sheet-scroll" id="event-body"></div>
+    <div class="sheet-actions" id="event-actions"></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<noscript><div class="noscript">This page needs JavaScript for the listings. You can find every gig on <a href="https://www.alttickets.com/venue/bristol/thekla">Alt Tickets</a> and every club night on <a href="https://www.fatsoma.com/p/thekla">Fatsoma</a>.</div></noscript>
+<script src="track.js" defer></script>
+<script src="app.js" defer></script>
+<script src="sheets.js" defer></script>
+<script src="motion.js" defer></script>
+<script src="seasons.js" defer></script>
+</body>
+</html>

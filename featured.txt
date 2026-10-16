@@ -1,0 +1,8 @@
+# Featured pins
+# Add one event per line to always show it in "Featured" (up to 4, before the automatic picks).
+# Paste its ticket link, or type part of its name. Lines starting with # are ignored.
+# Pins drop off by themselves once the event has happened.
+#
+# Examples:
+# https://www.alttickets.com/blood-red-shoes-tickets/bristol-thekla/2026-10-30-18-30
+# Republica

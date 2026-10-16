@@ -109,7 +109,8 @@
   function initConsent() {
     const bar = document.getElementById('consent');
     if (!bar) return;
-    const show = () => { bar.hidden = false; };
+    const show = () => { bar.hidden = false; bar.style.display = ''; };
+    const hide = () => { bar.hidden = true; bar.style.display = 'none'; };
     if (!getChoice()) setTimeout(show, 1200); // after the opener animation
     bar.addEventListener('click', (ev) => {
       const b = ev.target.closest('[data-consent]');
@@ -117,7 +118,7 @@
       const v = b.dataset.consent === 'granted' ? 'granted' : 'denied';
       setChoice(v);
       if (typeof window.gtag === 'function') window.gtag('consent', 'update', { analytics_storage: v });
-      bar.hidden = true;
+      hide();
     });
     document.addEventListener('click', (ev) => { if (ev.target.closest('[data-consent-open]')) show(); });
   }

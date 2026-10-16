@@ -73,6 +73,13 @@ if (skiddleSkipped) {
 
 const events = mergeEvents([...alt.events, ...fat.events], thek.events, { from, until, secondary: skid.events });
 
+if (!skiddleSkipped) {
+  const kept = events.filter((e) => e.source === 'skiddle').length;
+  const inWindow = skid.events.filter((e) => new Date(e.start) >= from && new Date(e.start) <= until).length;
+  console.log(`  Skiddle: ${skid.events.length} found, ${kept} added to the page, ${inWindow - kept} already listed on Alt Tickets / Fatsoma`);
+  for (const e of skid.events.slice(0, 15)) console.log(`    · ${e.start.slice(0, 10)} ${e.title}${events.some((x) => x.source === 'skiddle' && x.ticketUrl === e.ticketUrl) ? '' : '  (duplicate, skipped)'}`);
+}
+
 // Featured: score every event; pins come from site/featured.txt
 let pins = [];
 try { pins = parsePins(await fs.readFile(path.join(ROOT, 'site', 'featured.txt'), 'utf8')); } catch { /* no pins file */ }

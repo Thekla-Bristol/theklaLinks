@@ -25,11 +25,11 @@
   const sea = document.querySelector('.sea');
   const glows = sea ? [...sea.querySelectorAll('.glow')] : [];
   const px = [
-    [document.querySelector('.hero-photo img'), 0.35, 0],
+    [document.querySelector('.hero-photo'), 0.3, 0],
     [document.querySelector('.logo'), 0.16, 0.05],
     [document.querySelector('h1'), 0.12, 0],
     [document.querySelector('.coords'), 0.1, 0],
-    [document.querySelector('.about'), 0.06, 0],
+    [document.querySelector('.about'), 0.06, 0, true], // phones only (it's in the sidebar on desktop)
   ].filter(([el]) => el);
   px.forEach(([el]) => el.classList.add('px'));
   const heroId = document.querySelector('.hero-id');
@@ -63,7 +63,9 @@
     // parallax, only while the header is in view
     const hy = Math.min(y, 260);
     if (y < 700) {
-      for (const [el, k, shrink] of px) {
+      const wide = innerWidth >= 980;
+      for (const [el, k, shrink, phoneOnly] of px) {
+        if (phoneOnly && wide) { el.style.transform = ''; continue; }
         el.style.transform = `translate3d(0, ${(hy * k).toFixed(1)}px, 0)` + (shrink ? ` scale(${(1 - (hy / 260) * shrink).toFixed(3)})` : '');
       }
       if (heroId) heroId.style.opacity = (1 - (hy / 260) * 0.45).toFixed(3);

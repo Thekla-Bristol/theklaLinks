@@ -12,7 +12,7 @@
   // ---------- open / close ----------
   function open(id, { fromHash = false } = {}) {
     const dlg = document.getElementById(id);
-    if (!dlg || typeof dlg.showModal !== 'function') return false;
+    if (!dlg) return false;
     if (current && current !== dlg) closeNow(current);
 
     if (id === 'getting-here') loadMap(dlg);
@@ -20,7 +20,11 @@
     dlg.classList.remove('closing');
     const panel = $('.sheet-panel', dlg);
     panel.style.transform = '';
-    if (!dlg.open) dlg.showModal();
+    if (!dlg.open) {
+      // Older browsers without <dialog>: show it as a fixed panel instead
+      if (typeof dlg.showModal === 'function') dlg.showModal();
+      else { dlg.setAttribute('open', ''); dlg.classList.add('no-dialog'); }
+    }
     $('.sheet-scroll', dlg).scrollTop = 0;
     root.classList.add('sheet-open');
     current = dlg;
@@ -36,7 +40,9 @@
 
   function closeNow(dlg) {
     dlg.classList.remove('closing');
-    if (dlg.open) dlg.close();
+    if (dlg.open || dlg.hasAttribute('open')) {
+      if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open');
+    }
     if (dlg === current) current = null;
     root.classList.remove('sheet-open');
   }

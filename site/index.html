@@ -8,13 +8,31 @@
 <meta name="theme-color" content="#0b1019">
 <meta property="og:title" content="Thekla Bristol — What's On">
 <meta property="og:description" content="Gigs and club nights this week on the boat. Tap for tickets.">
-<meta property="og:image" content="assets/hero.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://links.theklabristol.co.uk/">
+<meta property="og:image" content="https://links.theklabristol.co.uk/assets/hero.jpg">
+<meta property="og:site_name" content="Thekla Bristol">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://links.theklabristol.co.uk/">
+<link rel="preload" as="image" href="assets/hero.jpg" fetchpriority="high">
+<link rel="preconnect" href="https://fatsoma.imgix.net" crossorigin>
+<link rel="preconnect" href="https://alttickets-9a2.kxcdn.com" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"MusicVenue","name":"Thekla","url":"https://links.theklabristol.co.uk/",
+ "description":"Live music venue and nightclub on a converted German cargo ship moored in Bristol's harbour since 1984.",
+ "address":{"@type":"PostalAddress","streetAddress":"The Grove, East Mud Dock","addressLocality":"Bristol","postalCode":"BS1 4RB","addressCountry":"GB"},
+ "geo":{"@type":"GeoCoordinates","latitude":51.448983,"longitude":-2.5941729},
+ "telephone":"+44 117 929 3301","email":"office@theklabristol.co.uk","maximumAttendeeCapacity":400,
+ "sameAs":["https://www.theklabristol.co.uk/","https://www.instagram.com/theklabris/","https://www.facebook.com/theklabristol"]}
+</script>
 <link rel="icon" href="assets/logo.jpg">
 <link rel="apple-touch-icon" href="assets/logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Big+Shoulders+Stencil+Display:wght@800&family=Figtree:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="styles.css">
+<!-- Umami analytics (no cookies). Only counts visits on the live domain; pop-up cards (#…) don't count as extra page views. -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="a3244469-e41e-4b79-afeb-b7587a4b326e" data-domains="links.theklabristol.co.uk" data-exclude-hash="true"></script>
 <!-- Anonymous visit counter (no cookies). The address is filled in by the deploy workflow. -->
 <meta name="thekla-counter" content="__COUNTER_URL__">
 <script>
@@ -30,6 +48,7 @@
 </script>
 </head>
 <body>
+<a class="skip" href="#this-week">Skip to this week’s events</a>
 
 <div class="opener" aria-hidden="true">
   <div class="porthole"><div class="glass"><img src="assets/logo.jpg" alt="" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'THEKLA'}))"></div></div>
@@ -39,8 +58,28 @@
 <!-- ============ EDIT ME: hero, about, socials ============ -->
 <header class="hero">
   <div class="hero-photo">
+    <!-- Drawn fallback: shows if the photo is slow or missing, so this area is never blank -->
+    <svg class="hero-fallback" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="hf-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2440"/><stop offset=".7" stop-color="#3a1424"/><stop offset="1" stop-color="#5a1424"/></linearGradient>
+        <linearGradient id="hf-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a0f1c"/><stop offset="1" stop-color="#0b1019"/></linearGradient>
+      </defs>
+      <rect width="1200" height="500" fill="url(#hf-sky)"/>
+      <g fill="#0d0f16">
+        <rect x="0" y="300" width="160" height="40"/><rect x="40" y="250" width="70" height="60"/><rect x="1020" y="270" width="180" height="70"/><rect x="1080" y="230" width="60" height="50"/>
+        <path d="M250 330 L270 360 L930 360 L960 318 L930 318 L900 300 L840 300 L840 250 L770 250 L770 300 L320 300 L300 318 Z"/>
+        <rect x="790" y="210" width="34" height="42"/><rect x="560" y="200" width="6" height="100"/><path d="M563 200 L470 300 M563 200 L656 300" stroke="#0d0f16" stroke-width="3"/>
+      </g>
+      <g fill="#f0c04c" opacity=".8"><rect x="790" y="270" width="8" height="8"/><rect x="808" y="270" width="8" height="8"/><rect x="826" y="270" width="8" height="8"/><rect x="380" y="318" width="6" height="6"/><rect x="430" y="318" width="6" height="6"/><rect x="480" y="318" width="6" height="6"/></g>
+      <rect y="360" width="1200" height="140" fill="url(#hf-water)"/>
+      <g stroke="#e52342" stroke-opacity=".35" stroke-width="2"><path d="M300 380h560M340 400h480M380 420h400M420 440h320"/></g>
+    </svg>
     <!-- Replace site/assets/hero.jpg with your own photo any time -->
-    <img src="assets/hero.jpg" alt="Thekla, the black-hulled former cargo ship moored in Bristol harbour" onerror="this.remove()">
+    <img src="assets/hero.jpg" alt="Thekla, the black-hulled former cargo ship moored in Bristol harbour"
+         fetchpriority="high" decoding="async" width="1600" height="1000"
+         data-fallbacks="https://www.theklabristol.co.uk/wp-content/uploads/2024/11/theka-sea-img-Large.jpeg"
+         onload="this.classList.add('loaded')"
+         onerror="var n=(this.dataset.fallbacks||'').split(' ').filter(Boolean);if(n.length){this.dataset.fallbacks=n.slice(1).join(' ');this.src=n[0];}else{this.remove();}">
   </div>
   <div class="hero-id">
     <div class="logo">
@@ -51,10 +90,10 @@
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap layout" id="main">
+  <aside class="side">
   <p class="about">
     A converted German cargo ship moored in Bristol’s harbour, and one of the UK’s best-loved small venues.
-    Live music below deck most nights and club nights all week: Pressure on Thursdays, Pop Confessional on Saturdays.
   </p>
 
   <ul class="socials" aria-label="Instagram and social links">
@@ -64,6 +103,22 @@
     <li><a href="https://www.facebook.com/theklabristol" data-track="Social|facebook" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z"/></svg>Facebook</a></li>
   </ul>
 
+  <!-- ============ EDIT ME: link buttons ============ -->
+  <section class="block side-links" aria-label="Links">
+    <ul class="links">
+      <li><a class="feature" href="https://www.alttickets.com/venue/bristol/thekla" target="_blank" rel="noopener" data-track="Link|All gigs">All gigs <span>On Alt Tickets →</span></a></li>
+      <li><a class="feature" href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener" data-track="Link|All club nights">All club nights <span>On Fatsoma →</span></a></li>
+      <li><button type="button" data-sheet="getting-here" aria-haspopup="dialog">Getting to Thekla <span class="opens">Map &amp; parking <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="faq" aria-haspopup="dialog">FAQs <span class="opens">Tickets, entry, times <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="accessibility" aria-haspopup="dialog">Accessibility <span class="opens">Access info <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><button type="button" data-sheet="lost-property" aria-haspopup="dialog">Lost property <span class="opens">Left something? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
+      <li><a href="mailto:office@theklabristol.co.uk?subject=Venue%20hire%20enquiry" data-track="Link|Hire the boat">Hire the boat <span>Email us →</span></a></li>
+      <li><a href="https://www.theklabristol.co.uk/merchandise/" target="_blank" rel="noopener" data-track="Link|Merch">Merch <span>→</span></a></li>
+    </ul>
+  </section>
+  </aside>
+
+  <div class="content">
   <div class="filter-bar">
     <div class="filter" role="group" aria-label="Show events">
       <button type="button" data-filter="all" aria-pressed="true">All</button>
@@ -92,23 +147,12 @@
     <div id="later" role="tabpanel" aria-labelledby="cu-h"></div>
   </section>
 
-  <!-- ============ EDIT ME: link buttons ============ -->
-  <section class="block" aria-label="Links">
-    <ul class="links">
-      <li><a class="feature" href="https://www.theklabristol.co.uk/live/" target="_blank" rel="noopener" data-track="Link|All gigs">All gigs <span>Full gig guide →</span></a></li>
-      <li><a class="feature" href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener" data-track="Link|All club nights">All club nights <span>On Fatsoma →</span></a></li>
-      <li><a href="https://www.theklabristol.co.uk/merchandise/" target="_blank" rel="noopener" data-track="Link|Merch">Merch <span>→</span></a></li>
-      <li><button type="button" data-sheet="getting-here" aria-haspopup="dialog">Getting to Thekla <span class="opens">Map &amp; parking <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
-      <li><button type="button" data-sheet="accessibility" aria-haspopup="dialog">Accessibility <span class="opens">Access info <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
-      <li><button type="button" data-sheet="lost-property" aria-haspopup="dialog">Lost property <span class="opens">Left something? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
-      <li><a href="https://www.theklabristol.co.uk/hire/" target="_blank" rel="noopener" data-track="Link|Hire the boat">Hire the boat <span>→</span></a></li>
-      <li><button type="button" data-sheet="faq" aria-haspopup="dialog">FAQs <span class="opens">Tickets, entry, times <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span></button></li>
-    </ul>
-  </section>
+  </div>
 </main>
 
 <footer class="wrap">
   <address>Thekla · The Grove, East Mud Dock, Bristol BS1 4RB</address>
+  <span class="contact"><a href="mailto:office@theklabristol.co.uk">office@theklabristol.co.uk</a> · <a href="tel:+441179293301">0117 929 3301</a></span>
   <span id="updated"></span>
   <span class="privacy">We count visits anonymously. No cookies, no personal data.</span>
 </footer>
@@ -329,6 +373,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
+<noscript><div class="noscript">This page needs JavaScript for the listings. You can find every gig on <a href="https://www.alttickets.com/venue/bristol/thekla">Alt Tickets</a> and every club night on <a href="https://www.fatsoma.com/p/thekla">Fatsoma</a>.</div></noscript>
 <script src="track.js" defer></script>
 <script src="app.js" defer></script>
 <script src="sheets.js" defer></script>

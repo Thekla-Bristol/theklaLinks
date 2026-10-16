@@ -47,7 +47,9 @@ a { color: inherit; }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
 /* fade the photo into whatever the animated background is doing */
 .hero-photo { -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent 100%); mask-image: linear-gradient(180deg, #000 50%, transparent 100%); }
-.hero-photo img { will-change: transform; transform-origin: 50% 0; }
+.hero-photo img { position: relative; z-index: 1; opacity: 0; transition: opacity .5s ease; }
+.hero-photo img.loaded { opacity: 1; }
+.hero-fallback { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hero-id { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-top: -52px; position: relative; padding-inline: var(--gutter); }
 .logo {
   width: 104px; height: 104px; border-radius: 50%; overflow: hidden; background: #fff;
@@ -196,7 +198,9 @@ footer address { font-style: normal; }
   height: calc(100vh + 160px);
   height: calc(100lvh + 160px);
   z-index: 0; overflow: hidden; pointer-events: none;
-  background: var(--hull);
+  background:
+    radial-gradient(120% 70% at 50% 0%, #3a0d1a 0%, transparent 70%),
+    linear-gradient(180deg, #24101a 0%, var(--hull) 100%);
   transform: translateZ(0);
   --depth: 0; /* 0 at the top of the page → 1 at the bottom (set by motion.js) */
 }
@@ -207,23 +211,26 @@ footer address { font-style: normal; }
 }
 .sea .g1 { /* Thekla red, strongest near the top of the page */
   background: radial-gradient(closest-side, var(--thekla-red), transparent);
-  opacity: calc(0.5 - var(--depth) * 0.32);
+  width: 150vmax; height: 150vmax; margin: -75vmax 0 0 -75vmax;
+  opacity: calc(0.78 - var(--depth) * 0.3);
   animation: drift-a 21s ease-in-out infinite alternate;
 }
-.sea .g2 { /* lifted navy */
+.sea .g2 { /* lifted navy, now the smaller accent */
   background: radial-gradient(closest-side, #1d3358, transparent);
-  opacity: 0.9;
+  width: 90vmax; height: 90vmax; margin: -45vmax 0 0 -45vmax;
+  opacity: 0.6;
   animation: drift-b 27s ease-in-out infinite alternate;
 }
 .sea .g3 { /* second, smaller red that wanders lower down */
   background: radial-gradient(closest-side, var(--thekla-red), transparent);
   width: 80vmax; height: 80vmax; margin: -40vmax 0 0 -40vmax;
-  opacity: calc(0.24 + var(--depth) * 0.08);
+  width: 100vmax; height: 100vmax; margin: -50vmax 0 0 -50vmax;
+  opacity: calc(0.5 + var(--depth) * 0.15);
   animation: drift-c 33s ease-in-out infinite alternate;
 }
 .sea::after { /* deepens to navy as you scroll down the listings */
   content: ''; position: absolute; inset: 0; background: var(--hull);
-  opacity: calc(0.18 + var(--depth) * 0.37);
+  opacity: calc(0.06 + var(--depth) * 0.22);
 }
 @keyframes drift-a {
   0%   { transform: translate(-38vw, -46vh) scale(1); }
@@ -270,7 +277,7 @@ html.intro .opener {
   display: grid; place-items: center;
   position: fixed; inset: 0; z-index: 100; cursor: pointer;
   background:
-    radial-gradient(60% 45% at 50% 42%, color-mix(in srgb, var(--thekla-red) 38%, transparent), transparent 70%),
+    radial-gradient(60% 45% at 50% 42%, rgba(229, 35, 66, 0.38), transparent 70%),
     var(--hull);
   /* the "hole" opens outward from the porthole to reveal the site */
   -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px));
@@ -348,6 +355,7 @@ dialog.sheet.closing::backdrop { animation: fade-out .22s ease both; }
   --sheet-bg: #121925;
   position: relative; width: min(100%, var(--maxw)); display: flex; flex-direction: column;
   max-height: calc(100% - 40px - env(safe-area-inset-top, 0px));
+  background: linear-gradient(180deg, #2a1622 0, var(--sheet-bg) 180px), var(--sheet-bg);
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--thekla-red) 14%, var(--sheet-bg)) 0, var(--sheet-bg) 180px),
     var(--sheet-bg);
@@ -421,7 +429,7 @@ dialog.sheet.closing .sheet-panel { animation: sheet-down .24s cubic-bezier(.4, 
 /* Info rows */
 .info-list { display: grid; gap: 18px; margin-top: 4px; }
 .info { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; }
-.info-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--thekla-red) 18%, transparent); }
+.info-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(229, 35, 66, 0.18); background: color-mix(in srgb, var(--thekla-red) 18%, transparent); }
 .info-icon svg { width: 22px; height: 22px; fill: none; stroke: #ffb3bf; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
 .info h3 { margin: 2px 0 4px; font-size: 16px; font-weight: 800; }
 .info p { margin: 0 0 6px; color: #d8d2c6; font-size: 15px; text-wrap: pretty; }
@@ -456,6 +464,7 @@ dialog.sheet.closing .sheet-panel { animation: sheet-down .24s cubic-bezier(.4, 
 .ev-media::after { content: ''; position: absolute; inset: auto 0 0; height: 40%; background: linear-gradient(transparent, #121925); }
 .ev-media .big-date {
   position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 4px;
+  background: #16202f;
   background: radial-gradient(80% 90% at 30% 20%, color-mix(in srgb, var(--tone) 35%, transparent), transparent 70%), #16202f;
 }
 .ev-media .big-date span { font: 700 13px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--tone); }
@@ -555,6 +564,7 @@ footer .privacy { font-size: 12px; opacity: .75; }
 .feat {
   --tone: var(--gig);
   position: relative; aspect-ratio: 1 / 1; max-width: 100%; border-radius: 16px; overflow: hidden;
+  background: #16202f;
   background:
     radial-gradient(90% 80% at 20% 10%, color-mix(in srgb, var(--tone) 30%, transparent), transparent 70%),
     #16202f;
@@ -629,4 +639,104 @@ footer .privacy { font-size: 12px; opacity: .75; }
 
 /* ---------- Seasonal tint on the background glow (set by seasons.js) ---------- */
 html[data-season] .sea .g2 { background: radial-gradient(closest-side, var(--s-a, #1d3358), transparent); }
-html[data-season] .sea .g3 { background: radial-gradient(closest-side, var(--s-b, var(--thekla-red)), transparent); opacity: calc(0.34 + var(--depth) * 0.1); }
+html[data-season] .sea .g3 { background: radial-gradient(closest-side, var(--s-b, var(--thekla-red)), transparent); opacity: calc(0.42 + var(--depth) * 0.1); }
+
+/* =====================================================================
+   Layout: one column on phones, sidebar + listings on desktop
+   ===================================================================== */
+:root { --photo-h: calc(min(100vw, var(--maxw)) * 0.625); }
+
+/* Phones & tablets: one column, in this order */
+.layout { display: flex; flex-direction: column; }
+.side, .content { display: contents; }
+.about { order: 1; }
+.socials { order: 2; }
+.filter-bar { order: 3; }
+#this-week { order: 4; }
+#featured { order: 5; }
+#coming-up { order: 6; }
+.side-links { order: 7; }
+
+/* Skip link + no-JS note */
+.skip { position: absolute; left: 12px; top: -60px; z-index: 100; padding: 10px 14px; border-radius: 10px; background: var(--rope); color: var(--hull); font-weight: 800; text-decoration: none; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
+.noscript { position: relative; z-index: 2; max-width: 560px; margin: 16px auto; padding: 14px 16px; border-radius: 12px; background: var(--deck); color: var(--rope); text-align: center; }
+.noscript a { color: var(--rope); }
+footer .contact a { color: var(--rope); text-decoration: none; }
+footer .contact a:hover { text-decoration: underline; }
+
+@media (min-width: 600px) and (max-width: 979px) {
+  :root { --maxw: 640px; }
+}
+
+/* Desktop */
+@media (min-width: 980px) {
+  :root { --maxw: 1200px; --photo-h: calc(min(100vw, 1200px) * 0.34); }
+  .wrap { padding-inline: 32px; }
+
+  .hero-photo { aspect-ratio: auto; height: var(--photo-h); border-radius: 0 0 28px 28px; }
+  .hero-id {
+    display: grid; grid-template-columns: auto 1fr; grid-template-areas: "logo title" "logo coords" "logo extra";
+    align-items: end; justify-items: start; text-align: left; column-gap: 24px; row-gap: 4px;
+    margin-top: -78px; padding-inline: 32px;
+  }
+  .hero-id .logo { grid-area: logo; width: 140px; height: 140px; }
+  .hero-id h1 { grid-area: title; margin: 0; font-size: 84px; line-height: .9; }
+  .hero-id .coords { grid-area: coords; align-self: start; }
+  .hero-id .season-banner { grid-area: extra; margin: 6px 0 0; }
+
+  .layout {
+    display: grid; grid-template-columns: 320px minmax(0, 1fr); column-gap: 56px; align-items: start;
+    margin-top: 32px;
+  }
+  .side {
+    display: flex; flex-direction: column; gap: 18px;
+    position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; scrollbar-width: none;
+    padding-bottom: 8px;
+  }
+  .side::-webkit-scrollbar { display: none; }
+  .content { display: block; min-width: 0; }
+  .about { margin: 0; max-width: none; text-align: left; font-size: 16px; }
+  .socials { justify-content: flex-start; margin: 0; }
+  .side-links { margin-top: 4px; }
+  .links a, .links button { min-height: 50px; font-size: 15px; }
+
+  .filter-bar { margin-top: 0; padding-top: 0; }
+  .filter { max-width: 420px; }
+  section.block { margin-top: 30px; }
+  #this-week { margin-top: 18px; }
+  h2 { font-size: 36px; }
+
+  .feats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  footer { max-width: var(--maxw); }
+
+  /* Pop-up cards become centred panels */
+  dialog.sheet[open] { align-items: center; }
+  .sheet-panel { width: min(100% - 48px, 620px); border-radius: 22px; max-height: min(86vh, 900px); animation: sheet-pop .28s cubic-bezier(.2, .9, .25, 1) both; }
+  dialog.sheet.closing .sheet-panel { animation: sheet-unpop .18s ease-in both; }
+  .sheet-grab { display: none; }
+  .ev-media { border-radius: 22px 22px 0 0; }
+}
+@media (min-width: 1180px) {
+  .upcoming .events { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@keyframes sheet-pop { from { opacity: 0; transform: translateY(18px) scale(.98); } }
+@keyframes sheet-unpop { to { opacity: 0; transform: translateY(12px) scale(.98); } }
+
+/* <dialog> fallback for older browsers */
+dialog.sheet.no-dialog { z-index: 90; background: rgba(5, 8, 14, 0.62); }
+
+/* Wider screens: soften the photo's side edges into the background too */
+@media (min-width: 600px) {
+  .hero-photo {
+    -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent 100%), linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(180deg, #000 50%, transparent 100%), linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+            mask-composite: intersect;
+  }
+}
+
+/* Desktop: the logo sits bottom-left of the photo, so seasonal items gather on the right */
+@media (min-width: 980px) {
+  .season-hero-layer > [style*="left:"] { left: auto !important; right: 96px !important; }
+}

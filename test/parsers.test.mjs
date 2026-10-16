@@ -93,7 +93,7 @@ test('merge: dedupe, links, fallbacks', () => {
   assert.equal(violet.support, 'The Kicks');
 
   const mary = out.find((e) => e.title === 'Mary In The Junkyard');
-  assert.equal(mary.url, 'https://www.theklabristol.co.uk/live/', 'no ticket, no page → gig guide');
+  assert.equal(mary.url, 'https://www.alttickets.com/venue/bristol/thekla', 'no ticket, no page → Alt Tickets venue page');
   assert.equal(out.find((e) => e.title === 'Damian Lewis').support, 'Young Martyrs');
   // Club-night merge: "Pressure Presents: Freshers" vs "PRESSURE. #TheklaThursday" → same night? similarity low; ok either way
   assert.ok(out.every((e, i) => i === 0 || new Date(out[i - 1].start) <= new Date(e.start)), 'sorted');

@@ -34,7 +34,8 @@ Skiddle only shares listings through its API, which needs a free key.
 
 1. Request a key at https://www.skiddle.com/api/join.php.
 2. In the repo, go to **Settings → Secrets and variables → Actions → New repository secret**. Name it `SKIDDLE_API_KEY` and paste the key.
-3. Run the workflow. The collector finds Thekla's Skiddle venue on its own. If it ever picks the wrong one, add a repository **variable** `SKIDDLE_VENUE_ID`.
+3. Go to **Actions → Update events & deploy → Run workflow**. This is the same workflow as everything else; there isn't a separate one for Skiddle. It uses Thekla's Skiddle venue (`skiddle.com/venues/1480`). To use a different venue, add a repository **variable** `SKIDDLE_VENUE_ID`.
+4. In the run's log, open the **Collect events** step. It lists what Skiddle returned and which events were skipped as duplicates of Alt Tickets or Fatsoma listings.
 
 Until a key is added, Skiddle is skipped and everything else works as normal.
 
@@ -118,6 +119,20 @@ Like Google's holiday doodles, the page decorates itself around key dates (UK ti
 
 **Change dates or switch one off:** edit the `SEASONS` list at the top of `site/seasons.js` (set `enabled: false`). If the Harbour Festival dates are announced and differ, change its line there.
 
+## Layout
+
+- **Phones and tablets:** one column, in this order: about, socials, filter, This Week, Featured, Coming Up, link buttons.
+- **Desktop (980px and wider):** a wide photo banner with the logo and title across the bottom-left. Below it, a sidebar holds the about text, socials and link buttons, and stays in place as you scroll. Featured shows 4 across, and Coming Up shows 2 columns on large screens.
+- **Pop-up cards:** these slide up from the bottom on phones and open as centred panels on desktop.
+
+## Reliability
+
+- **Saved listings:** the page keeps the last listings it loaded on each visitor's device, so a dropped connection still shows events. It retries loading 3 times before giving up.
+- **If listings can't be shown:** visitors are pointed to Alt Tickets and Fatsoma.
+- **Events with no ticket link:** these open the Alt Tickets or Fatsoma venue page rather than the Thekla website.
+- **Older phones:** pop-up cards still open on older phones that lack built-in pop-up support.
+- **Search engines:** upcoming events are published in Google's event format, which can show them in search. `404.html` and `robots.txt` are included.
+
 ## Editing
 
 | What | Where |
@@ -126,7 +141,7 @@ Like Google's holiday doodles, the page decorates itself around key dates (UK ti
 | Getting to Thekla / Accessibility / Lost property pop-ups | `site/index.html`, the `<dialog>` blocks under `EDIT ME: pop-up sheets` |
 | Featured events | `site/featured.txt`: add a ticket link or part of an event name to pin it (see below) |
 | FAQs pop-up | `site/index.html`, the `<dialog id="faq">` block |
-| Hero photo | Add `site/assets/hero.jpg` (landscape, ~1600px wide). Until then the Action uses the photo from the Thekla site. |
+| Hero photo | **Recommended:** add your own `site/assets/hero.jpg` to the repo (landscape, 2000px wide or more). Without it, each update downloads the photo from the Thekla website, falling back to the last deployed copy. If neither works, a drawn ship silhouette shows instead of a blank space. |
 | Logo | Add `site/assets/logo.jpg` (square). Until then the Action uses Thekla's Fatsoma logo. |
 | Colours and fonts | Top of `site/styles.css` (`--gig` brass, `--club` pink) |
 | How far ahead Coming Up goes | `DAYS_AHEAD` (default 300 days) in `scripts/collect.mjs` or the workflow |

@@ -127,8 +127,8 @@
         { art: ART.cobweb, css: 'top:0;right:0;width:110px;height:110px;transform:scaleX(-1)' },
         { art: ART.spider, css: 'top:0;right:18%;width:34px;height:34px', cls: 'dangle', thread: 90 },
         { art: ART.skeleton, css: 'top:0;left:12%;width:44px;height:46px', cls: 'dangle slow', thread: 60 },
-        { art: ART.pumpkin, css: 'top:calc(min(100vw, 560px) * 0.625 - 62px);left:14px;width:58px;height:58px', anchor: 'hero' },
-        { art: ART.pumpkin, css: 'top:calc(min(100vw, 560px) * 0.625 - 48px);right:18px;width:44px;height:44px', anchor: 'hero' },
+        { art: ART.pumpkin, css: 'top:calc(var(--photo-h) - 62px);left:14px;width:58px;height:58px', anchor: 'hero' },
+        { art: ART.pumpkin, css: 'top:calc(var(--photo-h) - 48px);right:18px;width:44px;height:44px', anchor: 'hero' },
       ],
       particles: { type: 'flutter', count: 7, art: [ART.bat], size: [22, 38] },
       extraParticles: { type: 'fall', count: 5, art: [ART.skull, ART.pumpkin], size: [18, 26], speed: .35 },
@@ -141,8 +141,8 @@
       extras: [
         ...[['8%', 70, '#e52342'], ['27%', 40, '#d4a64a'], ['73%', 55, '#3a86ff'], ['90%', 34, '#e52342']].map(([x, len, c], i) => (
           { art: ART.bauble(c), css: `top:0;left:${x};width:30px;height:30px`, cls: `dangle ${i % 2 ? 'slow' : ''}`, thread: len })),
-        { art: ART.tree, css: 'top:calc(min(100vw, 560px) * 0.625 - 60px);left:12px;width:56px;height:56px', anchor: 'hero' },
-        { art: ART.tree, css: 'top:calc(min(100vw, 560px) * 0.625 - 48px);right:14px;width:44px;height:44px', anchor: 'hero' },
+        { art: ART.tree, css: 'top:calc(var(--photo-h) - 60px);left:12px;width:56px;height:56px', anchor: 'hero' },
+        { art: ART.tree, css: 'top:calc(var(--photo-h) - 48px);right:14px;width:44px;height:44px', anchor: 'hero' },
       ],
       particles: { type: 'fall', count: 26, art: [ART.snow], size: [8, 18], speed: .6, alpha: [.35, .8] },
     },
@@ -157,7 +157,7 @@
     },
     easter: {
       tint: ['#4b3f8a', '#f3a6c8'], hat: ART.ears, garland: GARLAND.bunting(PASTELS),
-      extras: [{ art: ART.bunny, css: 'top:calc(min(100vw, 560px) * 0.625 - 66px);right:14px;width:66px;height:66px', anchor: 'hero', cls: 'peek' }],
+      extras: [{ art: ART.bunny, css: 'top:calc(var(--photo-h) - 66px);right:14px;width:66px;height:66px', anchor: 'hero', cls: 'peek' }],
       particles: { type: 'fall', count: 10, art: PASTELS.map((c, i) => ART.egg(c, PASTELS[(i + 2) % 5])), size: [18, 28], speed: .45 },
     },
     pride: {
@@ -167,8 +167,8 @@
     harbour: {
       tint: ['#123e66', '#f0c04c'], garland: GARLAND.bunting(['#e52342', '#efe8da', '#3a86ff', '#f0c04c']),
       extras: [
-        { art: ART.boat('#3a86ff'), css: 'top:calc(min(100vw, 560px) * 0.625 - 58px);left:6%;width:48px;height:48px', anchor: 'hero', cls: 'bob' },
-        { art: ART.boat('#e52342'), css: 'top:calc(min(100vw, 560px) * 0.625 - 50px);right:9%;width:36px;height:36px', anchor: 'hero', cls: 'bob slow' },
+        { art: ART.boat('#3a86ff'), css: 'top:calc(var(--photo-h) - 58px);left:6%;width:48px;height:48px', anchor: 'hero', cls: 'bob' },
+        { art: ART.boat('#e52342'), css: 'top:calc(var(--photo-h) - 50px);right:9%;width:36px;height:36px', anchor: 'hero', cls: 'bob slow' },
       ],
     },
   };

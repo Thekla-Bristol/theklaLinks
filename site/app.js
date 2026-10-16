@@ -239,24 +239,83 @@
     window.track.event('T', e);
   });
 
+  // ---------- loading (with a saved copy for flaky connections) ----------
+  const CACHE_KEY = 'thekla-events-v1';
+  const saveCopy = (d) => { try { localStorage.setItem(CACHE_KEY, JSON.stringify(d)); } catch { /* storage full or blocked */ } };
+  const savedCopy = () => { try { return JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch { return null; } };
+
+  async function fetchEvents(tries = 3) {
+    let last;
+    for (let i = 0; i < tries; i++) {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+        const r = await fetch(`events.json?t=${Math.floor(Date.now() / 600000)}`, { cache: 'no-cache', signal: ctrl.signal });
+        clearTimeout(t);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json();
+        if (!d || !Array.isArray(d.events)) throw new Error('bad data');
+        return d;
+      } catch (e) { last = e; await new Promise((res) => setTimeout(res, 700 * (i + 1))); }
+    }
+    throw last;
+  }
+
   async function load() {
     try {
-      const r = await fetch(`events.json?t=${Math.floor(Date.now() / 600000)}`, { cache: 'no-cache' });
-      if (!r.ok) throw new Error(r.status);
-      data = await r.json();
+      data = await fetchEvents();
+      saveCopy(data);
     } catch (err) {
+      if (!data) data = savedCopy();
       if (!data) {
         $('#week').classList.remove('skeleton');
-        $('#week').innerHTML = '<div class="empty">Listings didn’t load. Check your connection, or use the full gig and club guides below.</div>';
+        $('#week').innerHTML = '<div class="empty">Listings didn’t load. Check your connection and refresh, or see every gig on <a href="https://www.alttickets.com/venue/bristol/thekla" target="_blank" rel="noopener">Alt Tickets</a> and every club night on <a href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener">Fatsoma</a>.</div>';
         $('#coming-up').hidden = true;
         return;
       }
     }
-    render();
+    safeRender();
   }
 
-  if (data) render(); else load();
-  setInterval(render, 60 * 1000); // keeps "On now" / Tonight accurate
+  // Never leave the page half-drawn if something unexpected is in the data
+  function safeRender() {
+    try { render(); }
+    catch (err) {
+      console.error(err);
+      $('#week').classList.remove('skeleton');
+      $('#week').innerHTML = '<div class="empty">Something went wrong showing the listings. See every gig on <a href="https://www.alttickets.com/venue/bristol/thekla" target="_blank" rel="noopener">Alt Tickets</a> and every club night on <a href="https://www.fatsoma.com/p/thekla" target="_blank" rel="noopener">Fatsoma</a>.</div>';
+    }
+    try { structuredData(); } catch { /* optional */ }
+  }
+
+  // Event listings for search engines (schema.org), refreshed with the data
+  function structuredData() {
+    if (!data || window.__PREVIEW__) return;
+    const now = new Date();
+    const list = (data.events || []).filter((e) => new Date(e.start) > now && e.status !== 'cancelled').slice(0, 30).map((e) => ({
+      '@type': e.type === 'club' ? 'DanceEvent' : 'MusicEvent',
+      name: e.title,
+      startDate: e.start,
+      ...(e.end ? { endDate: e.end } : {}),
+      eventStatus: e.status === 'postponed' ? 'https://schema.org/EventPostponed' : 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: { '@type': 'MusicVenue', name: 'Thekla', address: { '@type': 'PostalAddress', streetAddress: 'The Grove, East Mud Dock', addressLocality: 'Bristol', postalCode: 'BS1 4RB', addressCountry: 'GB' } },
+      ...(e.image || e.imageLarge ? { image: [e.imageLarge || e.image] } : {}),
+      ...(e.support ? { performer: [{ '@type': 'MusicGroup', name: e.title }, { '@type': 'MusicGroup', name: e.support }] } : {}),
+      ...(e.ticketUrl ? { offers: { '@type': 'Offer', url: e.ticketUrl, availability: e.status === 'soldout' ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock', ...(e.price ? { price: String(e.price).replace(/[^0-9.]/g, ''), priceCurrency: 'GBP' } : {}) } } : {}),
+    }));
+    let tag = document.getElementById('events-ld');
+    if (!tag) { tag = document.createElement('script'); tag.type = 'application/ld+json'; tag.id = 'events-ld'; document.head.appendChild(tag); }
+    tag.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': list });
+  }
+
+  if (data) safeRender(); else {
+    // Show the saved copy straight away (if any) while fresh listings load
+    const copy = savedCopy();
+    if (copy && Array.isArray(copy.events)) { data = copy; safeRender(); }
+    load();
+  }
+  setInterval(safeRender, 60 * 1000); // keeps "On now" / Tonight accurate
   document.addEventListener('visibilitychange', () => { if (!document.hidden && !window.__EVENTS__) load(); });
   setInterval(() => { if (!document.hidden && !window.__EVENTS__) load(); }, REFRESH_MS);
 })();

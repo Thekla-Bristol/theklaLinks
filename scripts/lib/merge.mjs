@@ -1,9 +1,10 @@
 // Merge sources, de-duplicate, and pick the right link for each event.
 import { londonDay, londonISO, titleSimilarity, slugify, tokens } from './util.mjs';
 
+// Where an event with no ticket link sends people (ticket sites stay up even if the Thekla site doesn't)
 const THEKLA_FALLBACK = {
-  gig: 'https://www.theklabristol.co.uk/live/',
-  club: 'https://www.theklabristol.co.uk/club/',
+  gig: 'https://www.alttickets.com/venue/bristol/thekla',
+  club: 'https://www.fatsoma.com/p/thekla',
 };
 
 // The "night" an event belongs to: starts before 6am count as the previous night.

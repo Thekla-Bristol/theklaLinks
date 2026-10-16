@@ -37,7 +37,27 @@
   const cleanTitle = (t) => String(t || '').replace(/[|]/g, '/').replace(/\s+/g, ' ').trim();
   const SELLER = { alttickets: 'A', fatsoma: 'F', skiddle: 'S' };
 
-  const track = (name) => { try { send({ k: 'ev', n: clip(String(name)) }); } catch { /* never break the page */ } };
+  // Umami: every tap also goes to the Umami dashboard as a custom event (queued until its script loads)
+  const umamiQueue = [];
+  const toUmami = (name) => {
+    if (window.umami && typeof window.umami.track === 'function') window.umami.track(name);
+    else if (umamiQueue.length < 50) umamiQueue.push(name);
+  };
+  const flush = setInterval(() => {
+    if (window.umami && typeof window.umami.track === 'function') {
+      while (umamiQueue.length) window.umami.track(umamiQueue.shift());
+      clearInterval(flush);
+    }
+  }, 500);
+  setTimeout(() => clearInterval(flush), 20000);
+
+  const track = (name) => {
+    try {
+      const n = clip(String(name));
+      send({ k: 'ev', n });
+      toUmami(n);
+    } catch { /* never break the page */ }
+  };
   const CODE = { O: 'EO', Share: 'ES', Arrive: 'EA' };
   const TITLE_MAX = MAX - 14; // "XX|YYYY-MM-DD|"
   track.event = (kind, e) => {

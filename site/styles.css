@@ -748,6 +748,7 @@ dialog.sheet.no-dialog { z-index: 90; background: rgba(5, 8, 14, 0.62); }
   background: rgba(18, 25, 37, 0.97); border: 1px solid var(--line); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
   display: grid; gap: 10px; animation: fade-in .3s ease both;
 }
+.consent[hidden] { display: none !important; }
 .consent p { margin: 0; font-size: 14px; color: #d8d2c6; line-height: 1.4; }
 .consent p a { color: var(--rope); }
 .consent-actions { display: flex; gap: 8px; justify-content: flex-end; }

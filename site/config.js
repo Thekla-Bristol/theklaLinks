@@ -6,7 +6,7 @@
 // While projectId is empty, the page works exactly as before and /admin explains how to set up.
 window.THEKLA_CONFIG = {
   firebase: {
-    apiKey: "AIzaSyD3XL--9boPR_B7DAh0-zuAIvRvFEiCOKQ"",
+    apiKey: "AIzaSyD3XL--9boPR_B7DAh0-zuAIvRvFEiCOKQ",
     authDomain: "thekla-links.firebaseapp.com",
     projectId: "Thekla Links",
     appId: "1:457564785340:web:0c52324e73d70e42d69eb9",

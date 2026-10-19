@@ -129,7 +129,7 @@ It runs on Firebase’s free plan (no card needed). The page reads one small doc
 2. **Build → Authentication → Get started → Sign-in method → Email/Password → Enable** (leave “Email link” off) **→ Save**.
 3. **Authentication → Settings → Authorized domains → Add domain:** `links.theklabristol.co.uk`.
 4. Optional: **Authentication → Templates**. Set the sender name to “Thekla” on the email-verification and password-reset emails.
-5. **Build → Firestore Database → Create database.** Choose location **europe-west2 (London)** and **production mode**.
+5. **Build → Firestore Database → Create database.** If asked, choose **Standard edition** and leave the database ID as **(default)**. Choose location **europe-west2 (London)** and **production mode**.
 6. In Firestore, open the **Rules** tab. Replace everything with the contents of `firestore.rules` from this repo, then click **Publish**.
 7. **Project settings** (gear icon) **→ General → Your apps →** the web icon `</>`. Name it `Thekla Links`, leave Hosting unticked, and click **Register app**. You’ll see a `firebaseConfig` block.
 8. In GitHub, edit `site/config.js`. Copy `apiKey`, `authDomain`, `projectId` and `appId` from that block into the matching lines, keeping the quotes. Also fill in `githubRepo` (e.g. `theklabristol/thekla-links`). Commit.

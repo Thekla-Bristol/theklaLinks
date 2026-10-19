@@ -72,10 +72,15 @@ function friendly(e) {
     'auth/email-already-in-use': 'This email already has a password. Sign in, or use “Forgot password?” to choose a new one.',
     'auth/weak-password': 'Please choose a longer password (at least 10 characters).',
     'auth/password-does-not-meet-requirements': 'Please choose a longer password (at least 10 characters).',
+    'auth/operation-not-allowed': 'Email & password sign-in isn’t switched on yet. In the Firebase console: Authentication → Sign-in method → Email/Password → Enable → Save.',
+    'auth/unauthorized-domain': 'This web address isn’t allowed yet. In the Firebase console: Authentication → Settings → Authorized domains → add links.theklabristol.co.uk.',
+    'auth/configuration-not-found': 'Authentication isn’t set up yet. In the Firebase console: Authentication → Get started, then switch on Email/Password.',
     'auth/too-many-requests': 'Too many attempts. Wait a few minutes, then try again.',
     'auth/network-request-failed': 'No connection. Check your internet and try again.',
-    'permission-denied': 'You don’t have permission to do that. Try signing out and in again.',
-    unavailable: 'Can’t reach the server. Check your connection and try again.',
+    'permission-denied': 'You don’t have permission to do that. Check the Firestore rules are published (README step 6), then sign out and in again.',
+    'db-missing': 'The database isn’t set up yet. In the Firebase console: Firestore Database → Create database (keep the ID as “(default)”).',
+    'db-disabled': 'The Firestore database is switched off for this project. In the Firebase console, open Firestore Database and finish creating it.',
+    unavailable: e?.message || 'Can’t reach the server. Check your connection and try again.',
   })[c] || e?.message || 'Something went wrong.';
 }
 function busy(btn, on) { if (!btn) return; btn.disabled = on; if (on) { btn.dataset.label = btn.textContent; btn.textContent = 'Please wait…'; } else if (btn.dataset.label) btn.textContent = btn.dataset.label; }
@@ -100,25 +105,20 @@ document.addEventListener('click', (ev) => {
 
 async function boot() {
   if (!CFG.firebase?.projectId) { showAuth('setup-needed'); return; }
-  const [app, a, f] = await Promise.all([
-    import(`${SDK}/firebase-app.js`), import(`${SDK}/firebase-auth.js`), import(`${SDK}/firebase-firestore.js`),
-  ]);
+  // Only the sign-in library is loaded. The database is reached with plain web requests
+  // (see "database" below): quicker to load, and a save can never hang.
+  const [app, a] = await Promise.all([import(`${SDK}/firebase-app.js`), import(`${SDK}/firebase-auth.js`)]);
   const inst = app.initializeApp(CFG.firebase);
   const auth = a.getAuth(inst);
-  const db = f.getFirestore(inst);
-  // Local testing only: ?emulator on localhost uses the Firebase emulators
-  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) && new URLSearchParams(location.search).has('emulator')) {
-    a.connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
-    f.connectFirestoreEmulator(db, '127.0.0.1', 8080);
-  }
   auth.languageCode = 'en-GB';
-  fb = { a, f, auth, db, liveRef: f.doc(db, 'public', 'live') };
+  fb = { a, auth };
   a.onAuthStateChanged(auth, onUser);
 }
 
 let unsub = null;
 async function onUser(user) {
   if (unsub) { unsub(); unsub = null; }
+  $('#boot').hidden = false; $('#auth').hidden = true; $('#app').hidden = true;
   if (!user) { me = ''; showAuth('signin'); return; }
   me = (user.email || '').toLowerCase();
   if (!user.emailVerified) { $('#verify-email').textContent = me; showAuth('verify'); return; }
@@ -189,11 +189,96 @@ $('#verify-resend').addEventListener('click', async () => {
   catch (e) { msg.classList.remove('ok'); msg.textContent = friendly(e); }
 });
 
+// ---------- database (Firestore over plain web requests) ----------
+const DB = `https://firestore.googleapis.com/v1/projects/${encodeURIComponent(CFG.firebase?.projectId || '')}/databases/(default)/documents`;
+const docName = (...segs) => `projects/${CFG.firebase?.projectId}/databases/(default)/documents/${segs.join('/')}`;
+const docUrl = (...segs) => `${DB}/${segs.map(encodeURIComponent).join('/')}`;
+
+class DbError extends Error { constructor(code, message) { super(message); this.code = code; } }
+
+const tsVal = (s) => ({ __ts: s, toDate: () => new Date(s) });
+function dec(v) {
+  if (!v || typeof v !== 'object') return null;
+  if ('stringValue' in v) return v.stringValue;
+  if ('integerValue' in v) return Number(v.integerValue);
+  if ('doubleValue' in v) return Number(v.doubleValue);
+  if ('booleanValue' in v) return v.booleanValue;
+  if ('timestampValue' in v) return tsVal(v.timestampValue);
+  if ('nullValue' in v) return null;
+  if ('arrayValue' in v) return (v.arrayValue.values || []).map(dec);
+  if ('mapValue' in v) return decFields(v.mapValue.fields);
+  return null;
+}
+const decFields = (fields) => Object.fromEntries(Object.entries(fields || {}).map(([k, x]) => [k, dec(x)]));
+function enc(v) {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (v.__ts) return { timestampValue: v.__ts };
+  if (v instanceof Date) return { timestampValue: v.toISOString() };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(enc) } };
+  if (typeof v === 'object') return { mapValue: { fields: encFields(v) } };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  if (typeof v === 'number') return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  return { stringValue: String(v) };
+}
+const encFields = (o) => Object.fromEntries(Object.entries(o).filter(([, x]) => x !== undefined).map(([k, x]) => [k, enc(x)]));
+// Field paths: names with dashes, dots etc. go in backticks
+const seg = (k) => (/^[A-Za-z_][A-Za-z0-9_]*$/.test(k) ? k : '`' + String(k).replace(/[\\`]/g, (c) => '\\' + c) + '`');
+const autoId = () => Array.from(crypto.getRandomValues(new Uint8Array(20)), (b) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'[b % 62]).join('');
+
+async function api(url, { method = 'GET', body, auth = true, tries = 2 } = {}) {
+  for (let i = 0; ; i++) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000);
+    let r;
+    try {
+      const headers = { 'content-type': 'application/json' };
+      if (auth && fb?.auth?.currentUser) headers.authorization = `Bearer ${await fb.auth.currentUser.getIdToken(i > 0)}`;
+      r = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined, signal: ctrl.signal, cache: 'no-store' });
+    } catch (e) {
+      clearTimeout(timer);
+      if (i + 1 < tries && (method === 'GET' || url.endsWith(':runQuery'))) continue; // never resend a save: it may have gone through
+      throw new DbError('unavailable', e.name === 'AbortError'
+        ? 'The server took too long to answer. Check your connection and try again.'
+        : 'Couldn’t reach the database. Check your connection. If you use an ad blocker or privacy extension, allow firestore.googleapis.com.');
+    }
+    clearTimeout(timer);
+    if (r.ok) return r.status === 204 ? null : r.json();
+    let err = {};
+    try { err = (await r.json()).error || {}; } catch { /* not JSON */ }
+    if (r.status === 401 && i + 1 < tries) continue; // token expired: refresh once
+    if (r.status === 404 && url.includes('/documents/public/live') && method === 'GET' && !/database/i.test(err.message || '')) return null;
+    const msg = err.message || `HTTP ${r.status}`;
+    if (r.status === 403 || err.status === 'PERMISSION_DENIED') throw new DbError('permission-denied', msg);
+    if (r.status === 404 || /database .*does not exist|not found/i.test(msg)) throw new DbError('db-missing', msg);
+    if (r.status === 400 && /FAILED_PRECONDITION|not been used|disabled/i.test(`${err.status} ${msg}`)) throw new DbError('db-disabled', msg);
+    if (r.status >= 500 && i + 1 < tries) { await new Promise((res) => setTimeout(res, 800)); continue; }
+    throw new DbError(err.status || `http-${r.status}`, msg);
+  }
+}
+
+async function getLive() {
+  const d = await api(docUrl('public', 'live'));
+  return d ? decFields(d.fields) : {};
+}
+async function listAdmins() {
+  const d = await api(`${DB}/admins?pageSize=300`);
+  return (d?.documents || []).map((x) => ({ email: decodeURIComponent(x.name.split('/').pop()), ...decFields(x.fields) }));
+}
+async function queryLog(n = 60) {
+  const d = await api(`${DB}:runQuery`, { method: 'POST', body: { structuredQuery: { from: [{ collectionId: 'log' }], orderBy: [{ field: { fieldPath: 'at' }, direction: 'DESCENDING' }], limit: n } } });
+  return (d || []).filter((x) => x.document).map((x) => decFields(x.document.fields));
+}
+/** One all-or-nothing save. writes: Firestore REST "Write" objects */
+const commit = (writes) => api(`${DB}:commit`, { method: 'POST', body: { writes } });
+const logWrite = (action, target, summary) => ({
+  update: { name: docName('log', autoId()), fields: encFields({ by: me, action, target: target || '', summary: summary || '' }) },
+  updateTransforms: [{ fieldPath: 'at', setToServerValue: 'REQUEST_TIME' }],
+  currentDocument: { exists: false },
+});
+
 // ---------- data ----------
 async function loadAdmins() {
-  const { f, db } = fb;
-  const snap = await f.getDocs(f.collection(db, 'admins'));
-  admins = snap.docs.map((d) => ({ email: d.id, ...d.data() }));
+  admins = await listAdmins();
 }
 
 async function loadFeed() {
@@ -204,16 +289,20 @@ async function loadFeed() {
   } catch { feed = {}; raw = []; toast('Couldn’t load the listings. Refresh to try again.', true); }
 }
 
+// Picks up changes made by other admins: checks every 20 seconds while the tab is open
+let liveStamp = '';
+async function refreshLive({ quiet = true } = {}) {
+  try {
+    const d = await getLive();
+    const stamp = JSON.stringify(d);
+    if (stamp !== liveStamp) { liveStamp = stamp; live = d; renderAll(); }
+  } catch (e) { if (!quiet) toast(friendly(e), true); }
+}
 function watchLive() {
-  const { f } = fb;
-  unsub = f.onSnapshot(fb.liveRef, async (snap) => {
-    if (!snap.exists()) {
-      try { await f.setDoc(fb.liveRef, { overrides: {}, manual: {}, notice: {}, info: {}, updatedAt: f.serverTimestamp() }, { merge: true }); } catch (e) { toast(friendly(e), true); }
-      return;
-    }
-    live = snap.data() || {};
-    renderAll();
-  }, (e) => toast(friendly(e), true));
+  const t = setInterval(() => { if (!document.hidden && !$('#editor').open) refreshLive(); }, 20000);
+  const vis = () => { if (!document.hidden) refreshLive(); };
+  document.addEventListener('visibilitychange', vis);
+  unsub = () => { clearInterval(t); document.removeEventListener('visibilitychange', vis); };
 }
 
 /** Clean an object for saving: drop empty values; returns null if nothing left. */
@@ -234,22 +323,22 @@ function clean(v) {
  * changes: [[['overrides', id], value or null to remove], …]
  */
 async function save(changes, log) {
-  const { f, db } = fb;
-  const args = [];
-  for (const [path, value] of changes) args.push(new f.FieldPath(...path), value === null ? f.deleteField() : value);
-  args.push('updatedAt', f.serverTimestamp());
-  const commit = async () => {
-    const b = f.writeBatch(db);
-    b.update(fb.liveRef, ...args);
-    b.set(f.doc(f.collection(db, 'log')), { by: me, at: f.serverTimestamp(), action: log.action, target: log.target || '', summary: log.summary || '' });
-    await b.commit();
-  };
-  try { await commit(); }
-  catch (e) {
-    if (e.code !== 'not-found') throw e;
-    await f.setDoc(fb.liveRef, { overrides: {}, manual: {}, notice: {}, info: {} }, { merge: true });
-    await commit();
+  // Only the named fields change; a field in the mask but not in "fields" is removed.
+  const fields = {};
+  const mask = [];
+  for (const [path, value] of changes) {
+    mask.push(path.map(seg).join('.'));
+    if (value === null) continue;
+    let o = fields;
+    for (const k of path.slice(0, -1)) { o[k] ||= {}; o = o[k]; }
+    o[path[path.length - 1]] = value;
   }
+  await commit([
+    { update: { name: docName('public', 'live'), fields: encFields(fields) }, updateMask: { fieldPaths: mask }, updateTransforms: [{ fieldPath: 'updatedAt', setToServerValue: 'REQUEST_TIME' }] },
+    logWrite(log.action, log.target, log.summary),
+  ]);
+  // Show the saved state straight away (also picks up anyone else's changes)
+  await refreshLive({ quiet: true });
 }
 async function trySave(changes, log, okMsg = 'Saved. It’s live on the page now.') {
   try { await save(changes, log); toast(okMsg); return true; }
@@ -757,14 +846,15 @@ function renderAdmins() {
     const email = ev.currentTarget.email.value.trim().toLowerCase();
     if (!/^[^\s@/]+@[^\s@/]+\.[^\s@/]+$/.test(email)) { toast('Enter an email address.', true); return; }
     if (OWNERS.includes(email) || admins.some((a) => a.email === email)) { toast('They’re already an admin.'); return; }
-    const { f, db } = fb;
+    const btn = $('button[type=submit]', ev.currentTarget);
+    busy(btn, true);
     try {
-      const b = f.writeBatch(db);
-      b.set(f.doc(db, 'admins', email), { addedBy: me, addedAt: f.serverTimestamp() });
-      b.set(f.doc(f.collection(db, 'log')), { by: me, at: f.serverTimestamp(), action: 'Added admin', target: email, summary: '' });
-      await b.commit();
+      await commit([
+        { update: { name: docName('admins', email), fields: encFields({ addedBy: me }) }, updateTransforms: [{ fieldPath: 'addedAt', setToServerValue: 'REQUEST_TIME' }] },
+        logWrite('Added admin', email),
+      ]);
       await loadAdmins(); renderAdmins(); toast(`${email} added.`);
-    } catch (e) { toast(friendly(e), true); }
+    } catch (e) { toast(friendly(e), true); busy(btn, false); }
   });
 }
 document.addEventListener('click', async (ev) => {
@@ -772,14 +862,11 @@ document.addEventListener('click', async (ev) => {
   if (!b) return;
   const email = b.dataset.adminRemove;
   if (!confirm(`Remove ${email} as an admin?`)) return;
-  const { f, db } = fb;
+  b.disabled = true;
   try {
-    const bt = f.writeBatch(db);
-    bt.delete(f.doc(db, 'admins', email));
-    bt.set(f.doc(f.collection(db, 'log')), { by: me, at: f.serverTimestamp(), action: 'Removed admin', target: email, summary: '' });
-    await bt.commit();
+    await commit([{ delete: docName('admins', email) }, logWrite('Removed admin', email)]);
     await loadAdmins(); renderAdmins(); toast(`${email} removed.`);
-  } catch (e) { toast(friendly(e), true); }
+  } catch (e) { toast(friendly(e), true); b.disabled = false; }
 });
 
 // ---------- activity ----------
@@ -809,9 +896,7 @@ async function renderActivity() {
     <h2 class="sec-h">Change log<small>The last 60 changes.</small></h2>
     <div class="card" id="log"><div class="empty">Loading…</div></div>`;
   try {
-    const { f, db } = fb;
-    const snap = await f.getDocs(f.query(f.collection(db, 'log'), f.orderBy('at', 'desc'), f.limit(60)));
-    const items = snap.docs.map((d) => d.data());
+    const items = await queryLog(60);
     $('#log').innerHTML = items.length ? `<ul class="log">${items.map((l) => `<li><span><b>${esc(l.action)}</b>${l.target ? ` · ${esc(l.target)}` : ''}${l.summary ? ` — ${esc(l.summary)}` : ''}</span><span class="who">${esc(l.by)} · ${l.at?.toDate ? esc(when(l.at.toDate())) : 'just now'}</span></li>`).join('')}</ul>` : '<div class="empty">No changes yet.</div>';
   } catch (e) { $('#log').innerHTML = `<div class="empty">${esc(friendly(e))}</div>`; }
 }
@@ -852,7 +937,10 @@ async function startApp() {
   $('#boot').hidden = true; $('#auth').hidden = true; $('#app').hidden = false;
   $('#me-email').textContent = me;
   try { tab = sessionStorage.getItem('thekla-admin-tab') || 'tonight'; } catch {}
-  await loadFeed();
+  // Listings and admin changes load together
+  const [, liveDoc] = await Promise.all([loadFeed(), getLive().catch((e) => { toast(friendly(e), true); return {}; })]);
+  live = liveDoc || {};
+  liveStamp = JSON.stringify(live);
   setTab(tab);
   watchLive();
 }

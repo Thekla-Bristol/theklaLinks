@@ -754,3 +754,45 @@ dialog.sheet.no-dialog { z-index: 90; background: rgba(5, 8, 14, 0.62); }
 .consent-actions { display: flex; gap: 8px; justify-content: flex-end; }
 .consent .btn { min-height: 42px; padding: 0 16px; font-size: 14px; border-radius: 12px; }
 .linkish { appearance: none; border: 0; background: none; padding: 0; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* =====================================================================
+   Admin portal additions: notice banner, tonight's times, status notes
+   ===================================================================== */
+.notice { position: relative; z-index: 2; margin-top: 14px; }
+.notice-box {
+  display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: var(--radius);
+  background: rgba(20, 27, 39, 0.94); border: 1px solid var(--line); color: var(--rope);
+}
+.notice-box p { margin: 0; font-size: 15px; line-height: 1.4; text-wrap: pretty; }
+.notice-box a { color: var(--rope); font-weight: 700; white-space: nowrap; }
+.notice-icon {
+  flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(239, 232, 218, 0.12); font: 800 14px/1 var(--body); font-style: normal;
+}
+.notice-box.urgent { background: #3a0f1a; background: color-mix(in srgb, var(--thekla-red) 28%, #0b1019); border-color: rgba(229, 35, 66, 0.55); }
+.notice-box.urgent .notice-icon { background: var(--thekla-red); color: #fff; }
+@media (min-width: 980px) { .notice { margin-top: 24px; } }
+
+/* Tonight's times, under tonight's card */
+.run {
+  --tone: var(--gig);
+  margin: -4px 0 0; padding: 14px 14px 12px; border-radius: 0 0 var(--radius) var(--radius);
+  background: rgba(20, 27, 39, 0.7); border: 1px solid var(--line); border-top: 0;
+}
+.run.club { --tone: var(--club); }
+.events > li:has(.run) > .ev { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.run-h { display: block; margin-bottom: 8px; font: 700 11px/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--tone); }
+.run ol { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; }
+.run li { display: inline-flex; align-items: baseline; gap: 6px; font-size: 14px; color: #d8d2c6; }
+.run li time { font-weight: 800; color: var(--rope); font-variant-numeric: tabular-nums; }
+.run li.headliner span { color: var(--rope); font-weight: 700; }
+.run-note { margin: 8px 0 0; font-size: 13px; color: var(--fog); }
+
+/* Event details: status note + running order */
+.status-note { margin: 0; padding: 10px 12px; border-radius: 12px; background: rgba(255, 138, 92, 0.12); color: #ffd0bd; font-size: 14.5px; }
+.ev-run h3 { margin: 4px 0 10px; font: 700 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--fog); }
+.ev-run ol { display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; border-radius: 14px; overflow: hidden; background: var(--line); }
+.ev-run li { display: grid; grid-template-columns: 64px 1fr; gap: 12px; padding: 11px 14px; background: var(--sheet-bg, #121925); font-size: 15px; }
+.ev-run time { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--tone); }
+.ev-run small { margin-left: 6px; font: 700 10px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--fog); }
+.ev-run .run-note { margin-top: 8px; }

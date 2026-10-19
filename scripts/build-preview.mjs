@@ -14,6 +14,8 @@ let html = read('site/index.html')
   .replace('<script src="sheets.js" defer></script>', `<script>\n${read('site/sheets.js')}\n</script>`)
   .replace('<script src="seasons.js" defer></script>', `<script>\n${read('site/seasons.js')}\n</script>`)
   .replace('<script src="track.js" defer></script>', `<script>\n${read('site/track.js')}\n</script>`)
+  .replace('<script src="config.js" defer></script>\n', '')
+  .replace('<script src="live.js" defer></script>', `<script>\n${read('site/live.js')}\n</script>`)
   .replace(/^.*__COUNTER_URL__.*\n/m, '')
   .replace(/^.*cloud\.umami\.is.*\n/m, '')
   .replace(/<!-- GA:start[\s\S]*?<!-- GA:end -->\n/, '');

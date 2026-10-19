@@ -143,11 +143,11 @@
   }
 
   // ---------- FAQ questions opened ----------
-  document.querySelectorAll('#faq details').forEach((d) => {
-    d.addEventListener('toggle', () => {
-      if (d.open) window.track?.(`FAQ|${d.querySelector('summary').textContent.trim()}`);
-    });
-  });
+  // (listens on the document, so FAQs edited in the admin portal are counted too)
+  document.addEventListener('toggle', (ev) => {
+    const d = ev.target;
+    if (d instanceof HTMLDetailsElement && d.open && d.closest('#faq')) window.track?.(`FAQ|${d.querySelector('summary').textContent.trim()}`);
+  }, true);
 
   // ---------- copy buttons ----------
   document.addEventListener('click', async (e) => {
@@ -195,7 +195,8 @@
   function openEvent(id, opts) {
     const e = (window.TheklaEvents || []).find((x) => x.id === id);
     if (!e || !F()) return false;
-    const { fmt, time, weekday, dateNum, esc } = F();
+    const { fmt, time, weekday, dateNum, esc, statusChip, runOrder } = F();
+    const t = e.times || {};
     const start = new Date(e.start);
     // Gigs finish by the 10pm curfew
     let end = e.end ? new Date(e.end) : null;
@@ -216,19 +217,16 @@
     const media = img ? `<div class="blur" style="background-image:url('${esc(img)}')"></div>` : '';
     const facts = [
       ['Date', fmt({ weekday: 'short', day: 'numeric', month: 'short' }).format(start)],
-      e.timeKnown !== false ? [isClub ? 'Starts' : 'Doors', time(start)] : null,
-      end ? [isClub ? 'Ends' : 'Expected finish', time(end)] : null,
-      e.lastEntry ? ['Last entry', hhmm(e.lastEntry)] : null,
+      t.doors ? [isClub ? 'Starts' : 'Doors', hhmm(t.doors)] : e.timeKnown !== false ? [isClub ? 'Starts' : 'Doors', time(start)] : null,
+      t.curfew ? [isClub ? 'Ends' : 'Curfew', hhmm(t.curfew)] : end ? [isClub ? 'Ends' : 'Expected finish', time(end)] : null,
+      t.lastEntry || e.lastEntry ? ['Last entry', hhmm(t.lastEntry || e.lastEntry)] : null,
       e.price && hasTickets ? ['Tickets from', e.price] : null,
       e.age ? ['Age', e.age] : null,
     ].filter(Boolean);
 
-    const chips = [];
-    if (e.status === 'soldout') chips.push('<span class="chip soldout">Sold out</span>');
-    if (e.status === 'low') chips.push('<span class="chip low">Last few</span>');
-    if (e.status === 'presale') chips.push('<span class="chip low">Pre-sale soon</span>');
-    if (e.status === 'cancelled') chips.push('<span class="chip soldout">Cancelled</span>');
-    if (e.status === 'postponed') chips.push('<span class="chip soldout">Postponed</span>');
+    const chips = [statusChip(e)].filter(Boolean);
+    // Running order: only the acts (doors and curfew are already in the facts)
+    const acts = runOrder(e).filter((r) => r.kind !== 'doors' && r.kind !== 'end');
 
     $('#event-body').innerHTML = `
       <div class="ev-media ${img ? 'has-art' : ''}">${media}<div class="big-date"><span>${esc(weekday(start))}</span><b>${esc(dateNum(start))}</b><em>${esc(F().month(start))}</em></div></div>
@@ -237,7 +235,9 @@
         <h2 id="ev-title">${esc(e.title)}</h2>
         ${e.support ? `<p class="with">with ${esc(e.support)}</p>` : ''}
       </div>
+      ${e.statusNote ? `<p class="status-note">${esc(e.statusNote)}</p>` : ''}
       <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+      ${acts.length ? `<div class="ev-run"><h3>Running order</h3><ol>${acts.map((r) => `<li><time>${esc(hhmm(r.time) || '')}</time><span>${esc(r.label)}${r.kind === 'headliner' ? ' <small>Headliner</small>' : ''}</span></li>`).join('')}</ol>${t.note ? `<p class="run-note">${esc(t.note)}</p>` : ''}</div>` : ''}
       ${e.about?.length ? `<div class="ev-about"><h3>About</h3>${e.about.map((p) => `<p>${esc(p)}</p>`).join('')}</div>` : ''}
       <button type="button" class="venue-link" data-sheet="getting-here">${icon.pin}<span>Thekla, East Mud Dock<small>Map, parking &amp; buses</small></span></button>
       ${e.pageUrl ? `<a class="sheet-more" href="${esc(e.pageUrl)}" target="_blank" rel="noopener">Event page on theklabristol.co.uk</a>` : ''}

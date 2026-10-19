@@ -16,6 +16,7 @@ import { fetchSkiddle } from './lib/skiddle.mjs';
 import { mergeEvents } from './lib/merge.mjs';
 import { scoreEvents, parsePins } from './lib/featured.mjs';
 import { getJSON } from './lib/util.mjs';
+import { fetchLive } from './lib/live.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'site', 'events.json');
@@ -86,10 +87,26 @@ try { pins = parsePins(await fs.readFile(path.join(ROOT, 'site', 'featured.txt')
 scoreEvents(events, pins);
 if (pins.length) console.log(`  Featured pins: ${events.filter((e) => e.pinned).map((e) => e.title).join(', ') || 'none matched'}`);
 
+// Admin portal changes (sold out, bios, times, added events…): keep a copy in events.json
+let live = prev.live || null;
+let liveStatus = { ok: true, skipped: true };
+try {
+  const r = await fetchLive(path.join(ROOT, 'site', 'config.js'));
+  if (!r.skipped) {
+    live = r.live;
+    liveStatus = { ok: true, overrides: Object.keys(live.overrides || {}).length, added: Object.keys(live.manual || {}).length };
+    console.log(`✓ Admin changes: ${liveStatus.overrides} edited events, ${liveStatus.added} added events`);
+  } else console.log('  (Admin portal not set up yet: add the Firebase settings to site/config.js)');
+} catch (e) {
+  liveStatus = { ok: false, error: e.message };
+  console.warn(`✗ Admin changes: ${e.message} — keeping the copy from last run`);
+}
+
 const data = {
   generatedAt: now.toISOString(),
-  sources: { alttickets: alt.status, fatsoma: fat.status, skiddle: skid.status, thekla: thek.status },
+  sources: { alttickets: alt.status, fatsoma: fat.status, skiddle: skid.status, thekla: thek.status, admin: liveStatus },
   events,
+  ...(live ? { live } : {}),
 };
 
 await fs.mkdir(path.dirname(OUT), { recursive: true });

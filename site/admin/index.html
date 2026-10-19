@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b1019">
+<title>Thekla Admin</title>
+<link rel="icon" href="../assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="admin.css">
+<script src="../config.js"></script>
+</head>
+<body>
+<div id="boot" class="boot"><div class="spinner" aria-hidden="true"></div><p>Loading…</p></div>
+
+<!-- ============ Signed out ============ -->
+<main id="auth" class="auth" hidden>
+  <div class="auth-card">
+    <div class="brand"><img src="../assets/logo.jpg" alt="" onerror="this.remove()"><div><b>Thekla</b><span>Admin</span></div></div>
+
+    <form id="f-signin" class="auth-form" data-view="signin" novalidate>
+      <h1>Sign in</h1>
+      <label>Email<input type="email" name="email" autocomplete="username" required></label>
+      <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+      <p class="msg" role="alert"></p>
+      <button class="btn primary" type="submit">Sign in</button>
+      <div class="auth-links">
+        <button type="button" class="linkish" data-go="setup">First time here? Set your password</button>
+        <button type="button" class="linkish" data-go="reset">Forgot password?</button>
+      </div>
+    </form>
+
+    <form id="f-setup" class="auth-form" data-view="setup" novalidate hidden>
+      <h1>Set your password</h1>
+      <p class="hint">Use your Thekla email address. You’ll get an email to confirm it’s you.</p>
+      <label>Email<input type="email" name="email" autocomplete="username" required></label>
+      <label>New password<input type="password" name="password" autocomplete="new-password" minlength="10" required></label>
+      <label>Type it again<input type="password" name="password2" autocomplete="new-password" required></label>
+      <p class="hint small">At least 10 characters. A short sentence is easy to remember and hard to guess.</p>
+      <p class="msg" role="alert"></p>
+      <button class="btn primary" type="submit">Set password</button>
+      <div class="auth-links"><button type="button" class="linkish" data-go="signin">Back to sign in</button></div>
+    </form>
+
+    <form id="f-reset" class="auth-form" data-view="reset" novalidate hidden>
+      <h1>Reset password</h1>
+      <p class="hint">We’ll email you a link to choose a new password.</p>
+      <label>Email<input type="email" name="email" autocomplete="username" required></label>
+      <p class="msg" role="alert"></p>
+      <button class="btn primary" type="submit">Send reset link</button>
+      <div class="auth-links"><button type="button" class="linkish" data-go="signin">Back to sign in</button></div>
+    </form>
+
+    <div class="auth-form" data-view="verify" hidden>
+      <h1>Check your inbox</h1>
+      <p class="hint">We’ve sent a link to <b id="verify-email"></b>. Open it to confirm your email, then come back here and tap Continue.</p>
+      <p class="hint small">Can’t see it? Check your junk folder. It comes from noreply@…firebaseapp.com.</p>
+      <p class="msg" role="alert"></p>
+      <button class="btn primary" type="button" id="verify-continue">Continue</button>
+      <div class="auth-links">
+        <button type="button" class="linkish" id="verify-resend">Send the email again</button>
+        <button type="button" class="linkish" data-signout>Use a different email</button>
+      </div>
+    </div>
+
+    <div class="auth-form" data-view="denied" hidden>
+      <h1>Not an admin yet</h1>
+      <p class="hint"><b id="denied-email"></b> isn’t on the admin list. Ask Harrison or Phoebe to add you, then sign in again.</p>
+      <button class="btn secondary" type="button" data-signout>Sign out</button>
+    </div>
+
+    <div class="auth-form" data-view="setup-needed" hidden>
+      <h1>Almost there</h1>
+      <p class="hint">The admin portal needs a free Firebase project. Follow <b>“Admin portal”</b> in the README, then paste the settings into <code>site/config.js</code>.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ============ Signed in ============ -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="brand small"><img src="../assets/logo.jpg" alt="" onerror="this.remove()"><div><b>Thekla</b><span>Admin</span></div></div>
+    <div class="me">
+      <a class="btn ghost sm" href="../" target="_blank" rel="noopener">View page</a>
+      <button class="btn ghost sm" type="button" id="menu-btn" aria-haspopup="true" aria-expanded="false"><span id="me-email"></span></button>
+      <div class="menu" id="menu" hidden>
+        <button type="button" id="change-pw">Change password</button>
+        <button type="button" data-signout>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-tab="tonight" aria-selected="true">Tonight</button>
+    <button role="tab" data-tab="events" aria-selected="false">Events</button>
+    <button role="tab" data-tab="notice" aria-selected="false">Notice</button>
+    <button role="tab" data-tab="info" aria-selected="false">Info pages</button>
+    <button role="tab" data-tab="admins" aria-selected="false">Admins</button>
+    <button role="tab" data-tab="activity" aria-selected="false">Activity</button>
+  </nav>
+
+  <main class="panes">
+    <section class="pane" id="p-tonight" role="tabpanel"></section>
+    <section class="pane" id="p-events" role="tabpanel" hidden>
+      <div class="toolbar">
+        <input type="search" id="ev-search" placeholder="Search events" aria-label="Search events">
+        <select id="ev-filter" aria-label="Show">
+          <option value="all">All events</option>
+          <option value="gig">Gigs</option>
+          <option value="club">Club nights</option>
+          <option value="edited">Changed in admin</option>
+          <option value="hidden">Hidden</option>
+          <option value="manual">Added by hand</option>
+          <option value="past">Past (last week)</option>
+        </select>
+        <button class="btn primary" type="button" id="add-event">+ Add event</button>
+      </div>
+      <div id="ev-list" class="list"></div>
+    </section>
+    <section class="pane" id="p-notice" role="tabpanel" hidden></section>
+    <section class="pane" id="p-info" role="tabpanel" hidden></section>
+    <section class="pane" id="p-admins" role="tabpanel" hidden></section>
+    <section class="pane" id="p-activity" role="tabpanel" hidden></section>
+  </main>
+</div>
+
+<!-- Event editor -->
+<dialog id="editor" class="editor" aria-labelledby="ed-title">
+  <form method="dialog" class="ed-form" id="ed-form" novalidate>
+    <header class="ed-head">
+      <button type="button" class="btn ghost sm" data-ed-close>Cancel</button>
+      <h2 id="ed-title">Edit event</h2>
+      <button type="submit" class="btn primary sm" id="ed-save">Save</button>
+    </header>
+    <div class="ed-body" id="ed-body"></div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>

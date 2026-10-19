@@ -42,30 +42,54 @@
     return fmt({ weekday: 'long', day: 'numeric', month: 'short' }).format(d);
   }
 
-  window.TheklaFmt = { fmt, time, weekday, dateNum, month, esc: (x) => esc(x) };
+  // "19:00" → "7pm", "23:30" → "11:30pm"
+  const hhmm = (s) => {
+    const m = /^(\d{1,2}):(\d{2})/.exec(s || '');
+    if (!m) return s || '';
+    const h = +m[1];
+    return `${h % 12 || 12}${m[2] === '00' ? '' : ':' + m[2]}${h < 12 ? 'am' : 'pm'}`;
+  };
+  // Status labels (from the ticket sites, or set in the admin portal)
+  const STATUS = {
+    soldout: ['soldout', 'Sold out'], low: ['low', 'Last few'], presale: ['low', 'Pre-sale soon'],
+    cancelled: ['soldout', 'Cancelled'], postponed: ['soldout', 'Postponed'],
+    rescheduled: ['low', 'New date'], moved: ['low', 'Moved'],
+  };
+  const statusChip = (e) => (STATUS[e.status] ? `<span class="chip ${STATUS[e.status][0]}">${STATUS[e.status][1]}</span>` : '');
+  // Tonight's running order (set in the admin portal): doors, acts, curfew / last entry
+  function runOrder(e) {
+    const t = e.times;
+    if (!t) return [];
+    const late = (x) => { const m = /^(\d{1,2}):(\d{2})/.exec(x || ''); return m ? (+m[1] < 6 ? 24 + +m[1] : +m[1]) * 60 + +m[2] : 9999; };
+    const rows = [];
+    if (t.doors) rows.push({ time: t.doors, label: 'Doors', kind: 'doors' });
+    for (const a of t.sets || []) if (a && a.name) rows.push({ time: a.time || '', label: a.name, kind: a.role || 'support' });
+    if (t.lastEntry) rows.push({ time: t.lastEntry, label: 'Last entry', kind: 'end' });
+    const curfew = t.curfew || (e.type === 'club' ? '' : '22:00'); // every gig has a 10pm curfew
+    if (curfew) rows.push({ time: curfew, label: e.type === 'club' ? 'Close' : 'Curfew', kind: 'end' });
+    return rows.sort((a, b) => late(a.time) - late(b.time));
+  }
+  window.TheklaFmt = { fmt, time, weekday, dateNum, month, esc: (x) => esc(x), hhmm, statusChip, runOrder };
   const endOf = (e) => (e.end ? new Date(e.end) : new Date(new Date(e.start).getTime() + DEFAULT_LENGTH_H[e.type] * 3600e3));
 
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   // ---------- rendering ----------
-  function card(e, now, compact) {
+  function card(e, now, compact, tonight) {
     const start = new Date(e.start);
     const isLive = start <= now && endOf(e) > now;
     const typeWord = e.type === 'club' ? 'Club' : 'Gig';
 
     let when = '';
-    if (e.timeKnown !== false) {
+    if (e.times?.doors && e.type === 'gig') when = `Doors ${hhmm(e.times.doors)}`;
+    else if (e.timeKnown !== false) {
       when = e.type === 'gig' ? `Doors ${time(start)}` : e.end ? `${time(start)}–${time(new Date(e.end))}` : `From ${time(start)}`;
     }
     if (compact) when = `${weekday(start)} ${dateNum(start)} ${month(start)}${when ? ' · ' + when : ''}`;
 
     const chips = [];
     if (isLive) chips.push('<span class="chip live">On now</span>');
-    if (e.status === 'soldout') chips.push('<span class="chip soldout">Sold out</span>');
-    if (e.status === 'low') chips.push('<span class="chip low">Last few</span>');
-    if (e.status === 'presale') chips.push('<span class="chip low">Pre-sale soon</span>');
-    if (e.status === 'cancelled') chips.push('<span class="chip soldout">Cancelled</span>');
-    if (e.status === 'postponed') chips.push('<span class="chip soldout">Postponed</span>');
+    if (statusChip(e)) chips.push(statusChip(e));
 
     const hasTickets = e.linkKind === 'tickets' && !['soldout', 'cancelled'].includes(e.status);
     const where = { fatsoma: 'Fatsoma', skiddle: 'Skiddle', alttickets: 'Alt Tickets' }[e.source] || 'the ticket site';
@@ -86,11 +110,22 @@
         <div class="ev-meta"><span class="tag">${typeWord}</span>${when ? `<span>${esc(when)}</span>` : ''}${chips.join('')}${e.price && !compact && hasTickets ? `<span>From ${esc(e.price)}</span>` : ''}</div>
       </div>
       ${cta}
-    </article></li>`;
+    </article>${tonight && runOrder(e).length ? runStrip(e) : ''}</li>`;
+  }
+
+  function runStrip(e) {
+    const rows = runOrder(e);
+    return `<div class="run ${e.type}" aria-label="Tonight’s times for ${esc(e.title)}">
+      <span class="run-h">Tonight’s times</span>
+      <ol>${rows.map((r) => `<li class="${esc(r.kind)}"><time>${esc(hhmm(r.time))}</time><span>${esc(r.label)}</span></li>`).join('')}</ol>
+      ${e.times.note ? `<p class="run-note">${esc(e.times.note)}</p>` : ''}
+    </div>`;
   }
 
   function render() {
-    if (data) window.TheklaEvents = data.events || [];
+    const all = data ? (window.TheklaLive ? window.TheklaLive.apply(data.events || []) : (data.events || [])) : [];
+    if (data) window.TheklaEvents = all;
+    window.TheklaLive?.decorate();
     document.dispatchEvent(new CustomEvent('thekla:events'));
     document.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
     if (!data) return;
@@ -98,7 +133,7 @@
     const now = new Date();
     const todayKey = dayKey(now);
     const weekEndKey = addDays(todayKey, 7); // exclusive: today + next 6 days
-    const events = (data.events || [])
+    const events = all
       .filter((e) => endOf(e) > now && e.status !== 'past')
       .filter((e) => filter === 'all' || e.type === filter)
       .sort((a, b) => new Date(a.start) - new Date(b.start));
@@ -127,7 +162,7 @@
       weekEl.innerHTML = [...groups].map(([k, list]) => `
         <div class="day">
           <h3 class="day-label ${k === todayKey ? 'today' : ''}">${esc(dayLabel(k, todayKey))}</h3>
-          <ul class="events">${list.map((e) => card(e, now, false)).join('')}</ul>
+          <ul class="events">${list.map((e) => card(e, now, false, k === todayKey)).join('')}</ul>
         </div>`).join('');
     }
 
@@ -144,7 +179,7 @@
   // ---------- Featured: 4 big cards (2 gigs + 2 clubs), after this week ----------
   // Scores come from the collector (scripts/lib/featured.mjs); pins in site/featured.txt go first.
   function renderFeatured(events, nightKey, fromKey, untilKey) {
-    const ok = (e) => !['soldout', 'cancelled', 'presale'].includes(e.status) && nightKey(e) >= fromKey;
+    const ok = (e) => !e.noFeature && !['soldout', 'cancelled', 'presale', 'postponed'].includes(e.status) && nightKey(e) >= fromKey;
     const pinned = events.filter((e) => e.pinned && ok(e)).slice(0, 4);
     const pool = events.filter((e) => !e.pinned && ok(e) && nightKey(e) < untilKey && (e.image || e.imageLarge || window.__PREVIEW__));
     const bestFirst = (a, b) => (b.feature || 0) - (a.feature || 0) || new Date(a.start) - new Date(b.start);
@@ -265,6 +300,7 @@
     try {
       data = await fetchEvents();
       saveCopy(data);
+      window.TheklaLive?.useSnapshot(data.live);
     } catch (err) {
       if (!data) data = savedCopy();
       if (!data) {
@@ -292,12 +328,12 @@
   function structuredData() {
     if (!data || window.__PREVIEW__) return;
     const now = new Date();
-    const list = (data.events || []).filter((e) => new Date(e.start) > now && e.status !== 'cancelled').slice(0, 30).map((e) => ({
+    const list = (window.TheklaEvents || []).filter((e) => new Date(e.start) > now && e.status !== 'cancelled').slice(0, 30).map((e) => ({
       '@type': e.type === 'club' ? 'DanceEvent' : 'MusicEvent',
       name: e.title,
       startDate: e.start,
       ...(e.end ? { endDate: e.end } : {}),
-      eventStatus: e.status === 'postponed' ? 'https://schema.org/EventPostponed' : 'https://schema.org/EventScheduled',
+      eventStatus: e.status === 'postponed' ? 'https://schema.org/EventPostponed' : e.status === 'rescheduled' ? 'https://schema.org/EventRescheduled' : e.status === 'cancelled' ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       location: { '@type': 'MusicVenue', name: 'Thekla', address: { '@type': 'PostalAddress', streetAddress: 'The Grove, East Mud Dock', addressLocality: 'Bristol', postalCode: 'BS1 4RB', addressCountry: 'GB' } },
       ...(e.image || e.imageLarge ? { image: [e.imageLarge || e.image] } : {}),
@@ -309,10 +345,11 @@
     tag.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': list });
   }
 
-  if (data) safeRender(); else {
+  window.TheklaLive?.onChange(safeRender); // admin changes arrive after the listings
+  if (data) { window.TheklaLive?.useSnapshot(data.live); safeRender(); } else {
     // Show the saved copy straight away (if any) while fresh listings load
     const copy = savedCopy();
-    if (copy && Array.isArray(copy.events)) { data = copy; safeRender(); }
+    if (copy && Array.isArray(copy.events)) { data = copy; window.TheklaLive?.useSnapshot(copy.live); safeRender(); }
     load();
   }
   setInterval(safeRender, 60 * 1000); // keeps "On now" / Tonight accurate

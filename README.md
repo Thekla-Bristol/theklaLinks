@@ -39,6 +39,49 @@ Skiddle only shares listings through its API, which needs a free key.
 
 Until a key is added, Skiddle is skipped and everything else works as normal.
 
+## Analytics and the weekly report
+
+The page counts visits and taps with **its own small counter on Cloudflare's free plan** (`workers/counter`). It uses no cookies and stores no IP addresses: visitors are recognised by a one-way code that resets every Monday. It needs no cookie consent, and the data stays with Thekla. (Google Analytics, below, is the only thing the cookie bar controls.)
+
+Every Monday at 9am (UK time) a second workflow emails a report of the previous week to Phoebe and Harrison. It covers Monday to Sunday, counted from 6am to 6am so Sunday's late club night is included. The email also links to a **live "this week so far" page**.
+
+**What the report covers, in the same order every week:** visitors, page views, ticket taps and events opened (each with the change on last week); each event's details opens and ticket taps; where visitors came from; every button and link that was clicked; and visits per day with the peak time. Anything with zero clicks is left out.
+
+### 1. Cloudflare (about 10 minutes, free)
+
+1. Sign up at https://dash.cloudflare.com (free plan). You don't need to move the domain to Cloudflare.
+2. **Workers & Pages:** open it once and pick your free `workers.dev` subdomain when asked, e.g. `thekla`.
+3. **Storage & Databases → D1 → Create database.** Name it exactly `thekla-links`. Copy its **Database ID**.
+4. **My Profile → API Tokens → Create Token → "Edit Cloudflare Workers" template.** Add the permission **Account → D1 → Edit**, then create it and copy the token. Also copy your **Account ID** (on the Workers & Pages overview page).
+5. Make up a long random password (32+ characters from a password generator). This is the `COUNTER_TOKEN` that keeps the stats private.
+6. In GitHub, go to **Settings → Secrets and variables → Actions** and add:
+   - Secret `CLOUDFLARE_API_TOKEN` = the API token
+   - Secret `CLOUDFLARE_ACCOUNT_ID` = the Account ID
+   - Secret `COUNTER_TOKEN` = the random password
+   - Variable `D1_DATABASE_ID` = the Database ID
+7. **Actions → Deploy visit counter → Run workflow.** At the end of the log it prints the counter's address, like `https://thekla-links-counter.thekla.workers.dev`.
+8. Add that address as the variable `COUNTER_URL`, then run **Update events & deploy** once. The page starts counting straight away.
+
+### 2. Microsoft 365 (about 10 minutes, needs a Microsoft 365 admin)
+
+The report is sent through Microsoft Graph, the modern method. Microsoft is switching off the older password-based SMTP sending.
+
+1. **Pick the sending mailbox**, for example `office@theklabristol.co.uk`. Better still, create a free shared mailbox such as `reports@theklabristol.co.uk`.
+2. Go to **entra.microsoft.com → App registrations → New registration**. Name it `Thekla Links reports`, choose "Single tenant", then Register.
+3. **API permissions → Add → Microsoft Graph → Application permissions → Mail.Send → Add**, then **Grant admin consent**.
+4. **Certificates & secrets → New client secret** (24 months). Copy the **Value** straight away. Set a calendar reminder to renew it before it expires.
+5. Recommended: limit the app so it can only send as that one mailbox. In Exchange Online, use an *application access policy* or *RBAC for Applications*.
+6. In GitHub, add:
+   - Secret `MS_TENANT_ID` = Directory (tenant) ID (on the app's Overview page)
+   - Secret `MS_CLIENT_ID` = Application (client) ID
+   - Secret `MS_CLIENT_SECRET` = the secret value
+   - Variable `MS_SENDER` = the sending mailbox address
+   - Variable `REPORT_TO` = recipients, comma-separated (optional; defaults to phoebe@ and harrison@)
+
+### 3. Test it
+
+Go to **Actions → Weekly analytics report → Run workflow**. Untick "Send" to just build it; the email is attached to the run as `weekly-report`. Leave it ticked to send now. You can also type your own address in "Send to" for a test.
+
 ### Tracking where people came from
 
 Instagram's in-app browser usually hides where visitors came from. Tag each link you post, and the report lists them under "Tagged links":
@@ -65,6 +108,35 @@ Events sent to GA: `ticket_click`, `view_event`, `share` (with event title, date
 2. **Admin → Events:** when Fatsoma's `purchase` event appears, mark it as a **key event**.
 3. To see sales from this page: **Reports → Acquisition → Traffic acquisition**, filter *Session source = thekla_links*, and add *Session campaign* to see the event.
 
+## Admin portal (links.theklabristol.co.uk/admin)
+
+Staff can sign in and change the page without touching GitHub. Changes show on the page straight away.
+
+- **Tonight:** add tonight’s times (doors, support, headliner, curfew or last entry) and mark tonight’s show sold out or last few in one tap. Times show under tonight’s listing and in the event details.
+- **Events:** for any event: sold out, last few, cancelled, postponed, new date or moved (with a note); your own bio, title, support, image or ticket link; always or never feature it; or hide it. **Add event** puts on an event that isn’t on any ticket site.
+- **Notice:** a banner at the top of the page (normal or urgent red), with an optional link and an end time.
+- **Info pages:** edit the About line, Getting here, Accessibility, Lost property and FAQ text.
+- **Admins:** add or remove admins. Harrison and Phoebe are owners and can’t be removed.
+- **Activity:** whether each ticket site was read OK, a “Refresh listings now” button, and a log of who changed what.
+
+**Logging in:** new admins go to `/admin`, tap **First time here? Set your password**, choose a password, then click the confirmation link that’s emailed to them. The email comes from `noreply@…firebaseapp.com`, so check junk. **Forgot password?** emails a reset link. Anyone can create a login, but only people on the admin list can see or change anything.
+
+It runs on Firebase’s free plan (no card needed). The page reads one small document each time it loads. The free plan allows 50,000 a day. If that’s ever exceeded, the page carries on using the copy saved at the last update.
+
+### Setting up Firebase (about 15 minutes, once)
+
+1. Go to https://console.firebase.google.com and sign in with a Google account Thekla controls. Click **Create a project** and name it `thekla-links`. Google Analytics for the project isn’t needed, so you can switch it off.
+2. **Build → Authentication → Get started → Sign-in method → Email/Password → Enable** (leave “Email link” off) **→ Save**.
+3. **Authentication → Settings → Authorized domains → Add domain:** `links.theklabristol.co.uk`.
+4. Optional: **Authentication → Templates**. Set the sender name to “Thekla” on the email-verification and password-reset emails.
+5. **Build → Firestore Database → Create database.** Choose location **europe-west2 (London)** and **production mode**.
+6. In Firestore, open the **Rules** tab. Replace everything with the contents of `firestore.rules` from this repo, then click **Publish**.
+7. **Project settings** (gear icon) **→ General → Your apps →** the web icon `</>`. Name it `Thekla Links`, leave Hosting unticked, and click **Register app**. You’ll see a `firebaseConfig` block.
+8. In GitHub, edit `site/config.js`. Copy `apiKey`, `authDomain`, `projectId` and `appId` from that block into the matching lines, keeping the quotes. Also fill in `githubRepo` (e.g. `theklabristol/thekla-links`). Commit.
+9. Wait about 2 minutes for the deploy, then go to `links.theklabristol.co.uk/admin` and set your password.
+
+The Firebase values in `config.js` are meant to be public. What protects the data is `firestore.rules`. To change the owners, edit the list in **both** `site/config.js` and `firestore.rules`, then publish the rules again (step 6).
+
 ## Featured
 
 Four big cards under This Week show the best events coming up **after this week and within the next 6 weeks**. They pick themselves:
@@ -73,7 +145,7 @@ Four big cards under This Week show the best events coming up **after this week 
 - **Gigs** score for "Few tickets left" (+3), being in Alt Tickets' "Recently announced" list (+3) and falling on a Friday or Saturday (+1).
 - **Club nights** score for how many people are going on Fatsoma compared with the busiest club night (up to +4), being a one-off rather than a weekly regular (+2), and having a description (+0.5).
 - Events must have artwork and must not be sold out. No weekly series appears twice.
-- **Pins:** anything listed in `site/featured.txt` always takes a slot first, even beyond 6 weeks. Edit the file on GitHub and it applies at the next update, within 3 hours.
+- **Pins:** set **Always feature** on an event in the admin portal (applies straight away), or list it in `site/featured.txt` (applies at the next update). Pinned events take a slot first, even beyond 6 weeks. **Never feature** keeps an event out.
 
 ## Seasonal effects
 

@@ -67,9 +67,11 @@
     </div>
 
     <div class="auth-form" data-view="denied" hidden>
-      <h1>Not an admin yet</h1>
-      <p class="hint"><b id="denied-email"></b> isn’t on the admin list. Ask Harrison or Phoebe to add you, then sign in again.</p>
-      <button class="btn secondary" type="button" data-signout>Sign out</button>
+      <h1>No access yet</h1>
+      <p class="hint">The database didn’t let <b id="denied-email"></b> in.</p>
+      <p class="hint" id="denied-why"></p>
+      <button class="btn primary" type="button" id="denied-retry">Try again</button>
+      <div class="auth-links"><button type="button" class="linkish" data-signout>Sign out</button></div>
     </div>
 
     <div class="auth-form" data-view="setup-needed" hidden>

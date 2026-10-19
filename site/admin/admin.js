@@ -126,7 +126,7 @@ async function onUser(user) {
   try {
     await loadAdmins();
   } catch (e) {
-    if (e.code === 'permission-denied') { $('#denied-email').textContent = me; showAuth('denied'); return; }
+    if (e.code === 'permission-denied') { await explainDenied(); return; }
     showAuth('signin'); $('#f-signin .msg').textContent = friendly(e); return;
   }
   startApp();
@@ -245,7 +245,8 @@ async function api(url, { method = 'GET', body, auth = true, tries = 2 } = {}) {
     if (r.ok) return r.status === 204 ? null : r.json();
     let err = {};
     try { err = (await r.json()).error || {}; } catch { /* not JSON */ }
-    if (r.status === 401 && i + 1 < tries) continue; // token expired: refresh once
+    // Expired sign-in, or a sign-in from before the email was confirmed: refresh it and try once more
+    if ((r.status === 401 || r.status === 403) && i + 1 < tries) continue;
     if (r.status === 404 && url.includes('/documents/public/live') && method === 'GET' && !/database/i.test(err.message || '')) return null;
     const msg = err.message || `HTTP ${r.status}`;
     if (r.status === 403 || err.status === 'PERMISSION_DENIED') throw new DbError('permission-denied', msg);
@@ -274,6 +275,33 @@ const logWrite = (action, target, summary) => ({
   update: { name: docName('log', autoId()), fields: encFields({ by: me, action, target: target || '', summary: summary || '' }) },
   updateTransforms: [{ fieldPath: 'at', setToServerValue: 'REQUEST_TIME' }],
   currentDocument: { exists: false },
+});
+
+// Work out why the database said no, so the message says what to fix
+async function explainDenied() {
+  $('#denied-email').textContent = me;
+  const why = $('#denied-why');
+  let rulesLive = null;
+  try {
+    // With the Thekla rules published, anyone can read the public document
+    const r = await fetch(docUrl('public', 'live'), { cache: 'no-store' });
+    rulesLive = r.status !== 403;
+  } catch { /* offline */ }
+  const owner = OWNERS.includes(me);
+  if (rulesLive === false) {
+    why.innerHTML = `The database is still using Firebase’s default “lock everything” rules, so it refuses everyone. In the Firebase console go to <b>Firestore Database → Rules</b> (not Realtime Database or Storage), replace everything with the contents of <code>firestore.rules</code>, and click <b>Publish</b>. Wait a minute, then tap Try again.`;
+  } else if (owner) {
+    why.innerHTML = `You’re an owner in <code>site/config.js</code>, but the database rules don’t list <b>${esc(me)}</b>. Check the owners list near the top of the rules in <b>Firestore Database → Rules</b> matches <code>firestore.rules</code> exactly, then click <b>Publish</b>.`;
+  } else {
+    why.innerHTML = `Ask Harrison or Phoebe to add <b>${esc(me)}</b> in the Admins tab, then tap Try again.`;
+  }
+  showAuth('denied');
+}
+$('#denied-retry')?.addEventListener('click', async (ev) => {
+  busy(ev.currentTarget, true);
+  try { await fb.auth.currentUser.getIdToken(true); } catch { /* ignore */ }
+  busy(ev.currentTarget, false);
+  onUser(fb.auth.currentUser);
 });
 
 // ---------- data ----------
